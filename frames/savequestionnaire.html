@@ -1,0 +1,473 @@
+<HTML>
+<HEAD>
+   <TITLE>Export Save Questionnaire</TITLE>
+<!--
+#################################################################
+#         Exporter: Save Questionnaire
+#     for Software: SDAPScreator
+#         Filename: savequenstionnaire.html
+#                
+# Author/Editor:        Engelbert Niehaus                    
+# email:                niehaus@uni-landau.de                 
+# created               21.10.2014             
+# last modifications    21.10.2014             
+# GNU Public License - OpenSource
+# created with JavaScript generator_exporter.html
+#################################################################
+-->
+<script language="javascript">
+
+function createCode()  {
+	var vTemplateID = new Array("TPL1");
+    var vHashID = new Array("QUESTIONNAIRE_TITLE","AUTHOR","EMAIL","DATE","QNODE_FOLDER","QNODE_XML");
+	var vVariables = loadVariables(vHashID);
+	vVariables["DATE"] = getDateString();
+	vVariables["FILENAME"] = document.fCreator.tFILENAME.value;
+	//##_LOOP_CALL_##
+	// vVariables["LOOP_OUTPUT"] = createLoopString("LOOPDEF");
+	var vInput    = getInputCode(vTemplateID);
+	vOutput = replaceVariables(vInput,vVariables);
+
+	document.fCreator.tOutput.value = vOutput;	
+	//alert("Call createCode() in savequenstionnaire.html:29");
+	alert("Code generated successfully!\nCopy code and save in file "+vVariables["FILENAME"]+"\n");
+
+}
+
+
+function getInputCode(pHashID)  {
+	var vInput = "";
+	var vTemplates = loadTemplates(pHashID);
+	for (var iTemplateID in vTemplates) {
+		vInput += vTemplates[iTemplateID];
+	}
+	//alert("getnputQNode:377\nvInput=\n"+vInput);
+	return vInput;
+}
+
+function loadQuestionnaire()  {
+	var vLoadHash = new Array();
+	var vValue = "";
+	if (top.vSDAPScreator) {
+		var vQuestion = top.vSDAPScreator.aQuestionnaire.aQuestions;
+		vLoadHash["QUESTIONNAIRE_TITLE"] = vQuestion.aVariables["Q_TITLE"];
+		vLoadHash["AUTHOR"] = vQuestion.aVariables["Q_AUTHOR"];
+		vLoadHash["EMAIL"]  = vQuestion.aVariables["Q_AUTHOR_EMAIL"];
+		vLoadHash["QNODE_FOLDER"]  = top.vSDAPScreator.aFileLoader.folder;
+		vLoadHash["QNODE_XML"]  = vQuestion.exportXML();
+		saveVariables(vLoadHash);
+	}
+}
+
+
+function loadTemplates(pHashID)  {
+	var vTemplates = new Array();
+	var vEval = "";
+	for (var i=0; i<pHashID.length; i++) {
+		getFormContent(vTemplates,pHashID[i]);
+	}
+	return vTemplates;
+}
+
+function getFormContent(pHashArray,pID) {
+	vEval = "pHashArray[\""+pID+"\"] = document.fCreator.t"+pID+".value";
+	eval(vEval);
+	if (!pHashArray[pID]) {
+		alert("ERROR: Input for '"+pID+"' undefined!\nsaveqnode.html:75")
+	}
+}
+
+function loadVariables(pHashID)  {
+	var vVariables = new Array();
+	var vEval = "";
+	for (var i=0; i<pHashID.length; i++) {
+		getFormContent(vVariables,pHashID[i]);
+	}
+	if (top.vSDAPScreator) {
+		top.vSDAPScreator.updateQNodeVariables(vVariables);
+	}
+	return vVariables;
+}
+
+
+function replaceStringReverse(pString,pReplace,pSearch)
+//###### replaces in the string "pString" multiple substrings "pSearch" by "pReplace"
+{
+	return replaceString(pString,pSearch,pReplace);
+}
+
+function replaceString(pString,pSearch,pReplace)
+//###### replaces in the string "pString" multiple substrings "pSearch" by "pReplace"
+{
+	//alert("cstring.js - replaceString() "+pString);
+	if (!pString) {
+		alert("replaceString()-Call - pString not defined!\nsavequenstionnaire.html:112");
+	} else if (pString != '') {
+		var vHelpString = '';
+        var vN = pString.indexOf(pSearch);
+		var vReturnString = '';
+		while (vN >= 0)
+		{
+			if (vN > 0)
+				vReturnString += pString.substring(0, vN);
+			vReturnString += pReplace;
+            if (vN + pSearch.length < pString.length) {
+				pString = pString.substring(vN+pSearch.length, pString.length);
+			} else {
+				pString = ''
+			}
+			vN = pString.indexOf(pSearch);
+		};
+	};
+	return vReturnString + pString;
+}
+
+function getDateString() {
+	var vNow = new Date();
+	var vMonth = vNow.getMonth()+1;
+	return vNow.getDate()+"."+vMonth+"."+vNow.getFullYear();
+}
+
+function saveVariables(pVariables)  {
+	var vEval = "";
+	for (var iHashID in pVariables) {
+		//vEval = "document.fCreator.t"+iHashID+".value = pVariables[\""+iHashID+"\"]";
+    	vEval = "if (document.fCreator.t"+iHashID+") document.fCreator.t"+iHashID+".value = pVariables[\""+iHashID+"\"]";
+		eval(vEval);
+	}
+}
+
+function replaceVariables(pOutput,pVariables)  {
+	//-------------------------------
+	for (var iHashID in pVariables) {
+		//pOutput = replaceString(pOutput,"##_"+iHashID+"_##",pVariables[iHashID]);
+		pOutput = replaceString(pOutput,"___"+iHashID+"___",pVariables[iHashID]);
+
+	}
+	return pOutput
+}
+
+function onLoad_Form_Replace() {
+	var vHashID = new Array("TPL1","LOOP1","LOOP2");
+    var vTemplates = loadTemplates(vHashID);
+    var vVariables = new Array();
+    vVariables["TEXTAREA"] = "TEXTAREA";
+	for (var iTemplateID in vTemplates) {
+		vTemplates[iTemplateID] = replaceVariables(vTemplates[iTemplateID],vVariables);
+	};
+	if (document.fCreator.tDATE) {
+		document.fCreator.tDATE.value = getDateString();
+	};
+	saveVariables(vTemplates);
+	loadQuestionnaire();
+	
+}
+
+function createLoopString(pLOOP_ID) {
+	var vContent = "";
+	var vLoopVars = new Array("V_VAR_NAME","V_TITLE","V_DEFAULT_VALUE","V_INPUT_TYPE","V_SIZE");	
+    var vLoopArray = getLoopArray(pLOOP_ID,vLoopVars);
+    for (var i=0; i<vLoopArray.length; i++) {
+    	vContent += replaceLoopTemplate(vLoopVars,vLoopArray[i]);
+    	//alert("createLoopString():133\n"+vContent);
+    }
+	return vContent;
+}
+
+function getLoopArray(pLOOP_ID,pLoopVars)  {
+	// pLoopVars = new Array("V_VAR_NAME","V_TITLE","V_DEFAULT_VALUE","V_INPUT_TYPE","V_SIZE");	
+    // pLOOP_ID = "LOOP1"
+    var vLoopArray = new Array();
+	var vEval = "";
+	var vLoopDef = "";
+	vEval = "vLoopDef = document.fCreator.t"+pLOOP_ID+".value";
+	eval(vEval);
+	//alert("generate_exporter.html:143\nvEval='"+vEval+"'\nLOOPDEF="+vLoopDef);
+	if (vLoopDef) {
+		var vLineSplit = vLoopDef.split("\n");
+		for (var i=0; i<vLineSplit.length; i++) {
+			var vLoopRecord = vLineSplit[i].split("|");
+			//check if vLoopRecord has length>0
+			vTestString = vLoopRecord[0].replace(/\s/g,"");
+			if (vTestString.length > 0) {
+				var k = vLoopRecord.length;
+				vLoopArray.push(vLoopRecord);
+			}
+		}
+	} else {
+		vLoopArray.push(pArrayHashID);
+	}
+	return vLoopArray;
+}
+
+function replaceLoopTemplate(pLoopVars,pLoopRecord) {
+	var vEval = "";
+	var vLoopHash = new Array();
+	var iMax = pLoopVars.length;
+	for (var i=0; i<iMax; i++) {
+    	vEval = "vLoopHash[\""+pLoopVars[i]+"\"] = '"+pLoopRecord[i]+"'";
+    	eval(vEval);
+    	//alert("generate_exporter.html:168\n"+vEval);
+	};
+	var vTempate = document.fCreator.tLOOP1.value;
+	if (vLoopHash["V_INPUT_TYPE"]) {
+		if (vLoopHash["V_INPUT_TYPE"].toUpperCase() == "TEXTAREA") {
+			vTempate = document.fCreator.tLOOP2.value;
+		};
+	} else {
+		alert("V_INPUT_TYPE is undefined\nsavequenstionnaire.html:323")
+	};
+	vTempate = replaceVariables(vTempate,vLoopHash);
+
+	return vTempate;
+
+}
+
+</script>
+
+
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF8">
+</head>
+
+<body bgcolor=white style="font-family:Arial,Verdana; font-size:12pt; color:black">
+<center><h1>Save Questionnaire</h1>
+<hr>
+</center>
+<form name="fCreator">
+<input type="hidden" name="tLOOPDEF" Value="">
+<center>
+<table border=1 bgcolor="#EEEEEE">
+	<tr>
+		<td colspan="2" align="center">
+    <b>Generated HTML for Questionnaire-File:</b>
+<input type="button" name="bCreator1" Value="  Create HTML-Code  " onclick="createCode()">
+<b>Filename:</b>
+<input type=text name="tFILENAME" value="myquestionnaire.html" size="20"> 
+<br/>
+ <TEXTAREA name="tOutput" cols="120" rows="10">
+</TEXTAREA> 
+		</td>
+	</tr>
+	<tr>
+		<td colspan="2" align="center">
+<input type="button" name="bCreator2" Value="   Create HTML-Code   " onclick="createCode()"><br>
+<table width="95%">
+<tr><td>
+Copy the HTML-Javascript-code above and save the generated Code into the filename with an editor.<br>
+Use e.g. Notepad (Win), Textwrangler (Mac), kate (Linux) to save the questionnaire on local hard drive<br>
+<ul>
+<li>
+Save the questionnaire-file in folder <font color="red"><tt>/SDAPScreator/questionnaires/</tt></font>.  
+</li>
+<li>
+Edit the file <font color="red"><tt>/SDAPScreator/questionnaire_loader.html/</tt></font> and add the new generated questionnaire as 
+LOAD option for users of the SDAPS-Creator.
+</li>
+</ul>
+</td></tr></table>
+		</td>
+	</tr>
+	<tr>
+		<td>
+		   <b>Title of Questionnaire:</b> 
+		</td>
+		<td>
+		  <input type=text name="tQUESTIONNAIRE_TITLE" value="My Title of the Questionnaire" size="45"> 
+		</td>
+	</tr>
+	<tr>
+		<td>
+		   <b>Author of Questionnaire:</b> 
+		</td>
+		<td>
+		  <input type=text name="tAUTHOR" value="My Name" size="45"> 
+		</td>
+	</tr>
+	<tr>
+		<td>
+		   <b>e-Mail:</b> 
+		</td>
+		<td>
+		  <input type=text name="tEMAIL" value="mymail@example.com" size="25"> 
+		</td>
+	</tr>
+	<tr>
+		<td>
+		   <b>Date:</b> 
+		</td>
+		<td>
+		  <input type=text name="tDATE" value="23.10.2014" size="12"> 
+		</td>
+	</tr>
+	<tr>
+		<td>
+		   <b>Folder of QNodes:</b> 
+		</td>
+		<td>
+		  <input type=text name="tQNODE_FOLDER" value="myqnodes/" size="12"> 
+		</td>
+	</tr>
+	<tr>
+		<td valign="top">
+		   <b>XML for QNodes:</b> 
+		</td>
+		<td>
+<TEXTAREA name="tQNODE_XML" cols="80" rows="16">
+Enter XML of QNodes here
+</TEXTAREA>
+		</td>
+	</tr>
+
+<table>
+</center>
+<hr/>
+
+<br/><br/><br/><br/><br/>
+<br/><br/><br/><br/><br/>
+<br/><br/><br/><br/><br/>
+<br/><br/><br/><br/><br/>
+<!---------------------------------------------------------------------------->
+<!---------------------------------------------------------------------------->
+<hr/><b>TPL1</b><br/>
+<!---------------------------------------------------------------------------->
+<TEXTAREA name="tTPL1" cols="125" rows="3">
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf8">
+  <!--
+#################################################################
+#           SDAPS Creator: Save Questionnaire 
+#
+# Title: ___QUESTIONNAIRE_TITLE___
+#
+# Questionnaire File:   ___FILENAME___
+#                
+# Author Questionnaire: ___AUTHOR___                    
+# email:                ___EMAIL___                 
+# created               ___DATE___             
+# last modifications    ___DATE___             
+# GNU Public License - OpenSource
+# created with JavaScript SDAPS-Creator
+#################################################################
+-->
+
+</head>
+<body bgcolor="#EEEEEE" >
+
+<br>
+<br>
+<!--- FORM --->
+<form name="fConfig" action="empty.html">
+<center>
+<table border="1">
+  <tbody>
+    <tr bgcolor="#ffffff">
+      <td>
+      <table border="0">
+        <tbody>
+          <tr bgcolor="#ffffff">
+            <td><br>
+            </td>
+            <td>
+            <center><br>
+            <br>
+            <font size="+2" face="Arial,Helvetica">
+            <b>Load Questionnaire in SDAPScreator</b> <br> 
+            </font> 
+       		<font  face="Arial,Helvetica">
+       		<b>Filename:</b> ___FILENAME___<br/>
+            <p></p>
+            	<form action="empty.html"> 
+          		<table border=0>
+            		<tr>
+            		<td>
+            			<input type="button" 
+          					value="Load Questionnaire" 
+          					onclick="loadConfigVariables();alert('Config Variables loaded!')">
+          			</td>
+          			<td> 
+            			<input type="submit"
+ 							value="Cancel" 
+ 							onclick="alert('Load Questionnaire - Cancelled!')">
+ 					</td>
+ 					</tr> 
+ 				</table>
+            </center>
+  <hr/>
+  <b>Questionnaire:</b> <input type="text" name="FileOfQuestions" value="config_questionnaire.html">  
+  <hr/>
+  <b>Folder of QNode Files:</b> <input type="text" name="QNodeFolder" value="___QNODE_FOLDER___">
+<hr/>
+  <!--------------------------------------------------------------------------------->
+  <b>QNode Files:</b><br>
+<!--------------------------------------------------------------------------------->
+Question-Text | QNode-Filename without <tt>.html</tt> | L=Load or N=Not Loaded
+<___TEXTAREA___ name="QNodeFiles" cols="95" rows="3">
+___QNODE_XML___
+</___TEXTAREA___>
+<hr/>
+            	</form>
+<!--------------------------------------------------------------------------------->
+<script language="JavaScript1.2">
+
+	function loadConfigVariables () {
+		top.vSDAPScreator.aQNodePath = "this.aQuestionnaire.aQuestions";
+		top.vSDAPScreator.aImportCall = top.vSDAPScreator.aQNodePath+".importQNode(pQNode)";
+		top.vSDAPScreator.aFileLoader.init();
+		top.vSDAPScreator.aQuestionnaire.init();
+		//top.title.document.fTitle.tFileOfQuestions.value    	= document.fConfig.FileOfQuestions.value;
+		//top.title.document.fTitle.tQNodeFolder.value 	= document.fConfig.QNodeFolder.value;
+		top.vSDAPScreator.aFileOfQuestions		= document.fConfig.FileOfQuestions.value;
+		top.vSDAPScreator.aFileLoader.folder 		= document.fConfig.QNodeFolder.value;
+		top.vSDAPScreator.aFileLoader.loadQNodeXML(document.fConfig.QNodeFiles.value);
+		
+	};
+    top.setTimeout("top.main.loadConfigVariables ();"+
+    			   "top.vSDAPScreator.aFileLoader.check_preload()",100);	
+	
+</script>
+<!--------------------------------------------------------------------------------->
+            </font>
+            </center>
+            <br>
+            <br>
+            </td>
+            <td>&nbsp;&nbsp;
+<!--- inner input table ---></td>
+          </tr>
+        </tbody>
+      </table>
+<!--- outer table ---> </td>
+    </tr>
+  </tbody>
+</table>
+<font size="2" face="Arial,Helvetica"><b>It is recommended to use the Browser Firefox with this Application. It is necessary to enable Javascript.</font>
+</center>
+<!--- FORM --->
+</form> 				
+
+</body>
+</html>
+</TEXTAREA>
+<!---------------------------------------------------------------------------->
+<!---------------------------------------------------------------------------->
+<hr/><b>LOOP1</b><br/>
+<!---------------------------------------------------------------------------->
+<TEXTAREA name="tLOOP1" cols="125" rows="3">
+
+</TEXTAREA>
+<!---------------------------------------------------------------------------->
+<!---------------------------------------------------------------------------->
+<hr/><b>LOOP2</b><br/>
+<!---------------------------------------------------------------------------->
+<TEXTAREA name="tLOOP2" cols="125" rows="3">
+
+</TEXTAREA>
+<!---------------------------------------------------------------------------->
+ <SCRIPT LANGUAGE="JavaScript">
+    onLoad_Form_Replace();
+ </SCRIPT>
+</form>
+</body>
+</HTML>

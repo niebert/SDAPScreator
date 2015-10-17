@@ -1,0 +1,216 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+  <title>QNode File</title>
+<!--
+#################################################################
+#         SDAPS Creator: Save QNode STUDENTID
+#     for QNode File: qnodes/studentid.html
+#                
+# Author of Class:      Name of QNode Author                    
+# email:                mymail@example.com                 
+# created               16.10.2015             
+# last modifications    16.10.2015             
+# GNU Public License - OpenSource
+# created with JavaScript generator_exporter.html
+#################################################################
+-->
+  <meta http-equiv="Content-Type" content="text/html; charset=utf8">
+</head>
+<body bgcolor="#eeeeee">
+<!--- import Javascript Library qnodeloader.js --->
+<SCRIPT LANGUAGE="JavaScript" SRC="../library/qnodeloader.js">
+</SCRIPT>
+<br>
+<br>
+<center>
+<table border="1">
+  <tbody>
+    <tr bgcolor="#eeeeee">
+      <td>
+      <table border="0">
+        <tbody>
+          <tr bgcolor="#eeeeee">
+            <td><br>
+            </td>
+            <td>
+            <center><br>
+            <br>
+            <font size="+2" face="Arial,Helvetica">
+            <b>Load 
+	<script language="JavaScript1.2">
+   	//----------------------------------------------------	
+         document.write(top.extractName(document.location.href).toUpperCase());
+	//----------------------------------------------------	
+    </script>
+            QNode<br></b> </font>
+    <script language="JavaScript1.2">
+   	//----------------------------------------------------
+   		 document.write(getQNode_Filename());
+	//----------------------------------------------------	
+    </script>
+                            <font size="+1" face="Arial,Helvetica">
+              <!-- action="#" -->
+	   			<form name="fInputForm"  onsubmit="document.location.href='showquestionnaire.html'">
+					<input type=button name="Import" value="Import QNode" onclick="importQNodeAlert()"> 
+<!--------------------------------------------------------------------------------------------->
+					QNode-Type: <input type=text name="QNodeType" value="myqnode"> 
+<!--------------------------------------------------------------------------------------------->
+			<hr noshade style=" color:black; height:5px; text-align:left; border:1px solid blue;">
+			<b>Variables for QNode</b><br/>
+<!--------------------------------------------------------------------------------------------->
+<TEXTAREA name="tVariables" cols="95" rows="6" >
+Q_TITLE|Second Question Group with Yes and No
+Q_LATEX_TITLE|Bitte die Matrikelnummer von oben nach unten in die $\sqcup$ eintragen und dann die Kreuze setzen.  \textbf{In jede Zeile kommt nur ein Kreuz.}
+Q_NUMBER|Ziffer
+Q_TYPE|STUDENTID
+SECTION_NO|1
+SUBSECTION_NO|1
+QUESTION_NO|1
+</TEXTAREA><hr/>
+<!--------------------------------------------------------------------------------------------->
+					<b>Options for QNode</b> (Option-Text|Option Value)<br/>
+<!--------------------------------------------------------------------------------------------->
+<TEXTAREA name="tOptions" cols="95" rows="6" >
+1. ###Q_NUMBER###|Z1
+2. ###Q_NUMBER###|Z2
+3. ###Q_NUMBER###|Z3
+4. ###Q_NUMBER###|Z4
+5. ###Q_NUMBER###|Z5
+6. ###Q_NUMBER###|Z6
+7. ###Q_NUMBER###|Z7
+8. ###Q_NUMBER###|Z8
+9. ###Q_NUMBER###|Z9
+
+</TEXTAREA>
+<!--------------------------------------------------------------------------------------------->
+			<hr noshade style=" color:black; height:5px; text-align:left; border:1px solid blue;">
+			<br/>			
+			<br/>			
+			<br/>			
+			<br/>			
+			<br/>			
+			<br/>			
+			<br/>			
+			<br/>						
+			<hr noshade style=" color:black; height:5px; text-align:left; border:1px solid blue;">
+			<b>TEMPLATES</b>
+			<hr noshade style=" color:black; height:5px; text-align:left; border:1px solid blue;">
+			<b>HTML-Template for QNode</b><br/>
+<!--------------------------------------------------------------------------------------------->
+<TEXTAREA name="tHTMLTemplate" cols="95" rows="6" >
+<hr/>
+  ###SECTION_NO###.###SUBSECTION_NO### ###Q_TITLE###
+<table border=0 width="100%">
+     <TR> <TD><!-- ###OPTION_NO### -->   </TD><TD> </TD>
+     <TD align="right"></TD>
+     <TD align="center">1</TD>
+     <TD align="center">2</TD>
+     <TD align="center">3</TD>
+     <TD align="center">4</TD>
+     <TD align="center">5</TD>
+     <TD align="center">6</TD>
+     <TD align="center">7</TD>
+     <TD align="center">8</TD>
+     <TD align="center">9</TD>
+     <TD align="center">0</TD>
+###Q_OPTIONS###
+</table>   
+###Q_CHILDNODES###
+   
+</TEXTAREA>
+<!--------------------------------------------------------------------------------------------->
+				<br/><b>HTML-Option for QNode</b><br/>
+<!--------------------------------------------------------------------------------------------->
+<TEXTAREA name="tHTMLOption" cols="95" rows="3" >
+     <TR> <TD><!-- ###OPTION_NO### -->   </TD><TD align="right">###OPTION_TEXT###</TD>
+     <TD align="left"><input type="text" size="3"></TD>
+     <TD align="center"><input type="radio" Name="Group###QUESTION_NO###Opt###OPTION_NO###" value="1"></TD>
+     <TD align="center"><input type="radio" Name="Group###QUESTION_NO###Opt###OPTION_NO###" value="2"></TD>
+     <TD align="center"><input type="radio" Name="Group###QUESTION_NO###Opt###OPTION_NO###" value="3"></TD>
+     <TD align="center"><input type="radio" Name="Group###QUESTION_NO###Opt###OPTION_NO###" value="4"></TD>
+     <TD align="center"><input type="radio" Name="Group###QUESTION_NO###Opt###OPTION_NO###" value="5"></TD>
+     <TD align="center"><input type="radio" Name="Group###QUESTION_NO###Opt###OPTION_NO###" value="6"></TD>
+     <TD align="center"><input type="radio" Name="Group###QUESTION_NO###Opt###OPTION_NO###" value="7"></TD>
+     <TD align="center"><input type="radio" Name="Group###QUESTION_NO###Opt###OPTION_NO###" value="8"></TD>
+     <TD align="center"><input type="radio" Name="Group###QUESTION_NO###Opt###OPTION_NO###" value="9"></TD>
+     <TD align="center"><input type="radio" Name="Group###QUESTION_NO###Opt###OPTION_NO###" value="0"></TD>
+
+</TEXTAREA>
+<!--------------------------------------------------------------------------------------------->
+		<hr noshade style=" color:black; height:5px; text-align:left; border:1px solid blue;">
+		<b>LaTeX-Template for QNode</b><br/>
+<!--------------------------------------------------------------------------------------------->
+<TEXTAREA name="tLatexTemplate" cols="95" rows="6" >
+      
+    %\def\checkboxstyle{ellipse}
+    \setcounter{markcheckboxcount}{10}
+    \begin{markgroup}{###Q_LATEX_TITLE###}
+       \hfill & & 1 & 2 & 3 & 4 & 5 & 6 & 7 & 8 & 9 & 0 \\
+###Q_OPTIONS###
+    \end{markgroup}
+
+###Q_CHILDNODES###
+
+</TEXTAREA>
+<!--------------------------------------------------------------------------------------------->
+				<br/><b>Latex-Option for QNode</b><br/>
+<!--------------------------------------------------------------------------------------------->
+<TEXTAREA name="tLatexOption" cols="95" rows="3" >
+        %----Ziffer ###OPTION_NO###: ###OPTION_VALUE### ------------    			
+        \markline{\hfill ###OPTION_TEXT### \Huge$\sqcup$}{}{}
+
+</TEXTAREA>
+<!--------------------------------------------------------------------------------------------->
+		<hr noshade style=" color:black; height:5px; text-align:left; border:1px solid blue;">
+		<b>XML-Template for QNode</b><br/>
+<!--------------------------------------------------------------------------------------------->
+<TEXTAREA name="tXMLTemplate" cols="95" rows="6" >
+  <QNODE LOAD="L">
+    <TYPE>###Q_TYPE###</TYPE>
+    <VARIABLES>
+###XML_VARIABLES###
+    </VARIABLES>
+    <OPTIONS>
+###Q_OPTIONS###
+    </OPTIONS>
+  </QNODE>
+###Q_CHILDNODES### 
+
+</TEXTAREA>
+<!--------------------------------------------------------------------------------------------->
+		<br/><b>XML-Option for QNode</b><br/>
+<!--------------------------------------------------------------------------------------------->
+<TEXTAREA name="tXMLOption" cols="95" rows="3" >
+        <OPTDEF TEXT="###OPTION_TEXT###" VALUE="###OPTION_VALUE###" />
+
+</TEXTAREA>
+<!--------------------------------------------------------------------------------------------->
+		    	</form>
+            </font>
+            </center>
+            <center>
+            <p></p>
+            </center>
+            <br>
+            </td>
+            <td>  
+<!--- inner input table ---></td>
+          </tr>
+        </tbody>
+      </table>
+<!--- outer table ---> </td>
+    </tr>
+  </tbody>
+</table>
+<script language="JavaScript1.2">
+	//----------------------------------------------------	
+    postprocessQNode()
+    //----------------------------------------------------	
+</script>
+
+
+<font size="2" face="Arial,Helvetica"><b>It is recommended to use the Browser Firefox with this Application. It is necessary to enable Javascript.</font>
+</center>
+</body>
+</html>

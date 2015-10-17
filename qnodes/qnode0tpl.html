@@ -1,0 +1,160 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+  <meta http-equiv="Content-Type"
+ content="text/html; charset=utf8">
+ <title>QNode File</title>
+</head>
+<body bgcolor="#eeeeee">
+<SCRIPT LANGUAGE="JavaScript" SRC="../library/qnodeloader.js">
+</SCRIPT>
+<br>
+<br>
+<center>
+<table border="1">
+  <tbody>
+    <tr bgcolor="#eeeeee">
+      <td>
+      <table border="0">
+        <tbody>
+          <tr bgcolor="#eeeeee">
+            <td><br>
+            </td>
+            <td>
+            <center><br>
+            <br>
+            <font size="+2" face="Arial,Helvetica">
+            <b>Load 
+	<script language="JavaScript1.2">
+   	//----------------------------------------------------	
+         document.write(top.vURL_Object.getName(document.location.href).toUpperCase());
+	//----------------------------------------------------	
+    </script>
+            QNode<br></b> </font>
+    <script language="JavaScript1.2">
+   	//----------------------------------------------------
+   		 document.write(getQNode_Filename());
+	//----------------------------------------------------	
+    </script>
+                        <font size="+1" face="Arial,Helvetica">
+              <!-- action="#" -->
+	   			<form name="fInputForm"  onsubmit="document.location.href='showquestionnaire.html'">
+					<input type=button name="Import" value="Import QNode" onclick="importQNode()"> 
+					QNode-Type: <input type=text name="QNodeType" value="myqnode"> 
+			<hr noshade style=" color:black; height:5px; text-align:left; border:1px solid blue;">
+			<b>Variables for QNode</b><br/>
+<!--------------------------------------------------------------------------------------------->
+<TEXTAREA name="tVariables" cols="95" rows="6" >
+Q_TITLE|Software Knowledge
+Q_QUESTION|Do you know the Software SDAPS?
+Q_TASK|Please select one of the following options!
+VARIABLE1|default1
+VARIABLE2|default2
+VARIABLE3|default3
+
+</TEXTAREA><hr/>
+<!--------------------------------------------------------------------------------------------->
+					<b>Options for QNode</b> (Option-Text|Option Value)<br/>
+<TEXTAREA name="tOptions" cols="95" rows="6" >
+Yes|Y
+No|N
+Not Sure|0
+
+</TEXTAREA>
+<!--------------------------------------------------------------------------------------------->
+			<hr noshade style=" color:black; height:5px; text-align:left; border:1px solid blue;">
+			<br/>			
+			<br/>			
+			<br/>			
+			<br/>			
+			<br/>			
+			<br/>			
+			<br/>			
+			<br/>
+			<hr noshade style=" color:black; height:5px; text-align:left; border:1px solid blue;">
+			<b>TEMPLATES</b>
+			<hr noshade style=" color:black; height:5px; text-align:left; border:1px solid blue;">
+			<b>HTML-Template for QNode</b><br/>
+<!--------------------------------------------------------------------------------------------->
+<TEXTAREA name="tHTMLTemplate" cols="95" rows="6" >
+<h2>Title is: ###Q_TITLE###</h2>
+<b>Question:</b> ###Q_QUESTION###<br/> 
+<b>Task:</b> ###Q_TASK###<br/> 
+This is the HTML-Text ###VARIABLE1### with additional text that wraps the Variables. The Default Variable can be edited (VARIABLE1=<tt>'###VARIABLE1###'</tt>).
+This is the HTML-Text ###VARIABLE2###  with additional text that wraps the Variables. The Default Variable can be edited (VARIABLE2=<tt>'###VARIABLE2###'</tt>).
+Place the Options <UL> ###Q_OPTIONS### </UL> here.
+This is the HTML-Text ###VARIABLE3###  with additional text that wraps the Variables. The Default Variable can be edited (VARIABLE3=<tt>'###VARIABLE3###'</tt>).
+Now we add the HTML-Child-Qnodes with ###Q_CHILDNODES### if they exist.
+</TEXTAREA>
+<!--------------------------------------------------------------------------------------------->
+				<br/><b>HTML-Option for QNode</b><br/>
+<!--------------------------------------------------------------------------------------------->
+<TEXTAREA name="tHTMLOption" cols="95" rows="3" >
+            <LI>(###OPTION_VALUE###) <b>Option ###OPTION_NO###:</b> ###OPTION_TEXT### with ###VARIABLE2###</LI>
+</TEXTAREA>
+<!--------------------------------------------------------------------------------------------->
+		<hr noshade style=" color:black; height:5px; text-align:left; border:1px solid blue;">
+		<b>LaTeX-Template for QNode</b><br/>
+<!--------------------------------------------------------------------------------------------->
+<TEXTAREA name="tLatexTemplate" cols="95" rows="6" >
+\large\textfb{{###Q_TITLE###}}
+\textbf{Question:} ###Q_QUESTION### \\ 
+\textbf{Task:} ###Q_TASK###\\ 
+This is the LaTeX-Text ###VARIABLE1### with additional text that wraps the Variables. The Default Variable can be edited (VARIABLE1='###VARIABLE1###').
+Now we add the LaTeX-Child-Qnodes with ###Q_CHILDNODES### if they exist
+This is the LaTeX-Text ###VARIABLE2###  with additional text that wraps the Variables. The Default Variable can be edited (VARIABLE2='###VARIABLE2###').
+Place the Options here:
+\begin{itemize} ###Q_OPTIONS### \end{itemize}
+This is the LaTeX-Text ###VARIABLE3###  with additional text that wraps the Variables. The Default Variable can be edited (VARIABLE3='###VARIABLE3###')
+</TEXTAREA>
+<!--------------------------------------------------------------------------------------------->
+				<br/><b>Latex-Option for QNode</b><br/>
+<!--------------------------------------------------------------------------------------------->
+<TEXTAREA name="tLatexOption" cols="95" rows="3" >
+        \item (###OPTION_VALUE###) \textbf{Option:} ###OPTION_TEXT### adding a variable ###VARIABLE1###
+</TEXTAREA>
+<!--------------------------------------------------------------------------------------------->
+		<hr noshade style=" color:black; height:5px; text-align:left; border:1px solid blue;">
+		<b>XML-Template for QNode</b><br/>
+<!--------------------------------------------------------------------------------------------->
+<TEXTAREA name="tXMLTemplate" cols="95" rows="6" >
+Now we add the XML-Child-Qnodes with ###Q_CHILDNODES### if they exist.
+This is the XML-Text ###VARIABLE1### with additional text that wraps the Variables. The Default Variable can be edited ###VARIABLE1###
+Place the XML-Options <select name="test">###Q_OPTIONS###</select> here.
+This is the XML-Text ###VARIABLE2###  with additional text that wraps the Variables. The Default Variable can be edited ###VARIABLE2###
+This is the XML-Text ###VARIABLE3###  with additional text that wraps the Variables. The Default Variable can be edited ###VARIABLE3###
+           		 	</TEXTAREA>
+<!--------------------------------------------------------------------------------------------->
+					<br/><b>XML-Option for QNode</b><br/>
+<!--------------------------------------------------------------------------------------------->
+<TEXTAREA name="tXMLOption" cols="95" rows="3" >
+        <OPTION NAME="OPTNAME###OPTION_NO###" VALUE="###OPTION_VALUE###">###OPTION_TEXT###</OPTION>
+</TEXTAREA>
+<!--------------------------------------------------------------------------------------------->
+		    	</form>
+            </font>
+            </center>
+            <center>
+            <p></p>
+            </center>
+            <br>
+            </td>
+            <td>&nbsp;&nbsp;
+<!--- inner input table ---></td>
+          </tr>
+        </tbody>
+      </table>
+<!--- outer table ---> </td>
+    </tr>
+  </tbody>
+</table>
+<script language="JavaScript1.2">
+	//----------------------------------------------------	
+    postprocessQNode()
+    //----------------------------------------------------	
+</script>
+
+<font size="2" face="Arial,Helvetica"><b>It is recommended to use the Browser Firefox with this Application. It is necessary to enable Javascript.</font>
+</center>
+</body>
+</html>

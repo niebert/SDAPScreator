@@ -1,0 +1,38 @@
+<QUESTIONNAIRE FOlDER="qnodes/">
+  <QNODE LOAD="Y">
+     <TYPE>1header</TYPE>
+     <VARIABLES>
+VAR1|default1
+VAR2|default2
+     </VARIABLES>
+     <OPTIONS>
+Option 1|Opt1
+Option 2|Opt2
+Option 3|Opt3
+     </OPTIONS>
+  </QNODE>
+  <QNODE LOAD="Y">
+     <TYPE>qnode2</TYPE>
+     <VARIABLES>
+VAR3|default3
+VAR4|default4
+VAR5|default5
+     </VARIABLES>
+     <OPTIONS>
+Option 1|Opt1
+Option 2|Opt2
+     </OPTIONS>
+  </QNODE>
+  <QNODE LOAD="Y">
+     <TYPE>qnode3</TYPE>
+     <VARIABLES>
+VAR6|default6
+     </VARIABLES>
+     <OPTIONS>
+Option 1|Opt1
+Option 2|Opt2
+Option 3|Opt3
+Option 4|Opt4
+     </OPTIONS>
+  </QNODE>
+</QUESTIONNAIRE>

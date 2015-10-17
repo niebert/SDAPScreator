@@ -1,0 +1,2985 @@
+<!DOCTYPE html>
+<html lang="en" class="ng-scope" ng-app="sdaps">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+	<title>SDAPS</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	
+	
+	
+	
+	
+  
+    <!-- Templates -->
+
+  
+
+  <script type="text/ng-template" id="questionnaire.html">
+    <div class="angular-ui-tree-handle" ng-show="!qobject.$editing">
+      <a href="" class="btn btn-danger btn-xs pull-right" data-nodrag ng-click="removeObj(this)"><i class="glyphicon glyphicon-remove"></i></a>
+      <a href="" class="btn btn-primary btn-xs pull-right" data-nodrag  ng-show="canAdd(qobject.type)" ng-click="addChild(qobject)"><i ng-show="!qobject.$adding" class="glyphicon glyphicon-plus"></i><i ng-show="qobject.$adding" class="glyphicon glyphicon-minus"></i></a>
+      <a href="" class="btn btn-primary btn-xs pull-right" data-nodrag ng-click="editObj(qobject)"><i class="glyphicon glyphicon-pencil"></i></a>
+      <div class="pull-right">&nbsp;</div>
+
+      <div ng-show="qobject.type == 'section'"><div class="qobjectheader">Section: {{qobject.title}}</div></div>
+
+      <div ng-show="qobject.type == 'multicol'"><div class="qobjectheader">{{qobject.columns}} column layout</div></div>
+
+      <div ng-show="qobject.type == 'textbody'"><pre class="textbody">{{qobject.text}}</pre></div>
+
+      <div ng-show="qobject.type == 'singlemark'"><div class="qobjectheader">{{qobject.question}}</div>
+        <div style="text-align: center">
+          {{qobject.lower}}
+          <input style="margin-right: 2px; margin-left: 2px;" disabled type="radio" ng-repeat="n in [] | range:qobject.checkboxcount" /> {{qobject.upper}}
+        </div>
+      </div>
+
+      <div ng-show="qobject.type == 'textbox'"><div class="qobjectheader">{{qobject.question}}</div>
+        <textarea style="display: block; width: 100%;" disabled>A textbox with a height of at least {{ qobject.height }}cm. Expands: {{ qobject.expand }}</textarea>
+      </div>
+
+      <div ng-show="qobject.type == 'markgroup'"><div class="qobjectheader">{{qobject.heading}}</div></div>
+
+      <div ng-show="qobject.type == 'choicegroup'"><div class="qobjectheader">{{qobject.heading}}</div></div>
+
+      <div ng-show="qobject.type == 'choicequestion'"><div class="qobjectheader">{{qobject.question}}</div><div class="pull-right">{{qobject.columns}} Columns</div></div>
+
+      <!-- choicequestion children -->
+
+      <div ng-show="qobject.type == 'choiceitem'"><input type="checkbox" disabled /> {{qobject.answer}}<div class="pull-right">Spans {{qobject.colspan}}</div></div>
+      <div ng-show="qobject.type == 'choiceitemtext'">{{qobject.answer}} <input type="text" disabled /><div class="pull-right">Spans {{qobject.colspan}}</div></div>
+
+      <!-- markgroup children -->
+
+      <div ng-show="qobject.type == 'markline'" class="row">
+        <div class="col-md-5">{{qobject.question}}</div>
+        <div class="col-md-6" style="text-align: center;">
+          {{qobject.lower}}
+          <input style="margin-right: 2px; margin-left: 2px;" disabled type="radio" ng-repeat="n in [] | range:parentAttr(this, 'checkboxcount')" /> {{qobject.upper}}
+        </div>
+      </div>
+
+      <!-- choicegroup children -->
+
+      <div ng-show="qobject.type == 'groupaddchoice'" class="row">
+        <div class="col-md-11" style="text-align: right">Choice: {{qobject.choice}}</div>
+      </div>
+
+      <div ng-show="qobject.type == 'choiceline'" class="row">
+        <div class="col-md-11">{{qobject.question}}</div>
+      </div>
+
+    </div>
+
+    <div class="angular-ui-tree-handle" data-nodrag ng-show="qobject.$editing">
+      <form class="form-inline" role="form">
+        <div ng-show="qobject.type == 'section'"  class="form-group">
+          <label style="width: 100%"><div class="sr-only">Title</div>
+            <input type="text" class="form-control" style="width: 100%" placeholder="Title" ng-model="qobject.title">
+          </label>
+        </div>
+
+        <div ng-show="qobject.type == 'multicol'"  class="form-group">
+          <label>Columns: 
+            <input type="number" class="form-control" min="1" max="4" ng-pattern="/[1-4]/" ng-model="qobject.columns">
+          </label>
+        </div>
+
+        <div ng-show="qobject.type == 'textbody'"  class="form-group">
+          <label style="width: 100%"><div class="sr-only">Text</div>
+            <textarea style="width: 100%" class="form-control" placeholder="Some text here." ng-model="qobject.text"></textarea>
+          </label>
+        </div>
+
+        <div ng-show="qobject.type == 'singlemark'"  class="form-group">
+          <div class="row">
+            <label class="col-md-11"><div class="sr-only">Question</div>
+                <input type="text" style="width:100%" class="form-control" placeholder="Question" ng-model="qobject.question">
+            <label>
+          </div>
+
+          <label >Number of Checkboxes:
+            <input type="number" class="form-control" min="2" max="10" ng-pattern="/[0-9]*/" ng-model="qobject.checkboxcount">
+          </label>
+
+          <div class="row">
+            <label class="col-md-5"><div class="sr-only">lower bound label</div>
+              <input type="text" style="width: 100%" class="form-control" placeholder="lower" ng-model="qobject.lower">
+            </label>
+            <div class="col-md-1" style="text-align: center;">–</div>
+            <label class="col-md-5"><div class="sr-only">upper bound label</div>
+              <input type="text" style="width: 100%" class="form-control" placeholder="upper" ng-model="qobject.upper">
+            </label>
+          </div>
+        </div>
+
+        <div ng-show="qobject.type == 'textbox'"  class="form-group">
+          <div class="row">
+            <label class="col-md-11"><div class="sr-only">Question</div>
+                <input type="text" style="width:100%" class="form-control" placeholder="Question" ng-model="qobject.question">
+            <label>
+          </div>
+
+          <label>Height:
+            <input type="number" class="form-control" min="1.0" max="12" ng-model="qobject.height">
+          </label>
+
+          <label><input type="checkbox" class="form-control" ng-model="qobject.expand" /> Expand in height</label>
+        </div>
+
+        <div ng-show="qobject.type == 'markgroup'"  class="form-group">
+          <div class="row">
+            <label class="col-md-11"><div class="sr-only">Heading</div>
+                <input type="text" style="width:100%" class="form-control" placeholder="Question" ng-model="qobject.heading">
+            <label>
+          </div>
+
+          <label >Number of Checkboxes:
+            <input type="number" class="form-control" min="2" max="10" ng-pattern="/[0-9]*/" ng-model="qobject.checkboxcount">
+          </label>
+        </div>
+
+        <div ng-show="qobject.type == 'choicegroup'"  class="form-group">
+          <div class="row">
+            <label class="col-md-11"><div class="sr-only">Heading</div>
+                <input type="text" style="width:100%" class="form-control" placeholder="Question" ng-model="qobject.heading">
+            <label>
+          </div>
+        </div>
+
+        <div ng-show="qobject.type == 'choicequestion'"  class="form-group">
+          <label><div class="sr-only">Question</div>
+            <input type="text" class="form-control" placeholder="Question" ng-model="qobject.question">
+          </label><br />
+          <label>Columns:
+            <input type="number" class="form-control" min="1" max="10" ng-pattern="/[0-9]*/" ng-model="qobject.columns">
+          </label>
+        </div>
+
+        <!-- choicequestion children -->
+
+        <div ng-show="qobject.type == 'choiceitem'" class="form-group">
+          <label class="sr-only" for="choiceitem-answer">Answer</label>
+          <input type="text" class="form-control" placeholder="Title" ng-model="qobject.answer"><br />
+          <label >Column span:
+            <input type="number" class="form-control" min="1" max="10" ng-pattern="/[0-9]*/" ng-model="qobject.colspan">
+          </label>
+        </div>
+
+        <div ng-show="qobject.type == 'choiceitemtext'"  class="form-group">
+          <label><div class="sr-only">Answer</div>
+            <input type="text" class="form-control" placeholder="Title" ng-model="qobject.answer">
+          </label><br />
+          <label >Column span:
+            <input type="number" class="form-control" min="1" max="10" ng-pattern="/[0-9]*/" ng-model="qobject.colspan">
+          </label>
+          <label>Height: 
+            <input type="number" class="form-control" min="0.8" max="3" placeholder="1.2" ng-model="qobject.height">
+          </label>
+        </div>
+
+        <!-- markgroup children -->
+
+        <div ng-show="qobject.type == 'markline'"  class="form-group">
+          <div class="row">
+            <label class="col-md-11"><div class="sr-only">Question</div>
+                <input type="text" style="width:100%" class="form-control" placeholder="Question" ng-model="qobject.question">
+            <label>
+          </div>
+
+          <div class="row">
+            <label class="col-md-5"><div class="sr-only">lower bound label</div>
+              <input type="text" style="width: 100%" class="form-control" placeholder="lower" ng-model="qobject.lower">
+            </label>
+            <div class="col-md-1" style="text-align: center;">–</div>
+            <label class="col-md-5"><div class="sr-only">upper bound label</div>
+              <input type="text" style="width: 100%" class="form-control" placeholder="upper" ng-model="qobject.upper">
+            </label>
+          </div>
+        </div>
+
+        <!-- choicegroup children -->
+
+        <div ng-show="qobject.type == 'groupaddchoice'" class="form-group">
+          <div class="row">
+            <label class="col-md-11">Choice:
+                <input type="text" style="width:auto" class="form-control" placeholder="Question" ng-model="qobject.choice">
+            <label>
+          </div>
+        </div>
+
+        <div ng-show="qobject.type == 'choiceline'" class="form-group">
+          <div class="row">
+            <label class="col-md-11"><div class="sr-only">Question</div>
+                <input type="text" style="width:100%" class="form-control" placeholder="Question" ng-model="qobject.question">
+            <label>
+          </div>
+        </div>
+
+        <div style="width: 100%; text-align: right; margin-top: 5px;">
+          <button type="submit" class="btn btn-default" ng-click="doneEditingObj(qobject)">Done</button>
+        </div>
+      </form>
+
+    </div>
+
+    <ol ui-tree-nodes="" ng-model="qobject.children">
+      <li class="angular-ui-tree-adder" ng-show="qobject.$adding">
+        <form class="form-inline ng-pristine ng-valid" role="form">
+          <div class="form-group">
+            <label>Object type</label>
+              <select class="form-control ng-pristine ng-valid" ng-model="qobject.$newObjType">
+                <option ng-if="qobject.type == 'multicol'" value="section">Section</option>
+                <option ng-if="qobject.type == 'multicol'" value="textbody">Textbody</option>
+                <option ng-if="qobject.type == 'multicol'" value="singlemark">Single Mark Question</option>
+                <option ng-if="qobject.type == 'multicol'" value="choicequestion">Choice Question</option>
+                <option ng-if="qobject.type == 'multicol'" value="textbox">Textbox</option>
+                <option ng-if="qobject.type == 'multicol'" value="markgroup">Mark Group</option>
+                <option ng-if="qobject.type == 'multicol'" value="choicegroup">Choice Group</option>
+                <option ng-if="qobject.type == 'choicequestion'" value="choiceitem">Checkbox Choice</option>
+                <option ng-if="qobject.type == 'choicequestion'" value="choiceitemtext">Textfield Choice</option>
+                <option ng-if="qobject.type == 'markgroup'" value="markline">Mark Line</option>
+                <option ng-if="qobject.type == 'choicegroup'" value="groupaddchoice">Choice</option>
+                <option ng-if="qobject.type == 'choicegroup'" value="choiceline">Choice Question</option>
+              </select>
+            </label>
+          </div>
+          <button type="submit" class="btn btn-default" ng-click="prependNewSubItem(qobject)">Prepend Object</button>
+          <button type="submit" class="btn btn-default" ng-click="appendNewSubItem(qobject)">Append Object</button>
+        </form>
+      </li>
+
+      <li ng-repeat="qobject in qobject.children" ui-tree-node ng-include="'questionnaire.html'">
+      </li>
+    </ol>
+  </script>
+
+  
+
+
+
+
+
+
+<link rel="stylesheet" type="text/css" href="index.css" media="all">
+</head>
+<body>
+	<header class="navbar navbar-static-top navbar-inverse">
+		<div class="container">
+			<div class="navbar-header">
+				<button class="navbar-toggle" type="button" data-toggle="collapse" data-target=".bs-navbar-collapse">
+					<span class="sr-only">Toggle navigation</span>
+					<span class="icon-bar"></span>
+					<span class="icon-bar"></span>
+					<span class="icon-bar"></span>
+				</button>
+			</div>
+			<nav class="collapse navbar-collapse bs-navbar-collapse" role="navigation">
+				<ul class="nav navbar-nav">
+
+				</ul>
+			</nav>
+		</div>
+	</header>
+
+	<div class="container-fluid">
+	
+
+<h2>Test Survey</h2>
+
+<p>
+Title: Some Title
+</p>
+<p>
+Author: Some Author
+</p>
+
+<div class="row">
+  <div id="editor" class="col-md-6 ng-scope" ng-controller="questionnaireCtrl">
+
+    
+    <!-- Nested node template -->
+    <div class="ng-scope angular-ui-tree" ui-tree="options" id="tree-root">
+      <ol class="ng-scope ng-pristine ng-valid angular-ui-tree-nodes" ui-tree-nodes="" ng-model="data">
+        <li class="angular-ui-tree-adder" data-nodrag="">
+          <form action="http://demo.sdaps.org/surveys/2/edit" class="form-inline ng-pristine ng-valid" role="form">
+            <div class="form-group">
+              <label>Object type</label>
+                <select id="editor-new-type" class="form-control ng-pristine ng-valid" ng-model="qobject._newObjType"><option value="? undefined:undefined ?"></option>
+                  <option value="multicol">Multicolumn Layout</option>
+                  <option value="section">Section</option>
+                  <option value="textbody">Textbody</option>
+                  <option value="singlemark">Single Mark Question</option>
+                  <option value="choicequestion">Choice Question</option>
+                  <option value="textbox">Textbox</option>
+                  <option value="markgroup">Mark Group</option>
+                  <option value="choicegroup">Choice Group</option>
+                </select>
+              
+            </div>
+            <button type="submit" class="btn btn-default" ng-click="prependNewItem()">Prepend Object</button>
+            <button type="submit" class="btn btn-default" ng-click="appendNewItem()">Append Object</button>
+          </form>
+        </li>
+
+        <!-- ngRepeat: qobject in data --><!-- ngInclude: 'questionnaire.html' --><li collapsed="false" class="ng-scope angular-ui-tree-node" ng-repeat="qobject in data" ui-tree-node="" ng-include="'questionnaire.html'">
+    <div class="angular-ui-tree-handle ng-scope" ng-show="!qobject.$editing">
+      <a href="http://demo.sdaps.org/surveys/2/edit" class="btn btn-danger btn-xs pull-right" data-nodrag="" ng-click="removeObj(this)"><i class="glyphicon glyphicon-remove"></i></a>
+      <a href="http://demo.sdaps.org/surveys/2/edit" class="btn btn-primary btn-xs pull-right" data-nodrag="" ng-show="canAdd(qobject.type)" ng-click="addChild(qobject)"><i ng-show="!qobject.$adding" class="glyphicon glyphicon-plus"></i><i ng-show="qobject.$adding" class="glyphicon glyphicon-minus ng-hide"></i></a>
+      <a href="http://demo.sdaps.org/surveys/2/edit" class="btn btn-primary btn-xs pull-right" data-nodrag="" ng-click="editObj(qobject)"><i class="glyphicon glyphicon-pencil"></i></a>
+      <div class="pull-right">&nbsp;</div>
+
+      <div class="ng-hide" ng-show="qobject.type == 'section'"><div class="qobjectheader ng-binding">Section: </div></div>
+
+      <div class="ng-hide" ng-show="qobject.type == 'multicol'"><div class="qobjectheader ng-binding"> column layout</div></div>
+
+      <div class="ng-hide" ng-show="qobject.type == 'textbody'"><pre class="textbody ng-binding"></pre></div>
+
+      <div class="ng-hide" ng-show="qobject.type == 'singlemark'"><div class="qobjectheader ng-binding"></div>
+        <div class="ng-binding" style="text-align: center;">
+          
+          <!-- ngRepeat: n in [] | range:qobject.checkboxcount --><input class="ng-scope" style="margin-right: 2px; margin-left: 2px;" disabled="" ng-repeat="n in [] | range:qobject.checkboxcount" type="radio"><!-- end ngRepeat: n in [] | range:qobject.checkboxcount --><input class="ng-scope" style="margin-right: 2px; margin-left: 2px;" disabled="" ng-repeat="n in [] | range:qobject.checkboxcount" type="radio"><!-- end ngRepeat: n in [] | range:qobject.checkboxcount --><input class="ng-scope" style="margin-right: 2px; margin-left: 2px;" disabled="" ng-repeat="n in [] | range:qobject.checkboxcount" type="radio"><!-- end ngRepeat: n in [] | range:qobject.checkboxcount --><input class="ng-scope" style="margin-right: 2px; margin-left: 2px;" disabled="" ng-repeat="n in [] | range:qobject.checkboxcount" type="radio"><!-- end ngRepeat: n in [] | range:qobject.checkboxcount --> 
+        </div>
+      </div>
+
+      <div class="ng-hide" ng-show="qobject.type == 'textbox'"><div class="qobjectheader ng-binding"></div>
+        <textarea class="ng-binding" style="display: block; width: 100%;" disabled="">A textbox with a height of at least cm. Expands: </textarea>
+      </div>
+
+      <div class="" ng-show="qobject.type == 'markgroup'"><div class="qobjectheader ng-binding">Some question</div></div>
+
+      <div class="ng-hide" ng-show="qobject.type == 'choicegroup'"><div class="qobjectheader ng-binding">Some question</div></div>
+
+      <div class="ng-hide" ng-show="qobject.type == 'choicequestion'"><div class="qobjectheader ng-binding"></div><div class="pull-right ng-binding"> Columns</div></div>
+
+      <!-- choicequestion children -->
+
+      <div class="ng-binding ng-hide" ng-show="qobject.type == 'choiceitem'"><input disabled="" type="checkbox"> <div class="pull-right ng-binding">Spans </div></div>
+      <div class="ng-binding ng-hide" ng-show="qobject.type == 'choiceitemtext'"> <input value="" disabled="" type="text"><div class="pull-right ng-binding">Spans </div></div>
+
+      <!-- markgroup children -->
+
+      <div ng-show="qobject.type == 'markline'" class="row ng-hide">
+        <div class="col-md-5 ng-binding"></div>
+        <div class="col-md-6 ng-binding" style="text-align: center;">
+          
+          <!-- ngRepeat: n in [] | range:parentAttr(this, 'checkboxcount') --> 
+        </div>
+      </div>
+
+      <!-- choicegroup children -->
+
+      <div ng-show="qobject.type == 'groupaddchoice'" class="row ng-hide">
+        <div class="col-md-11 ng-binding" style="text-align: right;">Choice: </div>
+      </div>
+
+      <div ng-show="qobject.type == 'choiceline'" class="row ng-hide">
+        <div class="col-md-11 ng-binding"></div>
+      </div>
+
+    </div>
+
+    <div class="angular-ui-tree-handle ng-scope ng-hide" data-nodrag="" ng-show="qobject.$editing">
+      <form action="http://demo.sdaps.org/surveys/2/edit" class="form-inline ng-pristine ng-valid" role="form">
+        <div ng-show="qobject.type == 'section'" class="form-group ng-hide">
+          <label style="width: 100%;"><div class="sr-only">Title</div>
+            <input value="" class="form-control ng-pristine ng-valid" style="width: 100%;" placeholder="Title" ng-model="qobject.title" type="text">
+          </label>
+        </div>
+
+        <div ng-show="qobject.type == 'multicol'" class="form-group ng-hide">
+          <label>Columns: 
+            <input class="form-control ng-pristine ng-valid ng-valid-number ng-valid-max ng-valid-min ng-valid-pattern" min="1" max="4" ng-pattern="/[1-4]/" ng-model="qobject.columns" type="number">
+          </label>
+        </div>
+
+        <div ng-show="qobject.type == 'textbody'" class="form-group ng-hide">
+          <label style="width: 100%;"><div class="sr-only">Text</div>
+            <textarea style="width: 100%;" class="form-control ng-pristine ng-valid" placeholder="Some text here." ng-model="qobject.text"></textarea>
+          </label>
+        </div>
+
+        <div ng-show="qobject.type == 'singlemark'" class="form-group ng-hide">
+          <div class="row">
+            <label class="col-md-11"><div class="sr-only">Question</div>
+                <input value="" style="width: 100%;" class="form-control ng-pristine ng-valid" placeholder="Question" ng-model="qobject.question" type="text">
+            <label>
+          </label></label></div>
+
+          <label>Number of Checkboxes:
+            <input class="form-control ng-pristine ng-valid ng-valid-number ng-valid-max ng-valid-min ng-valid-pattern" min="2" max="10" ng-pattern="/[0-9]*/" ng-model="qobject.checkboxcount" type="number">
+          </label>
+
+          <div class="row">
+            <label class="col-md-5"><div class="sr-only">lower bound label</div>
+              <input value="" style="width: 100%;" class="form-control ng-pristine ng-valid" placeholder="lower" ng-model="qobject.lower" type="text">
+            </label>
+            <div class="col-md-1" style="text-align: center;">–</div>
+            <label class="col-md-5"><div class="sr-only">upper bound label</div>
+              <input value="" style="width: 100%;" class="form-control ng-pristine ng-valid" placeholder="upper" ng-model="qobject.upper" type="text">
+            </label>
+          </div>
+        </div>
+
+        <div ng-show="qobject.type == 'textbox'" class="form-group ng-hide">
+          <div class="row">
+            <label class="col-md-11"><div class="sr-only">Question</div>
+                <input value="" style="width: 100%;" class="form-control ng-pristine ng-valid" placeholder="Question" ng-model="qobject.question" type="text">
+            <label>
+          </label></label></div>
+
+          <label>Height:
+            <input class="form-control ng-pristine ng-valid ng-valid-number ng-valid-max ng-valid-min" min="1.0" max="12" ng-model="qobject.height" type="number">
+          </label>
+
+          <label><input class="form-control ng-pristine ng-valid" ng-model="qobject.expand" type="checkbox"> Expand in height</label>
+        </div>
+
+        <div ng-show="qobject.type == 'markgroup'" class="form-group">
+          <div class="row">
+            <label class="col-md-11"><div class="sr-only">Heading</div>
+                <input value="Some question" style="width: 100%;" class="form-control ng-pristine ng-valid" placeholder="Question" ng-model="qobject.heading" type="text">
+            <label>
+          </label></label></div>
+
+          <label>Number of Checkboxes:
+            <input class="form-control ng-pristine ng-valid ng-valid-number ng-valid-max ng-valid-min ng-valid-pattern" min="2" max="10" ng-pattern="/[0-9]*/" ng-model="qobject.checkboxcount" type="number">
+          </label>
+        </div>
+
+        <div ng-show="qobject.type == 'choicegroup'" class="form-group ng-hide">
+          <div class="row">
+            <label class="col-md-11"><div class="sr-only">Heading</div>
+                <input value="Some question" style="width: 100%;" class="form-control ng-pristine ng-valid" placeholder="Question" ng-model="qobject.heading" type="text">
+            <label>
+          </label></label></div>
+        </div>
+
+        <div ng-show="qobject.type == 'choicequestion'" class="form-group ng-hide">
+          <label><div class="sr-only">Question</div>
+            <input value="" class="form-control ng-pristine ng-valid" placeholder="Question" ng-model="qobject.question" type="text">
+          </label><br>
+          <label>Columns:
+            <input class="form-control ng-pristine ng-valid ng-valid-number ng-valid-max ng-valid-min ng-valid-pattern" min="1" max="10" ng-pattern="/[0-9]*/" ng-model="qobject.columns" type="number">
+          </label>
+        </div>
+
+        <!-- choicequestion children -->
+
+        <div ng-show="qobject.type == 'choiceitem'" class="form-group ng-hide">
+          <label class="sr-only" for="choiceitem-answer">Answer</label>
+          <input value="" class="form-control ng-pristine ng-valid" placeholder="Title" ng-model="qobject.answer" type="text"><br>
+          <label>Column span:
+            <input class="form-control ng-pristine ng-valid ng-valid-number ng-valid-max ng-valid-min ng-valid-pattern" min="1" max="10" ng-pattern="/[0-9]*/" ng-model="qobject.colspan" type="number">
+          </label>
+        </div>
+
+        <div ng-show="qobject.type == 'choiceitemtext'" class="form-group ng-hide">
+          <label><div class="sr-only">Answer</div>
+            <input value="" class="form-control ng-pristine ng-valid" placeholder="Title" ng-model="qobject.answer" type="text">
+          </label><br>
+          <label>Column span:
+            <input class="form-control ng-pristine ng-valid ng-valid-number ng-valid-max ng-valid-min ng-valid-pattern" min="1" max="10" ng-pattern="/[0-9]*/" ng-model="qobject.colspan" type="number">
+          </label>
+          <label>Height: 
+            <input class="form-control ng-pristine ng-valid ng-valid-number ng-valid-max ng-valid-min" min="0.8" max="3" placeholder="1.2" ng-model="qobject.height" type="number">
+          </label>
+        </div>
+
+        <!-- markgroup children -->
+
+        <div ng-show="qobject.type == 'markline'" class="form-group ng-hide">
+          <div class="row">
+            <label class="col-md-11"><div class="sr-only">Question</div>
+                <input value="" style="width: 100%;" class="form-control ng-pristine ng-valid" placeholder="Question" ng-model="qobject.question" type="text">
+            <label>
+          </label></label></div>
+
+          <div class="row">
+            <label class="col-md-5"><div class="sr-only">lower bound label</div>
+              <input value="" style="width: 100%;" class="form-control ng-pristine ng-valid" placeholder="lower" ng-model="qobject.lower" type="text">
+            </label>
+            <div class="col-md-1" style="text-align: center;">–</div>
+            <label class="col-md-5"><div class="sr-only">upper bound label</div>
+              <input value="" style="width: 100%;" class="form-control ng-pristine ng-valid" placeholder="upper" ng-model="qobject.upper" type="text">
+            </label>
+          </div>
+        </div>
+
+        <!-- choicegroup children -->
+
+        <div ng-show="qobject.type == 'groupaddchoice'" class="form-group ng-hide">
+          <div class="row">
+            <label class="col-md-11">Choice:
+                <input value="" style="width: auto;" class="form-control ng-pristine ng-valid" placeholder="Question" ng-model="qobject.choice" type="text">
+            <label>
+          </label></label></div>
+        </div>
+
+        <div ng-show="qobject.type == 'choiceline'" class="form-group ng-hide">
+          <div class="row">
+            <label class="col-md-11"><div class="sr-only">Question</div>
+                <input value="" style="width: 100%;" class="form-control ng-pristine ng-valid" placeholder="Question" ng-model="qobject.question" type="text">
+            <label>
+          </label></label></div>
+        </div>
+
+        <div style="width: 100%; text-align: right; margin-top: 5px;">
+          <button type="submit" class="btn btn-default" ng-click="doneEditingObj(qobject)">Done</button>
+        </div>
+      </form>
+
+    </div>
+
+    <ol class="ng-scope ng-pristine ng-valid angular-ui-tree-nodes" ui-tree-nodes="" ng-model="qobject.children">
+      <li class="angular-ui-tree-adder ng-hide" ng-show="qobject.$adding">
+        <form action="http://demo.sdaps.org/surveys/2/edit" class="form-inline ng-pristine ng-valid" role="form">
+          <div class="form-group">
+            <label>Object type</label>
+              <select class="form-control ng-pristine ng-valid" ng-model="qobject.$newObjType"><option value="? undefined:undefined ?"></option>
+                <!-- ngIf: qobject.type == 'multicol' -->
+                <!-- ngIf: qobject.type == 'multicol' -->
+                <!-- ngIf: qobject.type == 'multicol' -->
+                <!-- ngIf: qobject.type == 'multicol' -->
+                <!-- ngIf: qobject.type == 'multicol' -->
+                <!-- ngIf: qobject.type == 'multicol' -->
+                <!-- ngIf: qobject.type == 'multicol' -->
+                <!-- ngIf: qobject.type == 'choicequestion' -->
+                <!-- ngIf: qobject.type == 'choicequestion' -->
+                <!-- ngIf: qobject.type == 'markgroup' --><option class="ng-scope" ng-if="qobject.type == 'markgroup'" value="markline">Mark Line</option><!-- end ngIf: qobject.type == 'markgroup' -->
+                <!-- ngIf: qobject.type == 'choicegroup' -->
+                <!-- ngIf: qobject.type == 'choicegroup' -->
+              </select>
+            
+          </div>
+          <button type="submit" class="btn btn-default" ng-click="prependNewSubItem(qobject)">Prepend Object</button>
+          <button type="submit" class="btn btn-default" ng-click="appendNewSubItem(qobject)">Append Object</button>
+        </form>
+      </li>
+
+      <!-- ngRepeat: qobject in qobject.children --><!-- ngInclude: 'questionnaire.html' --><li collapsed="false" class="ng-scope angular-ui-tree-node" ng-repeat="qobject in qobject.children" ui-tree-node="" ng-include="'questionnaire.html'">
+    <div class="angular-ui-tree-handle ng-scope" ng-show="!qobject.$editing">
+      <a href="http://demo.sdaps.org/surveys/2/edit" class="btn btn-danger btn-xs pull-right" data-nodrag="" ng-click="removeObj(this)"><i class="glyphicon glyphicon-remove"></i></a>
+      <a href="http://demo.sdaps.org/surveys/2/edit" class="btn btn-primary btn-xs pull-right ng-hide" data-nodrag="" ng-show="canAdd(qobject.type)" ng-click="addChild(qobject)"><i ng-show="!qobject.$adding" class="glyphicon glyphicon-plus"></i><i ng-show="qobject.$adding" class="glyphicon glyphicon-minus ng-hide"></i></a>
+      <a href="http://demo.sdaps.org/surveys/2/edit" class="btn btn-primary btn-xs pull-right" data-nodrag="" ng-click="editObj(qobject)"><i class="glyphicon glyphicon-pencil"></i></a>
+      <div class="pull-right">&nbsp;</div>
+
+      <div class="ng-hide" ng-show="qobject.type == 'section'"><div class="qobjectheader ng-binding">Section: </div></div>
+
+      <div class="ng-hide" ng-show="qobject.type == 'multicol'"><div class="qobjectheader ng-binding"> column layout</div></div>
+
+      <div class="ng-hide" ng-show="qobject.type == 'textbody'"><pre class="textbody ng-binding"></pre></div>
+
+      <div class="ng-hide" ng-show="qobject.type == 'singlemark'"><div class="qobjectheader ng-binding">subquestion</div>
+        <div class="ng-binding" style="text-align: center;">
+          lower
+          <!-- ngRepeat: n in [] | range:qobject.checkboxcount --> upper
+        </div>
+      </div>
+
+      <div class="ng-hide" ng-show="qobject.type == 'textbox'"><div class="qobjectheader ng-binding">subquestion</div>
+        <textarea class="ng-binding" style="display: block; width: 100%;" disabled="">A textbox with a height of at least cm. Expands: </textarea>
+      </div>
+
+      <div class="ng-hide" ng-show="qobject.type == 'markgroup'"><div class="qobjectheader ng-binding"></div></div>
+
+      <div class="ng-hide" ng-show="qobject.type == 'choicegroup'"><div class="qobjectheader ng-binding"></div></div>
+
+      <div class="ng-hide" ng-show="qobject.type == 'choicequestion'"><div class="qobjectheader ng-binding">subquestion</div><div class="pull-right ng-binding"> Columns</div></div>
+
+      <!-- choicequestion children -->
+
+      <div class="ng-binding ng-hide" ng-show="qobject.type == 'choiceitem'"><input disabled="" type="checkbox"> <div class="pull-right ng-binding">Spans </div></div>
+      <div class="ng-binding ng-hide" ng-show="qobject.type == 'choiceitemtext'"> <input value="" disabled="" type="text"><div class="pull-right ng-binding">Spans </div></div>
+
+      <!-- markgroup children -->
+
+      <div ng-show="qobject.type == 'markline'" class="row">
+        <div class="col-md-5 ng-binding">subquestion</div>
+        <div class="col-md-6 ng-binding" style="text-align: center;">
+          lower
+          <!-- ngRepeat: n in [] | range:parentAttr(this, 'checkboxcount') --><input class="ng-scope" style="margin-right: 2px; margin-left: 2px;" disabled="" ng-repeat="n in [] | range:parentAttr(this, 'checkboxcount')" type="radio"><!-- end ngRepeat: n in [] | range:parentAttr(this, 'checkboxcount') --><input class="ng-scope" style="margin-right: 2px; margin-left: 2px;" disabled="" ng-repeat="n in [] | range:parentAttr(this, 'checkboxcount')" type="radio"><!-- end ngRepeat: n in [] | range:parentAttr(this, 'checkboxcount') --><input class="ng-scope" style="margin-right: 2px; margin-left: 2px;" disabled="" ng-repeat="n in [] | range:parentAttr(this, 'checkboxcount')" type="radio"><!-- end ngRepeat: n in [] | range:parentAttr(this, 'checkboxcount') --><input class="ng-scope" style="margin-right: 2px; margin-left: 2px;" disabled="" ng-repeat="n in [] | range:parentAttr(this, 'checkboxcount')" type="radio"><!-- end ngRepeat: n in [] | range:parentAttr(this, 'checkboxcount') --> upper
+        </div>
+      </div>
+
+      <!-- choicegroup children -->
+
+      <div ng-show="qobject.type == 'groupaddchoice'" class="row ng-hide">
+        <div class="col-md-11 ng-binding" style="text-align: right;">Choice: </div>
+      </div>
+
+      <div ng-show="qobject.type == 'choiceline'" class="row ng-hide">
+        <div class="col-md-11 ng-binding">subquestion</div>
+      </div>
+
+    </div>
+
+    <div class="angular-ui-tree-handle ng-scope ng-hide" data-nodrag="" ng-show="qobject.$editing">
+      <form action="http://demo.sdaps.org/surveys/2/edit" class="form-inline ng-pristine ng-valid" role="form">
+        <div ng-show="qobject.type == 'section'" class="form-group ng-hide">
+          <label style="width: 100%;"><div class="sr-only">Title</div>
+            <input value="" class="form-control ng-pristine ng-valid" style="width: 100%;" placeholder="Title" ng-model="qobject.title" type="text">
+          </label>
+        </div>
+
+        <div ng-show="qobject.type == 'multicol'" class="form-group ng-hide">
+          <label>Columns: 
+            <input class="form-control ng-pristine ng-valid ng-valid-number ng-valid-max ng-valid-min ng-valid-pattern" min="1" max="4" ng-pattern="/[1-4]/" ng-model="qobject.columns" type="number">
+          </label>
+        </div>
+
+        <div ng-show="qobject.type == 'textbody'" class="form-group ng-hide">
+          <label style="width: 100%;"><div class="sr-only">Text</div>
+            <textarea style="width: 100%;" class="form-control ng-pristine ng-valid" placeholder="Some text here." ng-model="qobject.text"></textarea>
+          </label>
+        </div>
+
+        <div ng-show="qobject.type == 'singlemark'" class="form-group ng-hide">
+          <div class="row">
+            <label class="col-md-11"><div class="sr-only">Question</div>
+                <input value="subquestion" style="width: 100%;" class="form-control ng-pristine ng-valid" placeholder="Question" ng-model="qobject.question" type="text">
+            <label>
+          </label></label></div>
+
+          <label>Number of Checkboxes:
+            <input class="form-control ng-pristine ng-valid ng-valid-number ng-valid-max ng-valid-min ng-valid-pattern" min="2" max="10" ng-pattern="/[0-9]*/" ng-model="qobject.checkboxcount" type="number">
+          </label>
+
+          <div class="row">
+            <label class="col-md-5"><div class="sr-only">lower bound label</div>
+              <input value="lower" style="width: 100%;" class="form-control ng-pristine ng-valid" placeholder="lower" ng-model="qobject.lower" type="text">
+            </label>
+            <div class="col-md-1" style="text-align: center;">–</div>
+            <label class="col-md-5"><div class="sr-only">upper bound label</div>
+              <input value="upper" style="width: 100%;" class="form-control ng-pristine ng-valid" placeholder="upper" ng-model="qobject.upper" type="text">
+            </label>
+          </div>
+        </div>
+
+        <div ng-show="qobject.type == 'textbox'" class="form-group ng-hide">
+          <div class="row">
+            <label class="col-md-11"><div class="sr-only">Question</div>
+                <input value="subquestion" style="width: 100%;" class="form-control ng-pristine ng-valid" placeholder="Question" ng-model="qobject.question" type="text">
+            <label>
+          </label></label></div>
+
+          <label>Height:
+            <input class="form-control ng-pristine ng-valid ng-valid-number ng-valid-max ng-valid-min" min="1.0" max="12" ng-model="qobject.height" type="number">
+          </label>
+
+          <label><input class="form-control ng-pristine ng-valid" ng-model="qobject.expand" type="checkbox"> Expand in height</label>
+        </div>
+
+        <div ng-show="qobject.type == 'markgroup'" class="form-group ng-hide">
+          <div class="row">
+            <label class="col-md-11"><div class="sr-only">Heading</div>
+                <input value="" style="width: 100%;" class="form-control ng-pristine ng-valid" placeholder="Question" ng-model="qobject.heading" type="text">
+            <label>
+          </label></label></div>
+
+          <label>Number of Checkboxes:
+            <input class="form-control ng-pristine ng-valid ng-valid-number ng-valid-max ng-valid-min ng-valid-pattern" min="2" max="10" ng-pattern="/[0-9]*/" ng-model="qobject.checkboxcount" type="number">
+          </label>
+        </div>
+
+        <div ng-show="qobject.type == 'choicegroup'" class="form-group ng-hide">
+          <div class="row">
+            <label class="col-md-11"><div class="sr-only">Heading</div>
+                <input value="" style="width: 100%;" class="form-control ng-pristine ng-valid" placeholder="Question" ng-model="qobject.heading" type="text">
+            <label>
+          </label></label></div>
+        </div>
+
+        <div ng-show="qobject.type == 'choicequestion'" class="form-group ng-hide">
+          <label><div class="sr-only">Question</div>
+            <input value="subquestion" class="form-control ng-pristine ng-valid" placeholder="Question" ng-model="qobject.question" type="text">
+          </label><br>
+          <label>Columns:
+            <input class="form-control ng-pristine ng-valid ng-valid-number ng-valid-max ng-valid-min ng-valid-pattern" min="1" max="10" ng-pattern="/[0-9]*/" ng-model="qobject.columns" type="number">
+          </label>
+        </div>
+
+        <!-- choicequestion children -->
+
+        <div ng-show="qobject.type == 'choiceitem'" class="form-group ng-hide">
+          <label class="sr-only" for="choiceitem-answer">Answer</label>
+          <input value="" class="form-control ng-pristine ng-valid" placeholder="Title" ng-model="qobject.answer" type="text"><br>
+          <label>Column span:
+            <input class="form-control ng-pristine ng-valid ng-valid-number ng-valid-max ng-valid-min ng-valid-pattern" min="1" max="10" ng-pattern="/[0-9]*/" ng-model="qobject.colspan" type="number">
+          </label>
+        </div>
+
+        <div ng-show="qobject.type == 'choiceitemtext'" class="form-group ng-hide">
+          <label><div class="sr-only">Answer</div>
+            <input value="" class="form-control ng-pristine ng-valid" placeholder="Title" ng-model="qobject.answer" type="text">
+          </label><br>
+          <label>Column span:
+            <input class="form-control ng-pristine ng-valid ng-valid-number ng-valid-max ng-valid-min ng-valid-pattern" min="1" max="10" ng-pattern="/[0-9]*/" ng-model="qobject.colspan" type="number">
+          </label>
+          <label>Height: 
+            <input class="form-control ng-pristine ng-valid ng-valid-number ng-valid-max ng-valid-min" min="0.8" max="3" placeholder="1.2" ng-model="qobject.height" type="number">
+          </label>
+        </div>
+
+        <!-- markgroup children -->
+
+        <div ng-show="qobject.type == 'markline'" class="form-group">
+          <div class="row">
+            <label class="col-md-11"><div class="sr-only">Question</div>
+                <input value="subquestion" style="width: 100%;" class="form-control ng-pristine ng-valid" placeholder="Question" ng-model="qobject.question" type="text">
+            <label>
+          </label></label></div>
+
+          <div class="row">
+            <label class="col-md-5"><div class="sr-only">lower bound label</div>
+              <input value="lower" style="width: 100%;" class="form-control ng-pristine ng-valid" placeholder="lower" ng-model="qobject.lower" type="text">
+            </label>
+            <div class="col-md-1" style="text-align: center;">–</div>
+            <label class="col-md-5"><div class="sr-only">upper bound label</div>
+              <input value="upper" style="width: 100%;" class="form-control ng-pristine ng-valid" placeholder="upper" ng-model="qobject.upper" type="text">
+            </label>
+          </div>
+        </div>
+
+        <!-- choicegroup children -->
+
+        <div ng-show="qobject.type == 'groupaddchoice'" class="form-group ng-hide">
+          <div class="row">
+            <label class="col-md-11">Choice:
+                <input value="" style="width: auto;" class="form-control ng-pristine ng-valid" placeholder="Question" ng-model="qobject.choice" type="text">
+            <label>
+          </label></label></div>
+        </div>
+
+        <div ng-show="qobject.type == 'choiceline'" class="form-group ng-hide">
+          <div class="row">
+            <label class="col-md-11"><div class="sr-only">Question</div>
+                <input value="subquestion" style="width: 100%;" class="form-control ng-pristine ng-valid" placeholder="Question" ng-model="qobject.question" type="text">
+            <label>
+          </label></label></div>
+        </div>
+
+        <div style="width: 100%; text-align: right; margin-top: 5px;">
+          <button type="submit" class="btn btn-default" ng-click="doneEditingObj(qobject)">Done</button>
+        </div>
+      </form>
+
+    </div>
+
+    <ol class="ng-scope ng-pristine ng-valid angular-ui-tree-nodes" ui-tree-nodes="" ng-model="qobject.children">
+      <li class="angular-ui-tree-adder ng-hide" ng-show="qobject.$adding">
+        <form action="http://demo.sdaps.org/surveys/2/edit" class="form-inline ng-pristine ng-valid" role="form">
+          <div class="form-group">
+            <label>Object type</label>
+              <select class="form-control ng-pristine ng-valid" ng-model="qobject.$newObjType"><option value="? undefined:undefined ?"></option>
+                <!-- ngIf: qobject.type == 'multicol' -->
+                <!-- ngIf: qobject.type == 'multicol' -->
+                <!-- ngIf: qobject.type == 'multicol' -->
+                <!-- ngIf: qobject.type == 'multicol' -->
+                <!-- ngIf: qobject.type == 'multicol' -->
+                <!-- ngIf: qobject.type == 'multicol' -->
+                <!-- ngIf: qobject.type == 'multicol' -->
+                <!-- ngIf: qobject.type == 'choicequestion' -->
+                <!-- ngIf: qobject.type == 'choicequestion' -->
+                <!-- ngIf: qobject.type == 'markgroup' -->
+                <!-- ngIf: qobject.type == 'choicegroup' -->
+                <!-- ngIf: qobject.type == 'choicegroup' -->
+              </select>
+            
+          </div>
+          <button type="submit" class="btn btn-default" ng-click="prependNewSubItem(qobject)">Prepend Object</button>
+          <button type="submit" class="btn btn-default" ng-click="appendNewSubItem(qobject)">Append Object</button>
+        </form>
+      </li>
+
+      <!-- ngRepeat: qobject in qobject.children -->
+    </ol>
+  </li><!-- end ngRepeat: qobject in qobject.children -->
+    </ol>
+  </li><!-- end ngRepeat: qobject in data --><!-- ngInclude: 'questionnaire.html' --><li collapsed="false" class="ng-scope angular-ui-tree-node" ng-repeat="qobject in data" ui-tree-node="" ng-include="'questionnaire.html'">
+    <div class="angular-ui-tree-handle ng-scope" ng-show="!qobject.$editing">
+      <a href="http://demo.sdaps.org/surveys/2/edit" class="btn btn-danger btn-xs pull-right" data-nodrag="" ng-click="removeObj(this)"><i class="glyphicon glyphicon-remove"></i></a>
+      <a href="http://demo.sdaps.org/surveys/2/edit" class="btn btn-primary btn-xs pull-right ng-hide" data-nodrag="" ng-show="canAdd(qobject.type)" ng-click="addChild(qobject)"><i ng-show="!qobject.$adding" class="glyphicon glyphicon-plus"></i><i ng-show="qobject.$adding" class="glyphicon glyphicon-minus ng-hide"></i></a>
+      <a href="http://demo.sdaps.org/surveys/2/edit" class="btn btn-primary btn-xs pull-right" data-nodrag="" ng-click="editObj(qobject)"><i class="glyphicon glyphicon-pencil"></i></a>
+      <div class="pull-right">&nbsp;</div>
+
+      <div class="ng-hide" ng-show="qobject.type == 'section'"><div class="qobjectheader ng-binding">Section: </div></div>
+
+      <div class="ng-hide" ng-show="qobject.type == 'multicol'"><div class="qobjectheader ng-binding"> column layout</div></div>
+
+      <div class="ng-hide" ng-show="qobject.type == 'textbody'"><pre class="textbody ng-binding"></pre></div>
+
+      <div class="" ng-show="qobject.type == 'singlemark'"><div class="qobjectheader ng-binding">testquest</div>
+        <div class="ng-binding" style="text-align: center;">
+          lower
+          <!-- ngRepeat: n in [] | range:qobject.checkboxcount --><input class="ng-scope" style="margin-right: 2px; margin-left: 2px;" disabled="" ng-repeat="n in [] | range:qobject.checkboxcount" type="radio"><!-- end ngRepeat: n in [] | range:qobject.checkboxcount --><input class="ng-scope" style="margin-right: 2px; margin-left: 2px;" disabled="" ng-repeat="n in [] | range:qobject.checkboxcount" type="radio"><!-- end ngRepeat: n in [] | range:qobject.checkboxcount --><input class="ng-scope" style="margin-right: 2px; margin-left: 2px;" disabled="" ng-repeat="n in [] | range:qobject.checkboxcount" type="radio"><!-- end ngRepeat: n in [] | range:qobject.checkboxcount --> Higher
+        </div>
+      </div>
+
+      <div class="ng-hide" ng-show="qobject.type == 'textbox'"><div class="qobjectheader ng-binding">testquest</div>
+        <textarea class="ng-binding" style="display: block; width: 100%;" disabled="">A textbox with a height of at least cm. Expands: </textarea>
+      </div>
+
+      <div class="ng-hide" ng-show="qobject.type == 'markgroup'"><div class="qobjectheader ng-binding"></div></div>
+
+      <div class="ng-hide" ng-show="qobject.type == 'choicegroup'"><div class="qobjectheader ng-binding"></div></div>
+
+      <div class="ng-hide" ng-show="qobject.type == 'choicequestion'"><div class="qobjectheader ng-binding">testquest</div><div class="pull-right ng-binding"> Columns</div></div>
+
+      <!-- choicequestion children -->
+
+      <div class="ng-binding ng-hide" ng-show="qobject.type == 'choiceitem'"><input disabled="" type="checkbox"> <div class="pull-right ng-binding">Spans </div></div>
+      <div class="ng-binding ng-hide" ng-show="qobject.type == 'choiceitemtext'"> <input value="" disabled="" type="text"><div class="pull-right ng-binding">Spans </div></div>
+
+      <!-- markgroup children -->
+
+      <div ng-show="qobject.type == 'markline'" class="row ng-hide">
+        <div class="col-md-5 ng-binding">testquest</div>
+        <div class="col-md-6 ng-binding" style="text-align: center;">
+          lower
+          <!-- ngRepeat: n in [] | range:parentAttr(this, 'checkboxcount') --> Higher
+        </div>
+      </div>
+
+      <!-- choicegroup children -->
+
+      <div ng-show="qobject.type == 'groupaddchoice'" class="row ng-hide">
+        <div class="col-md-11 ng-binding" style="text-align: right;">Choice: </div>
+      </div>
+
+      <div ng-show="qobject.type == 'choiceline'" class="row ng-hide">
+        <div class="col-md-11 ng-binding">testquest</div>
+      </div>
+
+    </div>
+
+    <div class="angular-ui-tree-handle ng-scope ng-hide" data-nodrag="" ng-show="qobject.$editing">
+      <form action="http://demo.sdaps.org/surveys/2/edit" class="form-inline ng-valid ng-dirty" role="form">
+        <div ng-show="qobject.type == 'section'" class="form-group ng-hide">
+          <label style="width: 100%;"><div class="sr-only">Title</div>
+            <input value="" class="form-control ng-pristine ng-valid" style="width: 100%;" placeholder="Title" ng-model="qobject.title" type="text">
+          </label>
+        </div>
+
+        <div ng-show="qobject.type == 'multicol'" class="form-group ng-hide">
+          <label>Columns: 
+            <input class="form-control ng-pristine ng-valid ng-valid-number ng-valid-max ng-valid-min ng-valid-pattern" min="1" max="4" ng-pattern="/[1-4]/" ng-model="qobject.columns" type="number">
+          </label>
+        </div>
+
+        <div ng-show="qobject.type == 'textbody'" class="form-group ng-hide">
+          <label style="width: 100%;"><div class="sr-only">Text</div>
+            <textarea style="width: 100%;" class="form-control ng-pristine ng-valid" placeholder="Some text here." ng-model="qobject.text"></textarea>
+          </label>
+        </div>
+
+        <div ng-show="qobject.type == 'singlemark'" class="form-group">
+          <div class="row">
+            <label class="col-md-11"><div class="sr-only">Question</div>
+                <input value="testquest" style="width: 100%;" class="form-control ng-pristine ng-valid" placeholder="Question" ng-model="qobject.question" type="text">
+            <label>
+          </label></label></div>
+
+          <label>Number of Checkboxes:
+            <input class="form-control ng-pristine ng-valid ng-valid-number ng-valid-max ng-valid-min ng-valid-pattern" min="2" max="10" ng-pattern="/[0-9]*/" ng-model="qobject.checkboxcount" type="number">
+          </label>
+
+          <div class="row">
+            <label class="col-md-5"><div class="sr-only">lower bound label</div>
+              <input value="lower" style="width: 100%;" class="form-control ng-pristine ng-valid" placeholder="lower" ng-model="qobject.lower" type="text">
+            </label>
+            <div class="col-md-1" style="text-align: center;">–</div>
+            <label class="col-md-5"><div class="sr-only">upper bound label</div>
+              <input value="Higher" style="width: 100%;" class="form-control ng-valid ng-dirty" placeholder="upper" ng-model="qobject.upper" type="text">
+            </label>
+          </div>
+        </div>
+
+        <div ng-show="qobject.type == 'textbox'" class="form-group ng-hide">
+          <div class="row">
+            <label class="col-md-11"><div class="sr-only">Question</div>
+                <input value="testquest" style="width: 100%;" class="form-control ng-pristine ng-valid" placeholder="Question" ng-model="qobject.question" type="text">
+            <label>
+          </label></label></div>
+
+          <label>Height:
+            <input class="form-control ng-pristine ng-valid ng-valid-number ng-valid-max ng-valid-min" min="1.0" max="12" ng-model="qobject.height" type="number">
+          </label>
+
+          <label><input class="form-control ng-pristine ng-valid" ng-model="qobject.expand" type="checkbox"> Expand in height</label>
+        </div>
+
+        <div ng-show="qobject.type == 'markgroup'" class="form-group ng-hide">
+          <div class="row">
+            <label class="col-md-11"><div class="sr-only">Heading</div>
+                <input value="" style="width: 100%;" class="form-control ng-pristine ng-valid" placeholder="Question" ng-model="qobject.heading" type="text">
+            <label>
+          </label></label></div>
+
+          <label>Number of Checkboxes:
+            <input class="form-control ng-pristine ng-valid ng-valid-number ng-valid-max ng-valid-min ng-valid-pattern" min="2" max="10" ng-pattern="/[0-9]*/" ng-model="qobject.checkboxcount" type="number">
+          </label>
+        </div>
+
+        <div ng-show="qobject.type == 'choicegroup'" class="form-group ng-hide">
+          <div class="row">
+            <label class="col-md-11"><div class="sr-only">Heading</div>
+                <input value="" style="width: 100%;" class="form-control ng-pristine ng-valid" placeholder="Question" ng-model="qobject.heading" type="text">
+            <label>
+          </label></label></div>
+        </div>
+
+        <div ng-show="qobject.type == 'choicequestion'" class="form-group ng-hide">
+          <label><div class="sr-only">Question</div>
+            <input value="testquest" class="form-control ng-pristine ng-valid" placeholder="Question" ng-model="qobject.question" type="text">
+          </label><br>
+          <label>Columns:
+            <input class="form-control ng-pristine ng-valid ng-valid-number ng-valid-max ng-valid-min ng-valid-pattern" min="1" max="10" ng-pattern="/[0-9]*/" ng-model="qobject.columns" type="number">
+          </label>
+        </div>
+
+        <!-- choicequestion children -->
+
+        <div ng-show="qobject.type == 'choiceitem'" class="form-group ng-hide">
+          <label class="sr-only" for="choiceitem-answer">Answer</label>
+          <input value="" class="form-control ng-pristine ng-valid" placeholder="Title" ng-model="qobject.answer" type="text"><br>
+          <label>Column span:
+            <input class="form-control ng-pristine ng-valid ng-valid-number ng-valid-max ng-valid-min ng-valid-pattern" min="1" max="10" ng-pattern="/[0-9]*/" ng-model="qobject.colspan" type="number">
+          </label>
+        </div>
+
+        <div ng-show="qobject.type == 'choiceitemtext'" class="form-group ng-hide">
+          <label><div class="sr-only">Answer</div>
+            <input value="" class="form-control ng-pristine ng-valid" placeholder="Title" ng-model="qobject.answer" type="text">
+          </label><br>
+          <label>Column span:
+            <input class="form-control ng-pristine ng-valid ng-valid-number ng-valid-max ng-valid-min ng-valid-pattern" min="1" max="10" ng-pattern="/[0-9]*/" ng-model="qobject.colspan" type="number">
+          </label>
+          <label>Height: 
+            <input class="form-control ng-pristine ng-valid ng-valid-number ng-valid-max ng-valid-min" min="0.8" max="3" placeholder="1.2" ng-model="qobject.height" type="number">
+          </label>
+        </div>
+
+        <!-- markgroup children -->
+
+        <div ng-show="qobject.type == 'markline'" class="form-group ng-hide">
+          <div class="row">
+            <label class="col-md-11"><div class="sr-only">Question</div>
+                <input value="testquest" style="width: 100%;" class="form-control ng-pristine ng-valid" placeholder="Question" ng-model="qobject.question" type="text">
+            <label>
+          </label></label></div>
+
+          <div class="row">
+            <label class="col-md-5"><div class="sr-only">lower bound label</div>
+              <input value="lower" style="width: 100%;" class="form-control ng-pristine ng-valid" placeholder="lower" ng-model="qobject.lower" type="text">
+            </label>
+            <div class="col-md-1" style="text-align: center;">–</div>
+            <label class="col-md-5"><div class="sr-only">upper bound label</div>
+              <input value="Higher" style="width: 100%;" class="form-control ng-pristine ng-valid" placeholder="upper" ng-model="qobject.upper" type="text">
+            </label>
+          </div>
+        </div>
+
+        <!-- choicegroup children -->
+
+        <div ng-show="qobject.type == 'groupaddchoice'" class="form-group ng-hide">
+          <div class="row">
+            <label class="col-md-11">Choice:
+                <input value="" style="width: auto;" class="form-control ng-pristine ng-valid" placeholder="Question" ng-model="qobject.choice" type="text">
+            <label>
+          </label></label></div>
+        </div>
+
+        <div ng-show="qobject.type == 'choiceline'" class="form-group ng-hide">
+          <div class="row">
+            <label class="col-md-11"><div class="sr-only">Question</div>
+                <input value="testquest" style="width: 100%;" class="form-control ng-pristine ng-valid" placeholder="Question" ng-model="qobject.question" type="text">
+            <label>
+          </label></label></div>
+        </div>
+
+        <div style="width: 100%; text-align: right; margin-top: 5px;">
+          <button type="submit" class="btn btn-default" ng-click="doneEditingObj(qobject)">Done</button>
+        </div>
+      </form>
+
+    </div>
+
+    <ol class="ng-scope ng-pristine ng-valid angular-ui-tree-nodes" ui-tree-nodes="" ng-model="qobject.children">
+      <li class="angular-ui-tree-adder ng-hide" ng-show="qobject.$adding">
+        <form action="http://demo.sdaps.org/surveys/2/edit" class="form-inline ng-pristine ng-valid" role="form">
+          <div class="form-group">
+            <label>Object type</label>
+              <select class="form-control ng-pristine ng-valid" ng-model="qobject.$newObjType"><option value="? undefined:undefined ?"></option>
+                <!-- ngIf: qobject.type == 'multicol' -->
+                <!-- ngIf: qobject.type == 'multicol' -->
+                <!-- ngIf: qobject.type == 'multicol' -->
+                <!-- ngIf: qobject.type == 'multicol' -->
+                <!-- ngIf: qobject.type == 'multicol' -->
+                <!-- ngIf: qobject.type == 'multicol' -->
+                <!-- ngIf: qobject.type == 'multicol' -->
+                <!-- ngIf: qobject.type == 'choicequestion' -->
+                <!-- ngIf: qobject.type == 'choicequestion' -->
+                <!-- ngIf: qobject.type == 'markgroup' -->
+                <!-- ngIf: qobject.type == 'choicegroup' -->
+                <!-- ngIf: qobject.type == 'choicegroup' -->
+              </select>
+            
+          </div>
+          <button type="submit" class="btn btn-default" ng-click="prependNewSubItem(qobject)">Prepend Object</button>
+          <button type="submit" class="btn btn-default" ng-click="appendNewSubItem(qobject)">Append Object</button>
+        </form>
+      </li>
+
+      <!-- ngRepeat: qobject in qobject.children -->
+    </ol>
+  </li><!-- end ngRepeat: qobject in data --><!-- ngInclude: 'questionnaire.html' --><li collapsed="false" class="ng-scope angular-ui-tree-node" ng-repeat="qobject in data" ui-tree-node="" ng-include="'questionnaire.html'">
+    <div class="angular-ui-tree-handle ng-scope" ng-show="!qobject.$editing">
+      <a href="http://demo.sdaps.org/surveys/2/edit" class="btn btn-danger btn-xs pull-right" data-nodrag="" ng-click="removeObj(this)"><i class="glyphicon glyphicon-remove"></i></a>
+      <a href="http://demo.sdaps.org/surveys/2/edit" class="btn btn-primary btn-xs pull-right" data-nodrag="" ng-show="canAdd(qobject.type)" ng-click="addChild(qobject)"><i ng-show="!qobject.$adding" class="glyphicon glyphicon-plus"></i><i ng-show="qobject.$adding" class="glyphicon glyphicon-minus ng-hide"></i></a>
+      <a href="http://demo.sdaps.org/surveys/2/edit" class="btn btn-primary btn-xs pull-right" data-nodrag="" ng-click="editObj(qobject)"><i class="glyphicon glyphicon-pencil"></i></a>
+      <div class="pull-right">&nbsp;</div>
+
+      <div class="ng-hide" ng-show="qobject.type == 'section'"><div class="qobjectheader ng-binding">Section: </div></div>
+
+      <div class="ng-hide" ng-show="qobject.type == 'multicol'"><div class="qobjectheader ng-binding"> column layout</div></div>
+
+      <div class="ng-hide" ng-show="qobject.type == 'textbody'"><pre class="textbody ng-binding"></pre></div>
+
+      <div class="ng-hide" ng-show="qobject.type == 'singlemark'"><div class="qobjectheader ng-binding"></div>
+        <div class="ng-binding" style="text-align: center;">
+          
+          <!-- ngRepeat: n in [] | range:qobject.checkboxcount --> 
+        </div>
+      </div>
+
+      <div class="ng-hide" ng-show="qobject.type == 'textbox'"><div class="qobjectheader ng-binding"></div>
+        <textarea class="ng-binding" style="display: block; width: 100%;" disabled="">A textbox with a height of at least cm. Expands: </textarea>
+      </div>
+
+      <div class="ng-hide" ng-show="qobject.type == 'markgroup'"><div class="qobjectheader ng-binding"></div></div>
+
+      <div class="ng-hide" ng-show="qobject.type == 'choicegroup'"><div class="qobjectheader ng-binding"></div></div>
+
+      <div class="" ng-show="qobject.type == 'choicequestion'"><div class="qobjectheader ng-binding"></div><div class="pull-right ng-binding"> Columns</div></div>
+
+      <!-- choicequestion children -->
+
+      <div class="ng-binding ng-hide" ng-show="qobject.type == 'choiceitem'"><input disabled="" type="checkbox"> <div class="pull-right ng-binding">Spans </div></div>
+      <div class="ng-binding ng-hide" ng-show="qobject.type == 'choiceitemtext'"> <input value="" disabled="" type="text"><div class="pull-right ng-binding">Spans </div></div>
+
+      <!-- markgroup children -->
+
+      <div ng-show="qobject.type == 'markline'" class="row ng-hide">
+        <div class="col-md-5 ng-binding"></div>
+        <div class="col-md-6 ng-binding" style="text-align: center;">
+          
+          <!-- ngRepeat: n in [] | range:parentAttr(this, 'checkboxcount') --> 
+        </div>
+      </div>
+
+      <!-- choicegroup children -->
+
+      <div ng-show="qobject.type == 'groupaddchoice'" class="row ng-hide">
+        <div class="col-md-11 ng-binding" style="text-align: right;">Choice: </div>
+      </div>
+
+      <div ng-show="qobject.type == 'choiceline'" class="row ng-hide">
+        <div class="col-md-11 ng-binding"></div>
+      </div>
+
+    </div>
+
+    <div class="angular-ui-tree-handle ng-scope ng-hide" data-nodrag="" ng-show="qobject.$editing">
+      <form action="http://demo.sdaps.org/surveys/2/edit" class="form-inline ng-pristine ng-valid" role="form">
+        <div ng-show="qobject.type == 'section'" class="form-group ng-hide">
+          <label style="width: 100%;"><div class="sr-only">Title</div>
+            <input value="" class="form-control ng-pristine ng-valid" style="width: 100%;" placeholder="Title" ng-model="qobject.title" type="text">
+          </label>
+        </div>
+
+        <div ng-show="qobject.type == 'multicol'" class="form-group ng-hide">
+          <label>Columns: 
+            <input class="form-control ng-pristine ng-valid ng-valid-number ng-valid-max ng-valid-min ng-valid-pattern" min="1" max="4" ng-pattern="/[1-4]/" ng-model="qobject.columns" type="number">
+          </label>
+        </div>
+
+        <div ng-show="qobject.type == 'textbody'" class="form-group ng-hide">
+          <label style="width: 100%;"><div class="sr-only">Text</div>
+            <textarea style="width: 100%;" class="form-control ng-pristine ng-valid" placeholder="Some text here." ng-model="qobject.text"></textarea>
+          </label>
+        </div>
+
+        <div ng-show="qobject.type == 'singlemark'" class="form-group ng-hide">
+          <div class="row">
+            <label class="col-md-11"><div class="sr-only">Question</div>
+                <input value="" style="width: 100%;" class="form-control ng-pristine ng-valid" placeholder="Question" ng-model="qobject.question" type="text">
+            <label>
+          </label></label></div>
+
+          <label>Number of Checkboxes:
+            <input class="form-control ng-pristine ng-valid ng-valid-number ng-valid-max ng-valid-min ng-valid-pattern" min="2" max="10" ng-pattern="/[0-9]*/" ng-model="qobject.checkboxcount" type="number">
+          </label>
+
+          <div class="row">
+            <label class="col-md-5"><div class="sr-only">lower bound label</div>
+              <input value="" style="width: 100%;" class="form-control ng-pristine ng-valid" placeholder="lower" ng-model="qobject.lower" type="text">
+            </label>
+            <div class="col-md-1" style="text-align: center;">–</div>
+            <label class="col-md-5"><div class="sr-only">upper bound label</div>
+              <input value="" style="width: 100%;" class="form-control ng-pristine ng-valid" placeholder="upper" ng-model="qobject.upper" type="text">
+            </label>
+          </div>
+        </div>
+
+        <div ng-show="qobject.type == 'textbox'" class="form-group ng-hide">
+          <div class="row">
+            <label class="col-md-11"><div class="sr-only">Question</div>
+                <input value="" style="width: 100%;" class="form-control ng-pristine ng-valid" placeholder="Question" ng-model="qobject.question" type="text">
+            <label>
+          </label></label></div>
+
+          <label>Height:
+            <input class="form-control ng-pristine ng-valid ng-valid-number ng-valid-max ng-valid-min" min="1.0" max="12" ng-model="qobject.height" type="number">
+          </label>
+
+          <label><input class="form-control ng-pristine ng-valid" ng-model="qobject.expand" type="checkbox"> Expand in height</label>
+        </div>
+
+        <div ng-show="qobject.type == 'markgroup'" class="form-group ng-hide">
+          <div class="row">
+            <label class="col-md-11"><div class="sr-only">Heading</div>
+                <input value="" style="width: 100%;" class="form-control ng-pristine ng-valid" placeholder="Question" ng-model="qobject.heading" type="text">
+            <label>
+          </label></label></div>
+
+          <label>Number of Checkboxes:
+            <input class="form-control ng-pristine ng-valid ng-valid-number ng-valid-max ng-valid-min ng-valid-pattern" min="2" max="10" ng-pattern="/[0-9]*/" ng-model="qobject.checkboxcount" type="number">
+          </label>
+        </div>
+
+        <div ng-show="qobject.type == 'choicegroup'" class="form-group ng-hide">
+          <div class="row">
+            <label class="col-md-11"><div class="sr-only">Heading</div>
+                <input value="" style="width: 100%;" class="form-control ng-pristine ng-valid" placeholder="Question" ng-model="qobject.heading" type="text">
+            <label>
+          </label></label></div>
+        </div>
+
+        <div ng-show="qobject.type == 'choicequestion'" class="form-group">
+          <label><div class="sr-only">Question</div>
+            <input value="" class="form-control ng-pristine ng-valid" placeholder="Question" ng-model="qobject.question" type="text">
+          </label><br>
+          <label>Columns:
+            <input class="form-control ng-pristine ng-valid ng-valid-number ng-valid-max ng-valid-min ng-valid-pattern" min="1" max="10" ng-pattern="/[0-9]*/" ng-model="qobject.columns" type="number">
+          </label>
+        </div>
+
+        <!-- choicequestion children -->
+
+        <div ng-show="qobject.type == 'choiceitem'" class="form-group ng-hide">
+          <label class="sr-only" for="choiceitem-answer">Answer</label>
+          <input value="" class="form-control ng-pristine ng-valid" placeholder="Title" ng-model="qobject.answer" type="text"><br>
+          <label>Column span:
+            <input class="form-control ng-pristine ng-valid ng-valid-number ng-valid-max ng-valid-min ng-valid-pattern" min="1" max="10" ng-pattern="/[0-9]*/" ng-model="qobject.colspan" type="number">
+          </label>
+        </div>
+
+        <div ng-show="qobject.type == 'choiceitemtext'" class="form-group ng-hide">
+          <label><div class="sr-only">Answer</div>
+            <input value="" class="form-control ng-pristine ng-valid" placeholder="Title" ng-model="qobject.answer" type="text">
+          </label><br>
+          <label>Column span:
+            <input class="form-control ng-pristine ng-valid ng-valid-number ng-valid-max ng-valid-min ng-valid-pattern" min="1" max="10" ng-pattern="/[0-9]*/" ng-model="qobject.colspan" type="number">
+          </label>
+          <label>Height: 
+            <input class="form-control ng-pristine ng-valid ng-valid-number ng-valid-max ng-valid-min" min="0.8" max="3" placeholder="1.2" ng-model="qobject.height" type="number">
+          </label>
+        </div>
+
+        <!-- markgroup children -->
+
+        <div ng-show="qobject.type == 'markline'" class="form-group ng-hide">
+          <div class="row">
+            <label class="col-md-11"><div class="sr-only">Question</div>
+                <input value="" style="width: 100%;" class="form-control ng-pristine ng-valid" placeholder="Question" ng-model="qobject.question" type="text">
+            <label>
+          </label></label></div>
+
+          <div class="row">
+            <label class="col-md-5"><div class="sr-only">lower bound label</div>
+              <input value="" style="width: 100%;" class="form-control ng-pristine ng-valid" placeholder="lower" ng-model="qobject.lower" type="text">
+            </label>
+            <div class="col-md-1" style="text-align: center;">–</div>
+            <label class="col-md-5"><div class="sr-only">upper bound label</div>
+              <input value="" style="width: 100%;" class="form-control ng-pristine ng-valid" placeholder="upper" ng-model="qobject.upper" type="text">
+            </label>
+          </div>
+        </div>
+
+        <!-- choicegroup children -->
+
+        <div ng-show="qobject.type == 'groupaddchoice'" class="form-group ng-hide">
+          <div class="row">
+            <label class="col-md-11">Choice:
+                <input value="" style="width: auto;" class="form-control ng-pristine ng-valid" placeholder="Question" ng-model="qobject.choice" type="text">
+            <label>
+          </label></label></div>
+        </div>
+
+        <div ng-show="qobject.type == 'choiceline'" class="form-group ng-hide">
+          <div class="row">
+            <label class="col-md-11"><div class="sr-only">Question</div>
+                <input value="" style="width: 100%;" class="form-control ng-pristine ng-valid" placeholder="Question" ng-model="qobject.question" type="text">
+            <label>
+          </label></label></div>
+        </div>
+
+        <div style="width: 100%; text-align: right; margin-top: 5px;">
+          <button type="submit" class="btn btn-default" ng-click="doneEditingObj(qobject)">Done</button>
+        </div>
+      </form>
+
+    </div>
+
+    <ol class="ng-scope ng-pristine ng-valid angular-ui-tree-nodes" ui-tree-nodes="" ng-model="qobject.children">
+      <li class="angular-ui-tree-adder ng-hide" ng-show="qobject.$adding">
+        <form action="http://demo.sdaps.org/surveys/2/edit" class="form-inline ng-pristine ng-valid" role="form">
+          <div class="form-group">
+            <label>Object type</label>
+              <select class="form-control ng-pristine ng-valid" ng-model="qobject.$newObjType"><option value="? undefined:undefined ?"></option>
+                <!-- ngIf: qobject.type == 'multicol' -->
+                <!-- ngIf: qobject.type == 'multicol' -->
+                <!-- ngIf: qobject.type == 'multicol' -->
+                <!-- ngIf: qobject.type == 'multicol' -->
+                <!-- ngIf: qobject.type == 'multicol' -->
+                <!-- ngIf: qobject.type == 'multicol' -->
+                <!-- ngIf: qobject.type == 'multicol' -->
+                <!-- ngIf: qobject.type == 'choicequestion' --><option class="ng-scope" ng-if="qobject.type == 'choicequestion'" value="choiceitem">Checkbox Choice</option><!-- end ngIf: qobject.type == 'choicequestion' -->
+                <!-- ngIf: qobject.type == 'choicequestion' --><option class="ng-scope" ng-if="qobject.type == 'choicequestion'" value="choiceitemtext">Textfield Choice</option><!-- end ngIf: qobject.type == 'choicequestion' -->
+                <!-- ngIf: qobject.type == 'markgroup' -->
+                <!-- ngIf: qobject.type == 'choicegroup' -->
+                <!-- ngIf: qobject.type == 'choicegroup' -->
+              </select>
+            
+          </div>
+          <button type="submit" class="btn btn-default" ng-click="prependNewSubItem(qobject)">Prepend Object</button>
+          <button type="submit" class="btn btn-default" ng-click="appendNewSubItem(qobject)">Append Object</button>
+        </form>
+      </li>
+
+      <!-- ngRepeat: qobject in qobject.children -->
+    </ol>
+  </li><!-- end ngRepeat: qobject in data --><!-- ngInclude: 'questionnaire.html' --><li collapsed="false" class="ng-scope angular-ui-tree-node" ng-repeat="qobject in data" ui-tree-node="" ng-include="'questionnaire.html'">
+    <div class="angular-ui-tree-handle ng-scope" ng-show="!qobject.$editing">
+      <a href="http://demo.sdaps.org/surveys/2/edit" class="btn btn-danger btn-xs pull-right" data-nodrag="" ng-click="removeObj(this)"><i class="glyphicon glyphicon-remove"></i></a>
+      <a href="http://demo.sdaps.org/surveys/2/edit" class="btn btn-primary btn-xs pull-right ng-hide" data-nodrag="" ng-show="canAdd(qobject.type)" ng-click="addChild(qobject)"><i ng-show="!qobject.$adding" class="glyphicon glyphicon-plus"></i><i ng-show="qobject.$adding" class="glyphicon glyphicon-minus ng-hide"></i></a>
+      <a href="http://demo.sdaps.org/surveys/2/edit" class="btn btn-primary btn-xs pull-right" data-nodrag="" ng-click="editObj(qobject)"><i class="glyphicon glyphicon-pencil"></i></a>
+      <div class="pull-right">&nbsp;</div>
+
+      <div class="ng-hide" ng-show="qobject.type == 'section'"><div class="qobjectheader ng-binding">Section: </div></div>
+
+      <div class="ng-hide" ng-show="qobject.type == 'multicol'"><div class="qobjectheader ng-binding"> column layout</div></div>
+
+      <div class="ng-hide" ng-show="qobject.type == 'textbody'"><pre class="textbody ng-binding"></pre></div>
+
+      <div class="" ng-show="qobject.type == 'singlemark'"><div class="qobjectheader ng-binding">Single mark</div>
+        <div class="ng-binding" style="text-align: center;">
+          lower
+          <!-- ngRepeat: n in [] | range:qobject.checkboxcount --><input class="ng-scope" style="margin-right: 2px; margin-left: 2px;" disabled="" ng-repeat="n in [] | range:qobject.checkboxcount" type="radio"><!-- end ngRepeat: n in [] | range:qobject.checkboxcount --><input class="ng-scope" style="margin-right: 2px; margin-left: 2px;" disabled="" ng-repeat="n in [] | range:qobject.checkboxcount" type="radio"><!-- end ngRepeat: n in [] | range:qobject.checkboxcount --><input class="ng-scope" style="margin-right: 2px; margin-left: 2px;" disabled="" ng-repeat="n in [] | range:qobject.checkboxcount" type="radio"><!-- end ngRepeat: n in [] | range:qobject.checkboxcount --><input class="ng-scope" style="margin-right: 2px; margin-left: 2px;" disabled="" ng-repeat="n in [] | range:qobject.checkboxcount" type="radio"><!-- end ngRepeat: n in [] | range:qobject.checkboxcount --><input class="ng-scope" style="margin-right: 2px; margin-left: 2px;" disabled="" ng-repeat="n in [] | range:qobject.checkboxcount" type="radio"><!-- end ngRepeat: n in [] | range:qobject.checkboxcount --> upper
+        </div>
+      </div>
+
+      <div class="ng-hide" ng-show="qobject.type == 'textbox'"><div class="qobjectheader ng-binding">Single mark</div>
+        <textarea class="ng-binding" style="display: block; width: 100%;" disabled="">A textbox with a height of at least cm. Expands: </textarea>
+      </div>
+
+      <div class="ng-hide" ng-show="qobject.type == 'markgroup'"><div class="qobjectheader ng-binding"></div></div>
+
+      <div class="ng-hide" ng-show="qobject.type == 'choicegroup'"><div class="qobjectheader ng-binding"></div></div>
+
+      <div class="ng-hide" ng-show="qobject.type == 'choicequestion'"><div class="qobjectheader ng-binding">Single mark</div><div class="pull-right ng-binding"> Columns</div></div>
+
+      <!-- choicequestion children -->
+
+      <div class="ng-binding ng-hide" ng-show="qobject.type == 'choiceitem'"><input disabled="" type="checkbox"> <div class="pull-right ng-binding">Spans </div></div>
+      <div class="ng-binding ng-hide" ng-show="qobject.type == 'choiceitemtext'"> <input value="" disabled="" type="text"><div class="pull-right ng-binding">Spans </div></div>
+
+      <!-- markgroup children -->
+
+      <div ng-show="qobject.type == 'markline'" class="row ng-hide">
+        <div class="col-md-5 ng-binding">Single mark</div>
+        <div class="col-md-6 ng-binding" style="text-align: center;">
+          lower
+          <!-- ngRepeat: n in [] | range:parentAttr(this, 'checkboxcount') --> upper
+        </div>
+      </div>
+
+      <!-- choicegroup children -->
+
+      <div ng-show="qobject.type == 'groupaddchoice'" class="row ng-hide">
+        <div class="col-md-11 ng-binding" style="text-align: right;">Choice: </div>
+      </div>
+
+      <div ng-show="qobject.type == 'choiceline'" class="row ng-hide">
+        <div class="col-md-11 ng-binding">Single mark</div>
+      </div>
+
+    </div>
+
+    <div class="angular-ui-tree-handle ng-scope ng-hide" data-nodrag="" ng-show="qobject.$editing">
+      <form action="http://demo.sdaps.org/surveys/2/edit" class="form-inline ng-pristine ng-valid" role="form">
+        <div ng-show="qobject.type == 'section'" class="form-group ng-hide">
+          <label style="width: 100%;"><div class="sr-only">Title</div>
+            <input value="" class="form-control ng-pristine ng-valid" style="width: 100%;" placeholder="Title" ng-model="qobject.title" type="text">
+          </label>
+        </div>
+
+        <div ng-show="qobject.type == 'multicol'" class="form-group ng-hide">
+          <label>Columns: 
+            <input class="form-control ng-pristine ng-valid ng-valid-number ng-valid-max ng-valid-min ng-valid-pattern" min="1" max="4" ng-pattern="/[1-4]/" ng-model="qobject.columns" type="number">
+          </label>
+        </div>
+
+        <div ng-show="qobject.type == 'textbody'" class="form-group ng-hide">
+          <label style="width: 100%;"><div class="sr-only">Text</div>
+            <textarea style="width: 100%;" class="form-control ng-pristine ng-valid" placeholder="Some text here." ng-model="qobject.text"></textarea>
+          </label>
+        </div>
+
+        <div ng-show="qobject.type == 'singlemark'" class="form-group">
+          <div class="row">
+            <label class="col-md-11"><div class="sr-only">Question</div>
+                <input value="Single mark" style="width: 100%;" class="form-control ng-pristine ng-valid" placeholder="Question" ng-model="qobject.question" type="text">
+            <label>
+          </label></label></div>
+
+          <label>Number of Checkboxes:
+            <input class="form-control ng-pristine ng-valid ng-valid-number ng-valid-max ng-valid-min ng-valid-pattern" min="2" max="10" ng-pattern="/[0-9]*/" ng-model="qobject.checkboxcount" type="number">
+          </label>
+
+          <div class="row">
+            <label class="col-md-5"><div class="sr-only">lower bound label</div>
+              <input value="lower" style="width: 100%;" class="form-control ng-pristine ng-valid" placeholder="lower" ng-model="qobject.lower" type="text">
+            </label>
+            <div class="col-md-1" style="text-align: center;">–</div>
+            <label class="col-md-5"><div class="sr-only">upper bound label</div>
+              <input value="upper" style="width: 100%;" class="form-control ng-pristine ng-valid" placeholder="upper" ng-model="qobject.upper" type="text">
+            </label>
+          </div>
+        </div>
+
+        <div ng-show="qobject.type == 'textbox'" class="form-group ng-hide">
+          <div class="row">
+            <label class="col-md-11"><div class="sr-only">Question</div>
+                <input value="Single mark" style="width: 100%;" class="form-control ng-pristine ng-valid" placeholder="Question" ng-model="qobject.question" type="text">
+            <label>
+          </label></label></div>
+
+          <label>Height:
+            <input class="form-control ng-pristine ng-valid ng-valid-number ng-valid-max ng-valid-min" min="1.0" max="12" ng-model="qobject.height" type="number">
+          </label>
+
+          <label><input class="form-control ng-pristine ng-valid" ng-model="qobject.expand" type="checkbox"> Expand in height</label>
+        </div>
+
+        <div ng-show="qobject.type == 'markgroup'" class="form-group ng-hide">
+          <div class="row">
+            <label class="col-md-11"><div class="sr-only">Heading</div>
+                <input value="" style="width: 100%;" class="form-control ng-pristine ng-valid" placeholder="Question" ng-model="qobject.heading" type="text">
+            <label>
+          </label></label></div>
+
+          <label>Number of Checkboxes:
+            <input class="form-control ng-pristine ng-valid ng-valid-number ng-valid-max ng-valid-min ng-valid-pattern" min="2" max="10" ng-pattern="/[0-9]*/" ng-model="qobject.checkboxcount" type="number">
+          </label>
+        </div>
+
+        <div ng-show="qobject.type == 'choicegroup'" class="form-group ng-hide">
+          <div class="row">
+            <label class="col-md-11"><div class="sr-only">Heading</div>
+                <input value="" style="width: 100%;" class="form-control ng-pristine ng-valid" placeholder="Question" ng-model="qobject.heading" type="text">
+            <label>
+          </label></label></div>
+        </div>
+
+        <div ng-show="qobject.type == 'choicequestion'" class="form-group ng-hide">
+          <label><div class="sr-only">Question</div>
+            <input value="Single mark" class="form-control ng-pristine ng-valid" placeholder="Question" ng-model="qobject.question" type="text">
+          </label><br>
+          <label>Columns:
+            <input class="form-control ng-pristine ng-valid ng-valid-number ng-valid-max ng-valid-min ng-valid-pattern" min="1" max="10" ng-pattern="/[0-9]*/" ng-model="qobject.columns" type="number">
+          </label>
+        </div>
+
+        <!-- choicequestion children -->
+
+        <div ng-show="qobject.type == 'choiceitem'" class="form-group ng-hide">
+          <label class="sr-only" for="choiceitem-answer">Answer</label>
+          <input value="" class="form-control ng-pristine ng-valid" placeholder="Title" ng-model="qobject.answer" type="text"><br>
+          <label>Column span:
+            <input class="form-control ng-pristine ng-valid ng-valid-number ng-valid-max ng-valid-min ng-valid-pattern" min="1" max="10" ng-pattern="/[0-9]*/" ng-model="qobject.colspan" type="number">
+          </label>
+        </div>
+
+        <div ng-show="qobject.type == 'choiceitemtext'" class="form-group ng-hide">
+          <label><div class="sr-only">Answer</div>
+            <input value="" class="form-control ng-pristine ng-valid" placeholder="Title" ng-model="qobject.answer" type="text">
+          </label><br>
+          <label>Column span:
+            <input class="form-control ng-pristine ng-valid ng-valid-number ng-valid-max ng-valid-min ng-valid-pattern" min="1" max="10" ng-pattern="/[0-9]*/" ng-model="qobject.colspan" type="number">
+          </label>
+          <label>Height: 
+            <input class="form-control ng-pristine ng-valid ng-valid-number ng-valid-max ng-valid-min" min="0.8" max="3" placeholder="1.2" ng-model="qobject.height" type="number">
+          </label>
+        </div>
+
+        <!-- markgroup children -->
+
+        <div ng-show="qobject.type == 'markline'" class="form-group ng-hide">
+          <div class="row">
+            <label class="col-md-11"><div class="sr-only">Question</div>
+                <input value="Single mark" style="width: 100%;" class="form-control ng-pristine ng-valid" placeholder="Question" ng-model="qobject.question" type="text">
+            <label>
+          </label></label></div>
+
+          <div class="row">
+            <label class="col-md-5"><div class="sr-only">lower bound label</div>
+              <input value="lower" style="width: 100%;" class="form-control ng-pristine ng-valid" placeholder="lower" ng-model="qobject.lower" type="text">
+            </label>
+            <div class="col-md-1" style="text-align: center;">–</div>
+            <label class="col-md-5"><div class="sr-only">upper bound label</div>
+              <input value="upper" style="width: 100%;" class="form-control ng-pristine ng-valid" placeholder="upper" ng-model="qobject.upper" type="text">
+            </label>
+          </div>
+        </div>
+
+        <!-- choicegroup children -->
+
+        <div ng-show="qobject.type == 'groupaddchoice'" class="form-group ng-hide">
+          <div class="row">
+            <label class="col-md-11">Choice:
+                <input value="" style="width: auto;" class="form-control ng-pristine ng-valid" placeholder="Question" ng-model="qobject.choice" type="text">
+            <label>
+          </label></label></div>
+        </div>
+
+        <div ng-show="qobject.type == 'choiceline'" class="form-group ng-hide">
+          <div class="row">
+            <label class="col-md-11"><div class="sr-only">Question</div>
+                <input value="Single mark" style="width: 100%;" class="form-control ng-pristine ng-valid" placeholder="Question" ng-model="qobject.question" type="text">
+            <label>
+          </label></label></div>
+        </div>
+
+        <div style="width: 100%; text-align: right; margin-top: 5px;">
+          <button type="submit" class="btn btn-default" ng-click="doneEditingObj(qobject)">Done</button>
+        </div>
+      </form>
+
+    </div>
+
+    <ol class="ng-scope ng-pristine ng-valid angular-ui-tree-nodes" ui-tree-nodes="" ng-model="qobject.children">
+      <li class="angular-ui-tree-adder ng-hide" ng-show="qobject.$adding">
+        <form action="http://demo.sdaps.org/surveys/2/edit" class="form-inline ng-pristine ng-valid" role="form">
+          <div class="form-group">
+            <label>Object type</label>
+              <select class="form-control ng-pristine ng-valid" ng-model="qobject.$newObjType"><option value="? undefined:undefined ?"></option>
+                <!-- ngIf: qobject.type == 'multicol' -->
+                <!-- ngIf: qobject.type == 'multicol' -->
+                <!-- ngIf: qobject.type == 'multicol' -->
+                <!-- ngIf: qobject.type == 'multicol' -->
+                <!-- ngIf: qobject.type == 'multicol' -->
+                <!-- ngIf: qobject.type == 'multicol' -->
+                <!-- ngIf: qobject.type == 'multicol' -->
+                <!-- ngIf: qobject.type == 'choicequestion' -->
+                <!-- ngIf: qobject.type == 'choicequestion' -->
+                <!-- ngIf: qobject.type == 'markgroup' -->
+                <!-- ngIf: qobject.type == 'choicegroup' -->
+                <!-- ngIf: qobject.type == 'choicegroup' -->
+              </select>
+            
+          </div>
+          <button type="submit" class="btn btn-default" ng-click="prependNewSubItem(qobject)">Prepend Object</button>
+          <button type="submit" class="btn btn-default" ng-click="appendNewSubItem(qobject)">Append Object</button>
+        </form>
+      </li>
+
+      <!-- ngRepeat: qobject in qobject.children -->
+    </ol>
+  </li><!-- end ngRepeat: qobject in data --><!-- ngInclude: 'questionnaire.html' --><li collapsed="false" class="ng-scope angular-ui-tree-node" ng-repeat="qobject in data" ui-tree-node="" ng-include="'questionnaire.html'">
+    <div class="angular-ui-tree-handle ng-scope" ng-show="!qobject.$editing">
+      <a href="http://demo.sdaps.org/surveys/2/edit" class="btn btn-danger btn-xs pull-right" data-nodrag="" ng-click="removeObj(this)"><i class="glyphicon glyphicon-remove"></i></a>
+      <a href="http://demo.sdaps.org/surveys/2/edit" class="btn btn-primary btn-xs pull-right" data-nodrag="" ng-show="canAdd(qobject.type)" ng-click="addChild(qobject)"><i ng-show="!qobject.$adding" class="glyphicon glyphicon-plus"></i><i ng-show="qobject.$adding" class="glyphicon glyphicon-minus ng-hide"></i></a>
+      <a href="http://demo.sdaps.org/surveys/2/edit" class="btn btn-primary btn-xs pull-right" data-nodrag="" ng-click="editObj(qobject)"><i class="glyphicon glyphicon-pencil"></i></a>
+      <div class="pull-right">&nbsp;</div>
+
+      <div class="ng-hide" ng-show="qobject.type == 'section'"><div class="qobjectheader ng-binding">Section: </div></div>
+
+      <div class="" ng-show="qobject.type == 'multicol'"><div class="qobjectheader ng-binding">2 column layout</div></div>
+
+      <div class="ng-hide" ng-show="qobject.type == 'textbody'"><pre class="textbody ng-binding"></pre></div>
+
+      <div class="ng-hide" ng-show="qobject.type == 'singlemark'"><div class="qobjectheader ng-binding"></div>
+        <div class="ng-binding" style="text-align: center;">
+          
+          <!-- ngRepeat: n in [] | range:qobject.checkboxcount --> 
+        </div>
+      </div>
+
+      <div class="ng-hide" ng-show="qobject.type == 'textbox'"><div class="qobjectheader ng-binding"></div>
+        <textarea class="ng-binding" style="display: block; width: 100%;" disabled="">A textbox with a height of at least cm. Expands: </textarea>
+      </div>
+
+      <div class="ng-hide" ng-show="qobject.type == 'markgroup'"><div class="qobjectheader ng-binding"></div></div>
+
+      <div class="ng-hide" ng-show="qobject.type == 'choicegroup'"><div class="qobjectheader ng-binding"></div></div>
+
+      <div class="ng-hide" ng-show="qobject.type == 'choicequestion'"><div class="qobjectheader ng-binding"></div><div class="pull-right ng-binding">2 Columns</div></div>
+
+      <!-- choicequestion children -->
+
+      <div class="ng-binding ng-hide" ng-show="qobject.type == 'choiceitem'"><input disabled="" type="checkbox"> <div class="pull-right ng-binding">Spans </div></div>
+      <div class="ng-binding ng-hide" ng-show="qobject.type == 'choiceitemtext'"> <input value="" disabled="" type="text"><div class="pull-right ng-binding">Spans </div></div>
+
+      <!-- markgroup children -->
+
+      <div ng-show="qobject.type == 'markline'" class="row ng-hide">
+        <div class="col-md-5 ng-binding"></div>
+        <div class="col-md-6 ng-binding" style="text-align: center;">
+          
+          <!-- ngRepeat: n in [] | range:parentAttr(this, 'checkboxcount') --> 
+        </div>
+      </div>
+
+      <!-- choicegroup children -->
+
+      <div ng-show="qobject.type == 'groupaddchoice'" class="row ng-hide">
+        <div class="col-md-11 ng-binding" style="text-align: right;">Choice: </div>
+      </div>
+
+      <div ng-show="qobject.type == 'choiceline'" class="row ng-hide">
+        <div class="col-md-11 ng-binding"></div>
+      </div>
+
+    </div>
+
+    <div class="angular-ui-tree-handle ng-scope ng-hide" data-nodrag="" ng-show="qobject.$editing">
+      <form action="http://demo.sdaps.org/surveys/2/edit" class="form-inline ng-pristine ng-valid" role="form">
+        <div ng-show="qobject.type == 'section'" class="form-group ng-hide">
+          <label style="width: 100%;"><div class="sr-only">Title</div>
+            <input value="" class="form-control ng-pristine ng-valid" style="width: 100%;" placeholder="Title" ng-model="qobject.title" type="text">
+          </label>
+        </div>
+
+        <div ng-show="qobject.type == 'multicol'" class="form-group">
+          <label>Columns: 
+            <input class="form-control ng-pristine ng-valid ng-valid-number ng-valid-max ng-valid-min ng-valid-pattern" min="1" max="4" ng-pattern="/[1-4]/" ng-model="qobject.columns" type="number">
+          </label>
+        </div>
+
+        <div ng-show="qobject.type == 'textbody'" class="form-group ng-hide">
+          <label style="width: 100%;"><div class="sr-only">Text</div>
+            <textarea style="width: 100%;" class="form-control ng-pristine ng-valid" placeholder="Some text here." ng-model="qobject.text"></textarea>
+          </label>
+        </div>
+
+        <div ng-show="qobject.type == 'singlemark'" class="form-group ng-hide">
+          <div class="row">
+            <label class="col-md-11"><div class="sr-only">Question</div>
+                <input value="" style="width: 100%;" class="form-control ng-pristine ng-valid" placeholder="Question" ng-model="qobject.question" type="text">
+            <label>
+          </label></label></div>
+
+          <label>Number of Checkboxes:
+            <input class="form-control ng-pristine ng-valid ng-valid-number ng-valid-max ng-valid-min ng-valid-pattern" min="2" max="10" ng-pattern="/[0-9]*/" ng-model="qobject.checkboxcount" type="number">
+          </label>
+
+          <div class="row">
+            <label class="col-md-5"><div class="sr-only">lower bound label</div>
+              <input value="" style="width: 100%;" class="form-control ng-pristine ng-valid" placeholder="lower" ng-model="qobject.lower" type="text">
+            </label>
+            <div class="col-md-1" style="text-align: center;">–</div>
+            <label class="col-md-5"><div class="sr-only">upper bound label</div>
+              <input value="" style="width: 100%;" class="form-control ng-pristine ng-valid" placeholder="upper" ng-model="qobject.upper" type="text">
+            </label>
+          </div>
+        </div>
+
+        <div ng-show="qobject.type == 'textbox'" class="form-group ng-hide">
+          <div class="row">
+            <label class="col-md-11"><div class="sr-only">Question</div>
+                <input value="" style="width: 100%;" class="form-control ng-pristine ng-valid" placeholder="Question" ng-model="qobject.question" type="text">
+            <label>
+          </label></label></div>
+
+          <label>Height:
+            <input class="form-control ng-pristine ng-valid ng-valid-number ng-valid-max ng-valid-min" min="1.0" max="12" ng-model="qobject.height" type="number">
+          </label>
+
+          <label><input class="form-control ng-pristine ng-valid" ng-model="qobject.expand" type="checkbox"> Expand in height</label>
+        </div>
+
+        <div ng-show="qobject.type == 'markgroup'" class="form-group ng-hide">
+          <div class="row">
+            <label class="col-md-11"><div class="sr-only">Heading</div>
+                <input value="" style="width: 100%;" class="form-control ng-pristine ng-valid" placeholder="Question" ng-model="qobject.heading" type="text">
+            <label>
+          </label></label></div>
+
+          <label>Number of Checkboxes:
+            <input class="form-control ng-pristine ng-valid ng-valid-number ng-valid-max ng-valid-min ng-valid-pattern" min="2" max="10" ng-pattern="/[0-9]*/" ng-model="qobject.checkboxcount" type="number">
+          </label>
+        </div>
+
+        <div ng-show="qobject.type == 'choicegroup'" class="form-group ng-hide">
+          <div class="row">
+            <label class="col-md-11"><div class="sr-only">Heading</div>
+                <input value="" style="width: 100%;" class="form-control ng-pristine ng-valid" placeholder="Question" ng-model="qobject.heading" type="text">
+            <label>
+          </label></label></div>
+        </div>
+
+        <div ng-show="qobject.type == 'choicequestion'" class="form-group ng-hide">
+          <label><div class="sr-only">Question</div>
+            <input value="" class="form-control ng-pristine ng-valid" placeholder="Question" ng-model="qobject.question" type="text">
+          </label><br>
+          <label>Columns:
+            <input class="form-control ng-pristine ng-valid ng-valid-number ng-valid-max ng-valid-min ng-valid-pattern" min="1" max="10" ng-pattern="/[0-9]*/" ng-model="qobject.columns" type="number">
+          </label>
+        </div>
+
+        <!-- choicequestion children -->
+
+        <div ng-show="qobject.type == 'choiceitem'" class="form-group ng-hide">
+          <label class="sr-only" for="choiceitem-answer">Answer</label>
+          <input value="" class="form-control ng-pristine ng-valid" placeholder="Title" ng-model="qobject.answer" type="text"><br>
+          <label>Column span:
+            <input class="form-control ng-pristine ng-valid ng-valid-number ng-valid-max ng-valid-min ng-valid-pattern" min="1" max="10" ng-pattern="/[0-9]*/" ng-model="qobject.colspan" type="number">
+          </label>
+        </div>
+
+        <div ng-show="qobject.type == 'choiceitemtext'" class="form-group ng-hide">
+          <label><div class="sr-only">Answer</div>
+            <input value="" class="form-control ng-pristine ng-valid" placeholder="Title" ng-model="qobject.answer" type="text">
+          </label><br>
+          <label>Column span:
+            <input class="form-control ng-pristine ng-valid ng-valid-number ng-valid-max ng-valid-min ng-valid-pattern" min="1" max="10" ng-pattern="/[0-9]*/" ng-model="qobject.colspan" type="number">
+          </label>
+          <label>Height: 
+            <input class="form-control ng-pristine ng-valid ng-valid-number ng-valid-max ng-valid-min" min="0.8" max="3" placeholder="1.2" ng-model="qobject.height" type="number">
+          </label>
+        </div>
+
+        <!-- markgroup children -->
+
+        <div ng-show="qobject.type == 'markline'" class="form-group ng-hide">
+          <div class="row">
+            <label class="col-md-11"><div class="sr-only">Question</div>
+                <input value="" style="width: 100%;" class="form-control ng-pristine ng-valid" placeholder="Question" ng-model="qobject.question" type="text">
+            <label>
+          </label></label></div>
+
+          <div class="row">
+            <label class="col-md-5"><div class="sr-only">lower bound label</div>
+              <input value="" style="width: 100%;" class="form-control ng-pristine ng-valid" placeholder="lower" ng-model="qobject.lower" type="text">
+            </label>
+            <div class="col-md-1" style="text-align: center;">–</div>
+            <label class="col-md-5"><div class="sr-only">upper bound label</div>
+              <input value="" style="width: 100%;" class="form-control ng-pristine ng-valid" placeholder="upper" ng-model="qobject.upper" type="text">
+            </label>
+          </div>
+        </div>
+
+        <!-- choicegroup children -->
+
+        <div ng-show="qobject.type == 'groupaddchoice'" class="form-group ng-hide">
+          <div class="row">
+            <label class="col-md-11">Choice:
+                <input value="" style="width: auto;" class="form-control ng-pristine ng-valid" placeholder="Question" ng-model="qobject.choice" type="text">
+            <label>
+          </label></label></div>
+        </div>
+
+        <div ng-show="qobject.type == 'choiceline'" class="form-group ng-hide">
+          <div class="row">
+            <label class="col-md-11"><div class="sr-only">Question</div>
+                <input value="" style="width: 100%;" class="form-control ng-pristine ng-valid" placeholder="Question" ng-model="qobject.question" type="text">
+            <label>
+          </label></label></div>
+        </div>
+
+        <div style="width: 100%; text-align: right; margin-top: 5px;">
+          <button type="submit" class="btn btn-default" ng-click="doneEditingObj(qobject)">Done</button>
+        </div>
+      </form>
+
+    </div>
+
+    <ol class="ng-scope ng-pristine ng-valid angular-ui-tree-nodes" ui-tree-nodes="" ng-model="qobject.children">
+      <li class="angular-ui-tree-adder ng-hide" ng-show="qobject.$adding">
+        <form action="http://demo.sdaps.org/surveys/2/edit" class="form-inline ng-pristine ng-valid" role="form">
+          <div class="form-group">
+            <label>Object type</label>
+              <select class="form-control ng-pristine ng-valid" ng-model="qobject.$newObjType"><option value="? undefined:undefined ?"></option>
+                <!-- ngIf: qobject.type == 'multicol' --><option class="ng-scope" ng-if="qobject.type == 'multicol'" value="section">Section</option><!-- end ngIf: qobject.type == 'multicol' -->
+                <!-- ngIf: qobject.type == 'multicol' --><option class="ng-scope" ng-if="qobject.type == 'multicol'" value="textbody">Textbody</option><!-- end ngIf: qobject.type == 'multicol' -->
+                <!-- ngIf: qobject.type == 'multicol' --><option class="ng-scope" ng-if="qobject.type == 'multicol'" value="singlemark">Single Mark Question</option><!-- end ngIf: qobject.type == 'multicol' -->
+                <!-- ngIf: qobject.type == 'multicol' --><option class="ng-scope" ng-if="qobject.type == 'multicol'" value="choicequestion">Choice Question</option><!-- end ngIf: qobject.type == 'multicol' -->
+                <!-- ngIf: qobject.type == 'multicol' --><option class="ng-scope" ng-if="qobject.type == 'multicol'" value="textbox">Textbox</option><!-- end ngIf: qobject.type == 'multicol' -->
+                <!-- ngIf: qobject.type == 'multicol' --><option class="ng-scope" ng-if="qobject.type == 'multicol'" value="markgroup">Mark Group</option><!-- end ngIf: qobject.type == 'multicol' -->
+                <!-- ngIf: qobject.type == 'multicol' --><option class="ng-scope" ng-if="qobject.type == 'multicol'" value="choicegroup">Choice Group</option><!-- end ngIf: qobject.type == 'multicol' -->
+                <!-- ngIf: qobject.type == 'choicequestion' -->
+                <!-- ngIf: qobject.type == 'choicequestion' -->
+                <!-- ngIf: qobject.type == 'markgroup' -->
+                <!-- ngIf: qobject.type == 'choicegroup' -->
+                <!-- ngIf: qobject.type == 'choicegroup' -->
+              </select>
+            
+          </div>
+          <button type="submit" class="btn btn-default" ng-click="prependNewSubItem(qobject)">Prepend Object</button>
+          <button type="submit" class="btn btn-default" ng-click="appendNewSubItem(qobject)">Append Object</button>
+        </form>
+      </li>
+
+      <!-- ngRepeat: qobject in qobject.children --><!-- ngInclude: 'questionnaire.html' --><li collapsed="false" class="ng-scope angular-ui-tree-node" ng-repeat="qobject in qobject.children" ui-tree-node="" ng-include="'questionnaire.html'">
+    <div class="angular-ui-tree-handle ng-scope" ng-show="!qobject.$editing">
+      <a href="http://demo.sdaps.org/surveys/2/edit" class="btn btn-danger btn-xs pull-right" data-nodrag="" ng-click="removeObj(this)"><i class="glyphicon glyphicon-remove"></i></a>
+      <a href="http://demo.sdaps.org/surveys/2/edit" class="btn btn-primary btn-xs pull-right ng-hide" data-nodrag="" ng-show="canAdd(qobject.type)" ng-click="addChild(qobject)"><i ng-show="!qobject.$adding" class="glyphicon glyphicon-plus"></i><i ng-show="qobject.$adding" class="glyphicon glyphicon-minus ng-hide"></i></a>
+      <a href="http://demo.sdaps.org/surveys/2/edit" class="btn btn-primary btn-xs pull-right" data-nodrag="" ng-click="editObj(qobject)"><i class="glyphicon glyphicon-pencil"></i></a>
+      <div class="pull-right">&nbsp;</div>
+
+      <div class="ng-hide" ng-show="qobject.type == 'section'"><div class="qobjectheader ng-binding">Section: </div></div>
+
+      <div class="ng-hide" ng-show="qobject.type == 'multicol'"><div class="qobjectheader ng-binding"> column layout</div></div>
+
+      <div class="" ng-show="qobject.type == 'textbody'"><pre class="textbody ng-binding">This is some text {\bf hallo}</pre></div>
+
+      <div class="ng-hide" ng-show="qobject.type == 'singlemark'"><div class="qobjectheader ng-binding"></div>
+        <div class="ng-binding" style="text-align: center;">
+          
+          <!-- ngRepeat: n in [] | range:qobject.checkboxcount --> 
+        </div>
+      </div>
+
+      <div class="ng-hide" ng-show="qobject.type == 'textbox'"><div class="qobjectheader ng-binding"></div>
+        <textarea class="ng-binding" style="display: block; width: 100%;" disabled="">A textbox with a height of at least cm. Expands: </textarea>
+      </div>
+
+      <div class="ng-hide" ng-show="qobject.type == 'markgroup'"><div class="qobjectheader ng-binding"></div></div>
+
+      <div class="ng-hide" ng-show="qobject.type == 'choicegroup'"><div class="qobjectheader ng-binding"></div></div>
+
+      <div class="ng-hide" ng-show="qobject.type == 'choicequestion'"><div class="qobjectheader ng-binding"></div><div class="pull-right ng-binding"> Columns</div></div>
+
+      <!-- choicequestion children -->
+
+      <div class="ng-binding ng-hide" ng-show="qobject.type == 'choiceitem'"><input disabled="" type="checkbox"> <div class="pull-right ng-binding">Spans </div></div>
+      <div class="ng-binding ng-hide" ng-show="qobject.type == 'choiceitemtext'"> <input value="" disabled="" type="text"><div class="pull-right ng-binding">Spans </div></div>
+
+      <!-- markgroup children -->
+
+      <div ng-show="qobject.type == 'markline'" class="row ng-hide">
+        <div class="col-md-5 ng-binding"></div>
+        <div class="col-md-6 ng-binding" style="text-align: center;">
+          
+          <!-- ngRepeat: n in [] | range:parentAttr(this, 'checkboxcount') --> 
+        </div>
+      </div>
+
+      <!-- choicegroup children -->
+
+      <div ng-show="qobject.type == 'groupaddchoice'" class="row ng-hide">
+        <div class="col-md-11 ng-binding" style="text-align: right;">Choice: </div>
+      </div>
+
+      <div ng-show="qobject.type == 'choiceline'" class="row ng-hide">
+        <div class="col-md-11 ng-binding"></div>
+      </div>
+
+    </div>
+
+    <div class="angular-ui-tree-handle ng-scope ng-hide" data-nodrag="" ng-show="qobject.$editing">
+      <form action="http://demo.sdaps.org/surveys/2/edit" class="form-inline ng-pristine ng-valid" role="form">
+        <div ng-show="qobject.type == 'section'" class="form-group ng-hide">
+          <label style="width: 100%;"><div class="sr-only">Title</div>
+            <input value="" class="form-control ng-pristine ng-valid" style="width: 100%;" placeholder="Title" ng-model="qobject.title" type="text">
+          </label>
+        </div>
+
+        <div ng-show="qobject.type == 'multicol'" class="form-group ng-hide">
+          <label>Columns: 
+            <input class="form-control ng-pristine ng-valid ng-valid-number ng-valid-max ng-valid-min ng-valid-pattern" min="1" max="4" ng-pattern="/[1-4]/" ng-model="qobject.columns" type="number">
+          </label>
+        </div>
+
+        <div ng-show="qobject.type == 'textbody'" class="form-group">
+          <label style="width: 100%;"><div class="sr-only">Text</div>
+            <textarea style="width: 100%;" class="form-control ng-pristine ng-valid" placeholder="Some text here." ng-model="qobject.text"></textarea>
+          </label>
+        </div>
+
+        <div ng-show="qobject.type == 'singlemark'" class="form-group ng-hide">
+          <div class="row">
+            <label class="col-md-11"><div class="sr-only">Question</div>
+                <input value="" style="width: 100%;" class="form-control ng-pristine ng-valid" placeholder="Question" ng-model="qobject.question" type="text">
+            <label>
+          </label></label></div>
+
+          <label>Number of Checkboxes:
+            <input class="form-control ng-pristine ng-valid ng-valid-number ng-valid-max ng-valid-min ng-valid-pattern" min="2" max="10" ng-pattern="/[0-9]*/" ng-model="qobject.checkboxcount" type="number">
+          </label>
+
+          <div class="row">
+            <label class="col-md-5"><div class="sr-only">lower bound label</div>
+              <input value="" style="width: 100%;" class="form-control ng-pristine ng-valid" placeholder="lower" ng-model="qobject.lower" type="text">
+            </label>
+            <div class="col-md-1" style="text-align: center;">–</div>
+            <label class="col-md-5"><div class="sr-only">upper bound label</div>
+              <input value="" style="width: 100%;" class="form-control ng-pristine ng-valid" placeholder="upper" ng-model="qobject.upper" type="text">
+            </label>
+          </div>
+        </div>
+
+        <div ng-show="qobject.type == 'textbox'" class="form-group ng-hide">
+          <div class="row">
+            <label class="col-md-11"><div class="sr-only">Question</div>
+                <input value="" style="width: 100%;" class="form-control ng-pristine ng-valid" placeholder="Question" ng-model="qobject.question" type="text">
+            <label>
+          </label></label></div>
+
+          <label>Height:
+            <input class="form-control ng-pristine ng-valid ng-valid-number ng-valid-max ng-valid-min" min="1.0" max="12" ng-model="qobject.height" type="number">
+          </label>
+
+          <label><input class="form-control ng-pristine ng-valid" ng-model="qobject.expand" type="checkbox"> Expand in height</label>
+        </div>
+
+        <div ng-show="qobject.type == 'markgroup'" class="form-group ng-hide">
+          <div class="row">
+            <label class="col-md-11"><div class="sr-only">Heading</div>
+                <input value="" style="width: 100%;" class="form-control ng-pristine ng-valid" placeholder="Question" ng-model="qobject.heading" type="text">
+            <label>
+          </label></label></div>
+
+          <label>Number of Checkboxes:
+            <input class="form-control ng-pristine ng-valid ng-valid-number ng-valid-max ng-valid-min ng-valid-pattern" min="2" max="10" ng-pattern="/[0-9]*/" ng-model="qobject.checkboxcount" type="number">
+          </label>
+        </div>
+
+        <div ng-show="qobject.type == 'choicegroup'" class="form-group ng-hide">
+          <div class="row">
+            <label class="col-md-11"><div class="sr-only">Heading</div>
+                <input value="" style="width: 100%;" class="form-control ng-pristine ng-valid" placeholder="Question" ng-model="qobject.heading" type="text">
+            <label>
+          </label></label></div>
+        </div>
+
+        <div ng-show="qobject.type == 'choicequestion'" class="form-group ng-hide">
+          <label><div class="sr-only">Question</div>
+            <input value="" class="form-control ng-pristine ng-valid" placeholder="Question" ng-model="qobject.question" type="text">
+          </label><br>
+          <label>Columns:
+            <input class="form-control ng-pristine ng-valid ng-valid-number ng-valid-max ng-valid-min ng-valid-pattern" min="1" max="10" ng-pattern="/[0-9]*/" ng-model="qobject.columns" type="number">
+          </label>
+        </div>
+
+        <!-- choicequestion children -->
+
+        <div ng-show="qobject.type == 'choiceitem'" class="form-group ng-hide">
+          <label class="sr-only" for="choiceitem-answer">Answer</label>
+          <input value="" class="form-control ng-pristine ng-valid" placeholder="Title" ng-model="qobject.answer" type="text"><br>
+          <label>Column span:
+            <input class="form-control ng-pristine ng-valid ng-valid-number ng-valid-max ng-valid-min ng-valid-pattern" min="1" max="10" ng-pattern="/[0-9]*/" ng-model="qobject.colspan" type="number">
+          </label>
+        </div>
+
+        <div ng-show="qobject.type == 'choiceitemtext'" class="form-group ng-hide">
+          <label><div class="sr-only">Answer</div>
+            <input value="" class="form-control ng-pristine ng-valid" placeholder="Title" ng-model="qobject.answer" type="text">
+          </label><br>
+          <label>Column span:
+            <input class="form-control ng-pristine ng-valid ng-valid-number ng-valid-max ng-valid-min ng-valid-pattern" min="1" max="10" ng-pattern="/[0-9]*/" ng-model="qobject.colspan" type="number">
+          </label>
+          <label>Height: 
+            <input class="form-control ng-pristine ng-valid ng-valid-number ng-valid-max ng-valid-min" min="0.8" max="3" placeholder="1.2" ng-model="qobject.height" type="number">
+          </label>
+        </div>
+
+        <!-- markgroup children -->
+
+        <div ng-show="qobject.type == 'markline'" class="form-group ng-hide">
+          <div class="row">
+            <label class="col-md-11"><div class="sr-only">Question</div>
+                <input value="" style="width: 100%;" class="form-control ng-pristine ng-valid" placeholder="Question" ng-model="qobject.question" type="text">
+            <label>
+          </label></label></div>
+
+          <div class="row">
+            <label class="col-md-5"><div class="sr-only">lower bound label</div>
+              <input value="" style="width: 100%;" class="form-control ng-pristine ng-valid" placeholder="lower" ng-model="qobject.lower" type="text">
+            </label>
+            <div class="col-md-1" style="text-align: center;">–</div>
+            <label class="col-md-5"><div class="sr-only">upper bound label</div>
+              <input value="" style="width: 100%;" class="form-control ng-pristine ng-valid" placeholder="upper" ng-model="qobject.upper" type="text">
+            </label>
+          </div>
+        </div>
+
+        <!-- choicegroup children -->
+
+        <div ng-show="qobject.type == 'groupaddchoice'" class="form-group ng-hide">
+          <div class="row">
+            <label class="col-md-11">Choice:
+                <input value="" style="width: auto;" class="form-control ng-pristine ng-valid" placeholder="Question" ng-model="qobject.choice" type="text">
+            <label>
+          </label></label></div>
+        </div>
+
+        <div ng-show="qobject.type == 'choiceline'" class="form-group ng-hide">
+          <div class="row">
+            <label class="col-md-11"><div class="sr-only">Question</div>
+                <input value="" style="width: 100%;" class="form-control ng-pristine ng-valid" placeholder="Question" ng-model="qobject.question" type="text">
+            <label>
+          </label></label></div>
+        </div>
+
+        <div style="width: 100%; text-align: right; margin-top: 5px;">
+          <button type="submit" class="btn btn-default" ng-click="doneEditingObj(qobject)">Done</button>
+        </div>
+      </form>
+
+    </div>
+
+    <ol class="ng-scope ng-pristine ng-valid angular-ui-tree-nodes" ui-tree-nodes="" ng-model="qobject.children">
+      <li class="angular-ui-tree-adder ng-hide" ng-show="qobject.$adding">
+        <form action="http://demo.sdaps.org/surveys/2/edit" class="form-inline ng-pristine ng-valid" role="form">
+          <div class="form-group">
+            <label>Object type</label>
+              <select class="form-control ng-pristine ng-valid" ng-model="qobject.$newObjType"><option value="? undefined:undefined ?"></option>
+                <!-- ngIf: qobject.type == 'multicol' -->
+                <!-- ngIf: qobject.type == 'multicol' -->
+                <!-- ngIf: qobject.type == 'multicol' -->
+                <!-- ngIf: qobject.type == 'multicol' -->
+                <!-- ngIf: qobject.type == 'multicol' -->
+                <!-- ngIf: qobject.type == 'multicol' -->
+                <!-- ngIf: qobject.type == 'multicol' -->
+                <!-- ngIf: qobject.type == 'choicequestion' -->
+                <!-- ngIf: qobject.type == 'choicequestion' -->
+                <!-- ngIf: qobject.type == 'markgroup' -->
+                <!-- ngIf: qobject.type == 'choicegroup' -->
+                <!-- ngIf: qobject.type == 'choicegroup' -->
+              </select>
+            
+          </div>
+          <button type="submit" class="btn btn-default" ng-click="prependNewSubItem(qobject)">Prepend Object</button>
+          <button type="submit" class="btn btn-default" ng-click="appendNewSubItem(qobject)">Append Object</button>
+        </form>
+      </li>
+
+      <!-- ngRepeat: qobject in qobject.children -->
+    </ol>
+  </li><!-- end ngRepeat: qobject in qobject.children -->
+    </ol>
+  </li><!-- end ngRepeat: qobject in data --><!-- ngInclude: 'questionnaire.html' --><li collapsed="false" class="ng-scope angular-ui-tree-node" ng-repeat="qobject in data" ui-tree-node="" ng-include="'questionnaire.html'">
+    <div class="angular-ui-tree-handle ng-scope" ng-show="!qobject.$editing">
+      <a href="http://demo.sdaps.org/surveys/2/edit" class="btn btn-danger btn-xs pull-right" data-nodrag="" ng-click="removeObj(this)"><i class="glyphicon glyphicon-remove"></i></a>
+      <a href="http://demo.sdaps.org/surveys/2/edit" class="btn btn-primary btn-xs pull-right ng-hide" data-nodrag="" ng-show="canAdd(qobject.type)" ng-click="addChild(qobject)"><i ng-show="!qobject.$adding" class="glyphicon glyphicon-plus"></i><i ng-show="qobject.$adding" class="glyphicon glyphicon-minus ng-hide"></i></a>
+      <a href="http://demo.sdaps.org/surveys/2/edit" class="btn btn-primary btn-xs pull-right" data-nodrag="" ng-click="editObj(qobject)"><i class="glyphicon glyphicon-pencil"></i></a>
+      <div class="pull-right">&nbsp;</div>
+
+      <div class="ng-hide" ng-show="qobject.type == 'section'"><div class="qobjectheader ng-binding">Section: </div></div>
+
+      <div class="ng-hide" ng-show="qobject.type == 'multicol'"><div class="qobjectheader ng-binding"> column layout</div></div>
+
+      <div class="ng-hide" ng-show="qobject.type == 'textbody'"><pre class="textbody ng-binding"></pre></div>
+
+      <div class="ng-hide" ng-show="qobject.type == 'singlemark'"><div class="qobjectheader ng-binding">pregunta</div>
+        <div class="ng-binding" style="text-align: center;">
+          
+          <!-- ngRepeat: n in [] | range:qobject.checkboxcount --> 
+        </div>
+      </div>
+
+      <div class="" ng-show="qobject.type == 'textbox'"><div class="qobjectheader ng-binding">pregunta</div>
+        <textarea class="ng-binding" style="display: block; width: 100%;" disabled="">A textbox with a height of at least 4cm. Expands: true</textarea>
+      </div>
+
+      <div class="ng-hide" ng-show="qobject.type == 'markgroup'"><div class="qobjectheader ng-binding"></div></div>
+
+      <div class="ng-hide" ng-show="qobject.type == 'choicegroup'"><div class="qobjectheader ng-binding"></div></div>
+
+      <div class="ng-hide" ng-show="qobject.type == 'choicequestion'"><div class="qobjectheader ng-binding">pregunta</div><div class="pull-right ng-binding"> Columns</div></div>
+
+      <!-- choicequestion children -->
+
+      <div class="ng-binding ng-hide" ng-show="qobject.type == 'choiceitem'"><input disabled="" type="checkbox"> <div class="pull-right ng-binding">Spans </div></div>
+      <div class="ng-binding ng-hide" ng-show="qobject.type == 'choiceitemtext'"> <input value="" disabled="" type="text"><div class="pull-right ng-binding">Spans </div></div>
+
+      <!-- markgroup children -->
+
+      <div ng-show="qobject.type == 'markline'" class="row ng-hide">
+        <div class="col-md-5 ng-binding">pregunta</div>
+        <div class="col-md-6 ng-binding" style="text-align: center;">
+          
+          <!-- ngRepeat: n in [] | range:parentAttr(this, 'checkboxcount') --> 
+        </div>
+      </div>
+
+      <!-- choicegroup children -->
+
+      <div ng-show="qobject.type == 'groupaddchoice'" class="row ng-hide">
+        <div class="col-md-11 ng-binding" style="text-align: right;">Choice: </div>
+      </div>
+
+      <div ng-show="qobject.type == 'choiceline'" class="row ng-hide">
+        <div class="col-md-11 ng-binding">pregunta</div>
+      </div>
+
+    </div>
+
+    <div class="angular-ui-tree-handle ng-scope ng-hide" data-nodrag="" ng-show="qobject.$editing">
+      <form action="http://demo.sdaps.org/surveys/2/edit" class="form-inline ng-dirty ng-invalid ng-invalid-max" role="form">
+        <div ng-show="qobject.type == 'section'" class="form-group ng-hide">
+          <label style="width: 100%;"><div class="sr-only">Title</div>
+            <input value="" class="form-control ng-pristine ng-valid" style="width: 100%;" placeholder="Title" ng-model="qobject.title" type="text">
+          </label>
+        </div>
+
+        <div ng-show="qobject.type == 'multicol'" class="form-group ng-hide">
+          <label>Columns: 
+            <input class="form-control ng-pristine ng-valid ng-valid-number ng-valid-max ng-valid-min ng-valid-pattern" min="1" max="4" ng-pattern="/[1-4]/" ng-model="qobject.columns" type="number">
+          </label>
+        </div>
+
+        <div ng-show="qobject.type == 'textbody'" class="form-group ng-hide">
+          <label style="width: 100%;"><div class="sr-only">Text</div>
+            <textarea style="width: 100%;" class="form-control ng-pristine ng-valid" placeholder="Some text here." ng-model="qobject.text"></textarea>
+          </label>
+        </div>
+
+        <div ng-show="qobject.type == 'singlemark'" class="form-group ng-hide">
+          <div class="row">
+            <label class="col-md-11"><div class="sr-only">Question</div>
+                <input value="pregunta" style="width: 100%;" class="form-control ng-pristine ng-valid" placeholder="Question" ng-model="qobject.question" type="text">
+            <label>
+          </label></label></div>
+
+          <label>Number of Checkboxes:
+            <input class="form-control ng-pristine ng-valid ng-valid-number ng-valid-max ng-valid-min ng-valid-pattern" min="2" max="10" ng-pattern="/[0-9]*/" ng-model="qobject.checkboxcount" type="number">
+          </label>
+
+          <div class="row">
+            <label class="col-md-5"><div class="sr-only">lower bound label</div>
+              <input value="" style="width: 100%;" class="form-control ng-pristine ng-valid" placeholder="lower" ng-model="qobject.lower" type="text">
+            </label>
+            <div class="col-md-1" style="text-align: center;">–</div>
+            <label class="col-md-5"><div class="sr-only">upper bound label</div>
+              <input value="" style="width: 100%;" class="form-control ng-pristine ng-valid" placeholder="upper" ng-model="qobject.upper" type="text">
+            </label>
+          </div>
+        </div>
+
+        <div ng-show="qobject.type == 'textbox'" class="form-group">
+          <div class="row">
+            <label class="col-md-11"><div class="sr-only">Question</div>
+                <input value="pregunta" style="width: 100%;" class="form-control ng-pristine ng-valid" placeholder="Question" ng-model="qobject.question" type="text">
+            <label>
+          </label></label></div>
+
+          <label>Height:
+            <input class="form-control ng-valid ng-valid-number ng-valid-max ng-valid-min ng-dirty" min="1.0" max="12" ng-model="qobject.height" type="number">
+          </label>
+
+          <label><input checked="checked" class="form-control ng-pristine ng-valid" ng-model="qobject.expand" type="checkbox"> Expand in height</label>
+        </div>
+
+        <div ng-show="qobject.type == 'markgroup'" class="form-group ng-hide">
+          <div class="row">
+            <label class="col-md-11"><div class="sr-only">Heading</div>
+                <input value="" style="width: 100%;" class="form-control ng-pristine ng-valid" placeholder="Question" ng-model="qobject.heading" type="text">
+            <label>
+          </label></label></div>
+
+          <label>Number of Checkboxes:
+            <input class="form-control ng-pristine ng-valid ng-valid-number ng-valid-max ng-valid-min ng-valid-pattern" min="2" max="10" ng-pattern="/[0-9]*/" ng-model="qobject.checkboxcount" type="number">
+          </label>
+        </div>
+
+        <div ng-show="qobject.type == 'choicegroup'" class="form-group ng-hide">
+          <div class="row">
+            <label class="col-md-11"><div class="sr-only">Heading</div>
+                <input value="" style="width: 100%;" class="form-control ng-pristine ng-valid" placeholder="Question" ng-model="qobject.heading" type="text">
+            <label>
+          </label></label></div>
+        </div>
+
+        <div ng-show="qobject.type == 'choicequestion'" class="form-group ng-hide">
+          <label><div class="sr-only">Question</div>
+            <input value="pregunta" class="form-control ng-pristine ng-valid" placeholder="Question" ng-model="qobject.question" type="text">
+          </label><br>
+          <label>Columns:
+            <input class="form-control ng-pristine ng-valid ng-valid-number ng-valid-max ng-valid-min ng-valid-pattern" min="1" max="10" ng-pattern="/[0-9]*/" ng-model="qobject.columns" type="number">
+          </label>
+        </div>
+
+        <!-- choicequestion children -->
+
+        <div ng-show="qobject.type == 'choiceitem'" class="form-group ng-hide">
+          <label class="sr-only" for="choiceitem-answer">Answer</label>
+          <input value="" class="form-control ng-pristine ng-valid" placeholder="Title" ng-model="qobject.answer" type="text"><br>
+          <label>Column span:
+            <input class="form-control ng-pristine ng-valid ng-valid-number ng-valid-max ng-valid-min ng-valid-pattern" min="1" max="10" ng-pattern="/[0-9]*/" ng-model="qobject.colspan" type="number">
+          </label>
+        </div>
+
+        <div ng-show="qobject.type == 'choiceitemtext'" class="form-group ng-hide">
+          <label><div class="sr-only">Answer</div>
+            <input value="" class="form-control ng-pristine ng-valid" placeholder="Title" ng-model="qobject.answer" type="text">
+          </label><br>
+          <label>Column span:
+            <input class="form-control ng-pristine ng-valid ng-valid-number ng-valid-max ng-valid-min ng-valid-pattern" min="1" max="10" ng-pattern="/[0-9]*/" ng-model="qobject.colspan" type="number">
+          </label>
+          <label>Height: 
+            <input class="form-control ng-pristine ng-valid-number ng-valid-min ng-invalid ng-invalid-max" min="0.8" max="3" placeholder="1.2" ng-model="qobject.height" type="number">
+          </label>
+        </div>
+
+        <!-- markgroup children -->
+
+        <div ng-show="qobject.type == 'markline'" class="form-group ng-hide">
+          <div class="row">
+            <label class="col-md-11"><div class="sr-only">Question</div>
+                <input value="pregunta" style="width: 100%;" class="form-control ng-pristine ng-valid" placeholder="Question" ng-model="qobject.question" type="text">
+            <label>
+          </label></label></div>
+
+          <div class="row">
+            <label class="col-md-5"><div class="sr-only">lower bound label</div>
+              <input value="" style="width: 100%;" class="form-control ng-pristine ng-valid" placeholder="lower" ng-model="qobject.lower" type="text">
+            </label>
+            <div class="col-md-1" style="text-align: center;">–</div>
+            <label class="col-md-5"><div class="sr-only">upper bound label</div>
+              <input value="" style="width: 100%;" class="form-control ng-pristine ng-valid" placeholder="upper" ng-model="qobject.upper" type="text">
+            </label>
+          </div>
+        </div>
+
+        <!-- choicegroup children -->
+
+        <div ng-show="qobject.type == 'groupaddchoice'" class="form-group ng-hide">
+          <div class="row">
+            <label class="col-md-11">Choice:
+                <input value="" style="width: auto;" class="form-control ng-pristine ng-valid" placeholder="Question" ng-model="qobject.choice" type="text">
+            <label>
+          </label></label></div>
+        </div>
+
+        <div ng-show="qobject.type == 'choiceline'" class="form-group ng-hide">
+          <div class="row">
+            <label class="col-md-11"><div class="sr-only">Question</div>
+                <input value="pregunta" style="width: 100%;" class="form-control ng-pristine ng-valid" placeholder="Question" ng-model="qobject.question" type="text">
+            <label>
+          </label></label></div>
+        </div>
+
+        <div style="width: 100%; text-align: right; margin-top: 5px;">
+          <button type="submit" class="btn btn-default" ng-click="doneEditingObj(qobject)">Done</button>
+        </div>
+      </form>
+
+    </div>
+
+    <ol class="ng-scope ng-pristine ng-valid angular-ui-tree-nodes" ui-tree-nodes="" ng-model="qobject.children">
+      <li class="angular-ui-tree-adder ng-hide" ng-show="qobject.$adding">
+        <form action="http://demo.sdaps.org/surveys/2/edit" class="form-inline ng-pristine ng-valid" role="form">
+          <div class="form-group">
+            <label>Object type</label>
+              <select class="form-control ng-pristine ng-valid" ng-model="qobject.$newObjType"><option value="? undefined:undefined ?"></option>
+                <!-- ngIf: qobject.type == 'multicol' -->
+                <!-- ngIf: qobject.type == 'multicol' -->
+                <!-- ngIf: qobject.type == 'multicol' -->
+                <!-- ngIf: qobject.type == 'multicol' -->
+                <!-- ngIf: qobject.type == 'multicol' -->
+                <!-- ngIf: qobject.type == 'multicol' -->
+                <!-- ngIf: qobject.type == 'multicol' -->
+                <!-- ngIf: qobject.type == 'choicequestion' -->
+                <!-- ngIf: qobject.type == 'choicequestion' -->
+                <!-- ngIf: qobject.type == 'markgroup' -->
+                <!-- ngIf: qobject.type == 'choicegroup' -->
+                <!-- ngIf: qobject.type == 'choicegroup' -->
+              </select>
+            
+          </div>
+          <button type="submit" class="btn btn-default" ng-click="prependNewSubItem(qobject)">Prepend Object</button>
+          <button type="submit" class="btn btn-default" ng-click="appendNewSubItem(qobject)">Append Object</button>
+        </form>
+      </li>
+
+      <!-- ngRepeat: qobject in qobject.children -->
+    </ol>
+  </li><!-- end ngRepeat: qobject in data --><!-- ngInclude: 'questionnaire.html' --><li collapsed="false" class="ng-scope angular-ui-tree-node" ng-repeat="qobject in data" ui-tree-node="" ng-include="'questionnaire.html'">
+    <div class="angular-ui-tree-handle ng-scope" ng-show="!qobject.$editing">
+      <a href="http://demo.sdaps.org/surveys/2/edit" class="btn btn-danger btn-xs pull-right" data-nodrag="" ng-click="removeObj(this)"><i class="glyphicon glyphicon-remove"></i></a>
+      <a href="http://demo.sdaps.org/surveys/2/edit" class="btn btn-primary btn-xs pull-right" data-nodrag="" ng-show="canAdd(qobject.type)" ng-click="addChild(qobject)"><i ng-show="!qobject.$adding" class="glyphicon glyphicon-plus"></i><i ng-show="qobject.$adding" class="glyphicon glyphicon-minus ng-hide"></i></a>
+      <a href="http://demo.sdaps.org/surveys/2/edit" class="btn btn-primary btn-xs pull-right" data-nodrag="" ng-click="editObj(qobject)"><i class="glyphicon glyphicon-pencil"></i></a>
+      <div class="pull-right">&nbsp;</div>
+
+      <div class="ng-hide" ng-show="qobject.type == 'section'"><div class="qobjectheader ng-binding">Section: </div></div>
+
+      <div class="ng-hide" ng-show="qobject.type == 'multicol'"><div class="qobjectheader ng-binding"> column layout</div></div>
+
+      <div class="ng-hide" ng-show="qobject.type == 'textbody'"><pre class="textbody ng-binding"></pre></div>
+
+      <div class="ng-hide" ng-show="qobject.type == 'singlemark'"><div class="qobjectheader ng-binding"></div>
+        <div class="ng-binding" style="text-align: center;">
+          
+          <!-- ngRepeat: n in [] | range:qobject.checkboxcount --> 
+        </div>
+      </div>
+
+      <div class="ng-hide" ng-show="qobject.type == 'textbox'"><div class="qobjectheader ng-binding"></div>
+        <textarea class="ng-binding" style="display: block; width: 100%;" disabled="">A textbox with a height of at least cm. Expands: </textarea>
+      </div>
+
+      <div class="" ng-show="qobject.type == 'markgroup'"><div class="qobjectheader ng-binding"></div></div>
+
+      <div class="ng-hide" ng-show="qobject.type == 'choicegroup'"><div class="qobjectheader ng-binding"></div></div>
+
+      <div class="ng-hide" ng-show="qobject.type == 'choicequestion'"><div class="qobjectheader ng-binding"></div><div class="pull-right ng-binding"> Columns</div></div>
+
+      <!-- choicequestion children -->
+
+      <div class="ng-binding ng-hide" ng-show="qobject.type == 'choiceitem'"><input disabled="" type="checkbox"> <div class="pull-right ng-binding">Spans </div></div>
+      <div class="ng-binding ng-hide" ng-show="qobject.type == 'choiceitemtext'"> <input value="" disabled="" type="text"><div class="pull-right ng-binding">Spans </div></div>
+
+      <!-- markgroup children -->
+
+      <div ng-show="qobject.type == 'markline'" class="row ng-hide">
+        <div class="col-md-5 ng-binding"></div>
+        <div class="col-md-6 ng-binding" style="text-align: center;">
+          
+          <!-- ngRepeat: n in [] | range:parentAttr(this, 'checkboxcount') --> 
+        </div>
+      </div>
+
+      <!-- choicegroup children -->
+
+      <div ng-show="qobject.type == 'groupaddchoice'" class="row ng-hide">
+        <div class="col-md-11 ng-binding" style="text-align: right;">Choice: </div>
+      </div>
+
+      <div ng-show="qobject.type == 'choiceline'" class="row ng-hide">
+        <div class="col-md-11 ng-binding"></div>
+      </div>
+
+    </div>
+
+    <div class="angular-ui-tree-handle ng-scope ng-hide" data-nodrag="" ng-show="qobject.$editing">
+      <form action="http://demo.sdaps.org/surveys/2/edit" class="form-inline ng-pristine ng-valid" role="form">
+        <div ng-show="qobject.type == 'section'" class="form-group ng-hide">
+          <label style="width: 100%;"><div class="sr-only">Title</div>
+            <input value="" class="form-control ng-pristine ng-valid" style="width: 100%;" placeholder="Title" ng-model="qobject.title" type="text">
+          </label>
+        </div>
+
+        <div ng-show="qobject.type == 'multicol'" class="form-group ng-hide">
+          <label>Columns: 
+            <input class="form-control ng-pristine ng-valid ng-valid-number ng-valid-max ng-valid-min ng-valid-pattern" min="1" max="4" ng-pattern="/[1-4]/" ng-model="qobject.columns" type="number">
+          </label>
+        </div>
+
+        <div ng-show="qobject.type == 'textbody'" class="form-group ng-hide">
+          <label style="width: 100%;"><div class="sr-only">Text</div>
+            <textarea style="width: 100%;" class="form-control ng-pristine ng-valid" placeholder="Some text here." ng-model="qobject.text"></textarea>
+          </label>
+        </div>
+
+        <div ng-show="qobject.type == 'singlemark'" class="form-group ng-hide">
+          <div class="row">
+            <label class="col-md-11"><div class="sr-only">Question</div>
+                <input value="" style="width: 100%;" class="form-control ng-pristine ng-valid" placeholder="Question" ng-model="qobject.question" type="text">
+            <label>
+          </label></label></div>
+
+          <label>Number of Checkboxes:
+            <input class="form-control ng-pristine ng-valid ng-valid-number ng-valid-max ng-valid-min ng-valid-pattern" min="2" max="10" ng-pattern="/[0-9]*/" ng-model="qobject.checkboxcount" type="number">
+          </label>
+
+          <div class="row">
+            <label class="col-md-5"><div class="sr-only">lower bound label</div>
+              <input value="" style="width: 100%;" class="form-control ng-pristine ng-valid" placeholder="lower" ng-model="qobject.lower" type="text">
+            </label>
+            <div class="col-md-1" style="text-align: center;">–</div>
+            <label class="col-md-5"><div class="sr-only">upper bound label</div>
+              <input value="" style="width: 100%;" class="form-control ng-pristine ng-valid" placeholder="upper" ng-model="qobject.upper" type="text">
+            </label>
+          </div>
+        </div>
+
+        <div ng-show="qobject.type == 'textbox'" class="form-group ng-hide">
+          <div class="row">
+            <label class="col-md-11"><div class="sr-only">Question</div>
+                <input value="" style="width: 100%;" class="form-control ng-pristine ng-valid" placeholder="Question" ng-model="qobject.question" type="text">
+            <label>
+          </label></label></div>
+
+          <label>Height:
+            <input class="form-control ng-pristine ng-valid ng-valid-number ng-valid-max ng-valid-min" min="1.0" max="12" ng-model="qobject.height" type="number">
+          </label>
+
+          <label><input class="form-control ng-pristine ng-valid" ng-model="qobject.expand" type="checkbox"> Expand in height</label>
+        </div>
+
+        <div ng-show="qobject.type == 'markgroup'" class="form-group">
+          <div class="row">
+            <label class="col-md-11"><div class="sr-only">Heading</div>
+                <input value="" style="width: 100%;" class="form-control ng-pristine ng-valid" placeholder="Question" ng-model="qobject.heading" type="text">
+            <label>
+          </label></label></div>
+
+          <label>Number of Checkboxes:
+            <input class="form-control ng-pristine ng-valid ng-valid-number ng-valid-max ng-valid-min ng-valid-pattern" min="2" max="10" ng-pattern="/[0-9]*/" ng-model="qobject.checkboxcount" type="number">
+          </label>
+        </div>
+
+        <div ng-show="qobject.type == 'choicegroup'" class="form-group ng-hide">
+          <div class="row">
+            <label class="col-md-11"><div class="sr-only">Heading</div>
+                <input value="" style="width: 100%;" class="form-control ng-pristine ng-valid" placeholder="Question" ng-model="qobject.heading" type="text">
+            <label>
+          </label></label></div>
+        </div>
+
+        <div ng-show="qobject.type == 'choicequestion'" class="form-group ng-hide">
+          <label><div class="sr-only">Question</div>
+            <input value="" class="form-control ng-pristine ng-valid" placeholder="Question" ng-model="qobject.question" type="text">
+          </label><br>
+          <label>Columns:
+            <input class="form-control ng-pristine ng-valid ng-valid-number ng-valid-max ng-valid-min ng-valid-pattern" min="1" max="10" ng-pattern="/[0-9]*/" ng-model="qobject.columns" type="number">
+          </label>
+        </div>
+
+        <!-- choicequestion children -->
+
+        <div ng-show="qobject.type == 'choiceitem'" class="form-group ng-hide">
+          <label class="sr-only" for="choiceitem-answer">Answer</label>
+          <input value="" class="form-control ng-pristine ng-valid" placeholder="Title" ng-model="qobject.answer" type="text"><br>
+          <label>Column span:
+            <input class="form-control ng-pristine ng-valid ng-valid-number ng-valid-max ng-valid-min ng-valid-pattern" min="1" max="10" ng-pattern="/[0-9]*/" ng-model="qobject.colspan" type="number">
+          </label>
+        </div>
+
+        <div ng-show="qobject.type == 'choiceitemtext'" class="form-group ng-hide">
+          <label><div class="sr-only">Answer</div>
+            <input value="" class="form-control ng-pristine ng-valid" placeholder="Title" ng-model="qobject.answer" type="text">
+          </label><br>
+          <label>Column span:
+            <input class="form-control ng-pristine ng-valid ng-valid-number ng-valid-max ng-valid-min ng-valid-pattern" min="1" max="10" ng-pattern="/[0-9]*/" ng-model="qobject.colspan" type="number">
+          </label>
+          <label>Height: 
+            <input class="form-control ng-pristine ng-valid ng-valid-number ng-valid-max ng-valid-min" min="0.8" max="3" placeholder="1.2" ng-model="qobject.height" type="number">
+          </label>
+        </div>
+
+        <!-- markgroup children -->
+
+        <div ng-show="qobject.type == 'markline'" class="form-group ng-hide">
+          <div class="row">
+            <label class="col-md-11"><div class="sr-only">Question</div>
+                <input value="" style="width: 100%;" class="form-control ng-pristine ng-valid" placeholder="Question" ng-model="qobject.question" type="text">
+            <label>
+          </label></label></div>
+
+          <div class="row">
+            <label class="col-md-5"><div class="sr-only">lower bound label</div>
+              <input value="" style="width: 100%;" class="form-control ng-pristine ng-valid" placeholder="lower" ng-model="qobject.lower" type="text">
+            </label>
+            <div class="col-md-1" style="text-align: center;">–</div>
+            <label class="col-md-5"><div class="sr-only">upper bound label</div>
+              <input value="" style="width: 100%;" class="form-control ng-pristine ng-valid" placeholder="upper" ng-model="qobject.upper" type="text">
+            </label>
+          </div>
+        </div>
+
+        <!-- choicegroup children -->
+
+        <div ng-show="qobject.type == 'groupaddchoice'" class="form-group ng-hide">
+          <div class="row">
+            <label class="col-md-11">Choice:
+                <input value="" style="width: auto;" class="form-control ng-pristine ng-valid" placeholder="Question" ng-model="qobject.choice" type="text">
+            <label>
+          </label></label></div>
+        </div>
+
+        <div ng-show="qobject.type == 'choiceline'" class="form-group ng-hide">
+          <div class="row">
+            <label class="col-md-11"><div class="sr-only">Question</div>
+                <input value="" style="width: 100%;" class="form-control ng-pristine ng-valid" placeholder="Question" ng-model="qobject.question" type="text">
+            <label>
+          </label></label></div>
+        </div>
+
+        <div style="width: 100%; text-align: right; margin-top: 5px;">
+          <button type="submit" class="btn btn-default" ng-click="doneEditingObj(qobject)">Done</button>
+        </div>
+      </form>
+
+    </div>
+
+    <ol class="ng-scope ng-pristine ng-valid angular-ui-tree-nodes" ui-tree-nodes="" ng-model="qobject.children">
+      <li class="angular-ui-tree-adder ng-hide" ng-show="qobject.$adding">
+        <form action="http://demo.sdaps.org/surveys/2/edit" class="form-inline ng-pristine ng-valid" role="form">
+          <div class="form-group">
+            <label>Object type</label>
+              <select class="form-control ng-pristine ng-valid" ng-model="qobject.$newObjType"><option value="? undefined:undefined ?"></option>
+                <!-- ngIf: qobject.type == 'multicol' -->
+                <!-- ngIf: qobject.type == 'multicol' -->
+                <!-- ngIf: qobject.type == 'multicol' -->
+                <!-- ngIf: qobject.type == 'multicol' -->
+                <!-- ngIf: qobject.type == 'multicol' -->
+                <!-- ngIf: qobject.type == 'multicol' -->
+                <!-- ngIf: qobject.type == 'multicol' -->
+                <!-- ngIf: qobject.type == 'choicequestion' -->
+                <!-- ngIf: qobject.type == 'choicequestion' -->
+                <!-- ngIf: qobject.type == 'markgroup' --><option class="ng-scope" ng-if="qobject.type == 'markgroup'" value="markline">Mark Line</option><!-- end ngIf: qobject.type == 'markgroup' -->
+                <!-- ngIf: qobject.type == 'choicegroup' -->
+                <!-- ngIf: qobject.type == 'choicegroup' -->
+              </select>
+            
+          </div>
+          <button type="submit" class="btn btn-default" ng-click="prependNewSubItem(qobject)">Prepend Object</button>
+          <button type="submit" class="btn btn-default" ng-click="appendNewSubItem(qobject)">Append Object</button>
+        </form>
+      </li>
+
+      <!-- ngRepeat: qobject in qobject.children -->
+    </ol>
+  </li><!-- end ngRepeat: qobject in data --><!-- ngInclude: 'questionnaire.html' --><li collapsed="false" class="ng-scope angular-ui-tree-node" ng-repeat="qobject in data" ui-tree-node="" ng-include="'questionnaire.html'">
+    <div class="angular-ui-tree-handle ng-scope" ng-show="!qobject.$editing">
+      <a href="http://demo.sdaps.org/surveys/2/edit" class="btn btn-danger btn-xs pull-right" data-nodrag="" ng-click="removeObj(this)"><i class="glyphicon glyphicon-remove"></i></a>
+      <a href="http://demo.sdaps.org/surveys/2/edit" class="btn btn-primary btn-xs pull-right ng-hide" data-nodrag="" ng-show="canAdd(qobject.type)" ng-click="addChild(qobject)"><i ng-show="!qobject.$adding" class="glyphicon glyphicon-plus"></i><i ng-show="qobject.$adding" class="glyphicon glyphicon-minus ng-hide"></i></a>
+      <a href="http://demo.sdaps.org/surveys/2/edit" class="btn btn-primary btn-xs pull-right" data-nodrag="" ng-click="editObj(qobject)"><i class="glyphicon glyphicon-pencil"></i></a>
+      <div class="pull-right">&nbsp;</div>
+
+      <div class="" ng-show="qobject.type == 'section'"><div class="qobjectheader ng-binding">Section: testkkknn</div></div>
+
+      <div class="ng-hide" ng-show="qobject.type == 'multicol'"><div class="qobjectheader ng-binding"> column layout</div></div>
+
+      <div class="ng-hide" ng-show="qobject.type == 'textbody'"><pre class="textbody ng-binding"></pre></div>
+
+      <div class="ng-hide" ng-show="qobject.type == 'singlemark'"><div class="qobjectheader ng-binding"></div>
+        <div class="ng-binding" style="text-align: center;">
+          
+          <!-- ngRepeat: n in [] | range:qobject.checkboxcount --> 
+        </div>
+      </div>
+
+      <div class="ng-hide" ng-show="qobject.type == 'textbox'"><div class="qobjectheader ng-binding"></div>
+        <textarea class="ng-binding" style="display: block; width: 100%;" disabled="">A textbox with a height of at least cm. Expands: </textarea>
+      </div>
+
+      <div class="ng-hide" ng-show="qobject.type == 'markgroup'"><div class="qobjectheader ng-binding"></div></div>
+
+      <div class="ng-hide" ng-show="qobject.type == 'choicegroup'"><div class="qobjectheader ng-binding"></div></div>
+
+      <div class="ng-hide" ng-show="qobject.type == 'choicequestion'"><div class="qobjectheader ng-binding"></div><div class="pull-right ng-binding"> Columns</div></div>
+
+      <!-- choicequestion children -->
+
+      <div class="ng-binding ng-hide" ng-show="qobject.type == 'choiceitem'"><input disabled="" type="checkbox"> <div class="pull-right ng-binding">Spans </div></div>
+      <div class="ng-binding ng-hide" ng-show="qobject.type == 'choiceitemtext'"> <input value="" disabled="" type="text"><div class="pull-right ng-binding">Spans </div></div>
+
+      <!-- markgroup children -->
+
+      <div ng-show="qobject.type == 'markline'" class="row ng-hide">
+        <div class="col-md-5 ng-binding"></div>
+        <div class="col-md-6 ng-binding" style="text-align: center;">
+          
+          <!-- ngRepeat: n in [] | range:parentAttr(this, 'checkboxcount') --> 
+        </div>
+      </div>
+
+      <!-- choicegroup children -->
+
+      <div ng-show="qobject.type == 'groupaddchoice'" class="row ng-hide">
+        <div class="col-md-11 ng-binding" style="text-align: right;">Choice: </div>
+      </div>
+
+      <div ng-show="qobject.type == 'choiceline'" class="row ng-hide">
+        <div class="col-md-11 ng-binding"></div>
+      </div>
+
+    </div>
+
+    <div class="angular-ui-tree-handle ng-scope ng-hide" data-nodrag="" ng-show="qobject.$editing">
+      <form action="http://demo.sdaps.org/surveys/2/edit" class="form-inline ng-valid ng-dirty" role="form">
+        <div ng-show="qobject.type == 'section'" class="form-group">
+          <label style="width: 100%;"><div class="sr-only">Title</div>
+            <input value="testkkknn" class="form-control ng-valid ng-dirty" style="width: 100%;" placeholder="Title" ng-model="qobject.title" type="text">
+          </label>
+        </div>
+
+        <div ng-show="qobject.type == 'multicol'" class="form-group ng-hide">
+          <label>Columns: 
+            <input class="form-control ng-pristine ng-valid ng-valid-number ng-valid-max ng-valid-min ng-valid-pattern" min="1" max="4" ng-pattern="/[1-4]/" ng-model="qobject.columns" type="number">
+          </label>
+        </div>
+
+        <div ng-show="qobject.type == 'textbody'" class="form-group ng-hide">
+          <label style="width: 100%;"><div class="sr-only">Text</div>
+            <textarea style="width: 100%;" class="form-control ng-pristine ng-valid" placeholder="Some text here." ng-model="qobject.text"></textarea>
+          </label>
+        </div>
+
+        <div ng-show="qobject.type == 'singlemark'" class="form-group ng-hide">
+          <div class="row">
+            <label class="col-md-11"><div class="sr-only">Question</div>
+                <input value="" style="width: 100%;" class="form-control ng-pristine ng-valid" placeholder="Question" ng-model="qobject.question" type="text">
+            <label>
+          </label></label></div>
+
+          <label>Number of Checkboxes:
+            <input class="form-control ng-pristine ng-valid ng-valid-number ng-valid-max ng-valid-min ng-valid-pattern" min="2" max="10" ng-pattern="/[0-9]*/" ng-model="qobject.checkboxcount" type="number">
+          </label>
+
+          <div class="row">
+            <label class="col-md-5"><div class="sr-only">lower bound label</div>
+              <input value="" style="width: 100%;" class="form-control ng-pristine ng-valid" placeholder="lower" ng-model="qobject.lower" type="text">
+            </label>
+            <div class="col-md-1" style="text-align: center;">–</div>
+            <label class="col-md-5"><div class="sr-only">upper bound label</div>
+              <input value="" style="width: 100%;" class="form-control ng-pristine ng-valid" placeholder="upper" ng-model="qobject.upper" type="text">
+            </label>
+          </div>
+        </div>
+
+        <div ng-show="qobject.type == 'textbox'" class="form-group ng-hide">
+          <div class="row">
+            <label class="col-md-11"><div class="sr-only">Question</div>
+                <input value="" style="width: 100%;" class="form-control ng-pristine ng-valid" placeholder="Question" ng-model="qobject.question" type="text">
+            <label>
+          </label></label></div>
+
+          <label>Height:
+            <input class="form-control ng-pristine ng-valid ng-valid-number ng-valid-max ng-valid-min" min="1.0" max="12" ng-model="qobject.height" type="number">
+          </label>
+
+          <label><input class="form-control ng-pristine ng-valid" ng-model="qobject.expand" type="checkbox"> Expand in height</label>
+        </div>
+
+        <div ng-show="qobject.type == 'markgroup'" class="form-group ng-hide">
+          <div class="row">
+            <label class="col-md-11"><div class="sr-only">Heading</div>
+                <input value="" style="width: 100%;" class="form-control ng-pristine ng-valid" placeholder="Question" ng-model="qobject.heading" type="text">
+            <label>
+          </label></label></div>
+
+          <label>Number of Checkboxes:
+            <input class="form-control ng-pristine ng-valid ng-valid-number ng-valid-max ng-valid-min ng-valid-pattern" min="2" max="10" ng-pattern="/[0-9]*/" ng-model="qobject.checkboxcount" type="number">
+          </label>
+        </div>
+
+        <div ng-show="qobject.type == 'choicegroup'" class="form-group ng-hide">
+          <div class="row">
+            <label class="col-md-11"><div class="sr-only">Heading</div>
+                <input value="" style="width: 100%;" class="form-control ng-pristine ng-valid" placeholder="Question" ng-model="qobject.heading" type="text">
+            <label>
+          </label></label></div>
+        </div>
+
+        <div ng-show="qobject.type == 'choicequestion'" class="form-group ng-hide">
+          <label><div class="sr-only">Question</div>
+            <input value="" class="form-control ng-pristine ng-valid" placeholder="Question" ng-model="qobject.question" type="text">
+          </label><br>
+          <label>Columns:
+            <input class="form-control ng-pristine ng-valid ng-valid-number ng-valid-max ng-valid-min ng-valid-pattern" min="1" max="10" ng-pattern="/[0-9]*/" ng-model="qobject.columns" type="number">
+          </label>
+        </div>
+
+        <!-- choicequestion children -->
+
+        <div ng-show="qobject.type == 'choiceitem'" class="form-group ng-hide">
+          <label class="sr-only" for="choiceitem-answer">Answer</label>
+          <input value="" class="form-control ng-pristine ng-valid" placeholder="Title" ng-model="qobject.answer" type="text"><br>
+          <label>Column span:
+            <input class="form-control ng-pristine ng-valid ng-valid-number ng-valid-max ng-valid-min ng-valid-pattern" min="1" max="10" ng-pattern="/[0-9]*/" ng-model="qobject.colspan" type="number">
+          </label>
+        </div>
+
+        <div ng-show="qobject.type == 'choiceitemtext'" class="form-group ng-hide">
+          <label><div class="sr-only">Answer</div>
+            <input value="" class="form-control ng-pristine ng-valid" placeholder="Title" ng-model="qobject.answer" type="text">
+          </label><br>
+          <label>Column span:
+            <input class="form-control ng-pristine ng-valid ng-valid-number ng-valid-max ng-valid-min ng-valid-pattern" min="1" max="10" ng-pattern="/[0-9]*/" ng-model="qobject.colspan" type="number">
+          </label>
+          <label>Height: 
+            <input class="form-control ng-pristine ng-valid ng-valid-number ng-valid-max ng-valid-min" min="0.8" max="3" placeholder="1.2" ng-model="qobject.height" type="number">
+          </label>
+        </div>
+
+        <!-- markgroup children -->
+
+        <div ng-show="qobject.type == 'markline'" class="form-group ng-hide">
+          <div class="row">
+            <label class="col-md-11"><div class="sr-only">Question</div>
+                <input value="" style="width: 100%;" class="form-control ng-pristine ng-valid" placeholder="Question" ng-model="qobject.question" type="text">
+            <label>
+          </label></label></div>
+
+          <div class="row">
+            <label class="col-md-5"><div class="sr-only">lower bound label</div>
+              <input value="" style="width: 100%;" class="form-control ng-pristine ng-valid" placeholder="lower" ng-model="qobject.lower" type="text">
+            </label>
+            <div class="col-md-1" style="text-align: center;">–</div>
+            <label class="col-md-5"><div class="sr-only">upper bound label</div>
+              <input value="" style="width: 100%;" class="form-control ng-pristine ng-valid" placeholder="upper" ng-model="qobject.upper" type="text">
+            </label>
+          </div>
+        </div>
+
+        <!-- choicegroup children -->
+
+        <div ng-show="qobject.type == 'groupaddchoice'" class="form-group ng-hide">
+          <div class="row">
+            <label class="col-md-11">Choice:
+                <input value="" style="width: auto;" class="form-control ng-pristine ng-valid" placeholder="Question" ng-model="qobject.choice" type="text">
+            <label>
+          </label></label></div>
+        </div>
+
+        <div ng-show="qobject.type == 'choiceline'" class="form-group ng-hide">
+          <div class="row">
+            <label class="col-md-11"><div class="sr-only">Question</div>
+                <input value="" style="width: 100%;" class="form-control ng-pristine ng-valid" placeholder="Question" ng-model="qobject.question" type="text">
+            <label>
+          </label></label></div>
+        </div>
+
+        <div style="width: 100%; text-align: right; margin-top: 5px;">
+          <button type="submit" class="btn btn-default" ng-click="doneEditingObj(qobject)">Done</button>
+        </div>
+      </form>
+
+    </div>
+
+    <ol class="ng-scope ng-pristine ng-valid angular-ui-tree-nodes" ui-tree-nodes="" ng-model="qobject.children">
+      <li class="angular-ui-tree-adder ng-hide" ng-show="qobject.$adding">
+        <form action="http://demo.sdaps.org/surveys/2/edit" class="form-inline ng-pristine ng-valid" role="form">
+          <div class="form-group">
+            <label>Object type</label>
+              <select class="form-control ng-pristine ng-valid" ng-model="qobject.$newObjType"><option value="? undefined:undefined ?"></option>
+                <!-- ngIf: qobject.type == 'multicol' -->
+                <!-- ngIf: qobject.type == 'multicol' -->
+                <!-- ngIf: qobject.type == 'multicol' -->
+                <!-- ngIf: qobject.type == 'multicol' -->
+                <!-- ngIf: qobject.type == 'multicol' -->
+                <!-- ngIf: qobject.type == 'multicol' -->
+                <!-- ngIf: qobject.type == 'multicol' -->
+                <!-- ngIf: qobject.type == 'choicequestion' -->
+                <!-- ngIf: qobject.type == 'choicequestion' -->
+                <!-- ngIf: qobject.type == 'markgroup' -->
+                <!-- ngIf: qobject.type == 'choicegroup' -->
+                <!-- ngIf: qobject.type == 'choicegroup' -->
+              </select>
+            
+          </div>
+          <button type="submit" class="btn btn-default" ng-click="prependNewSubItem(qobject)">Prepend Object</button>
+          <button type="submit" class="btn btn-default" ng-click="appendNewSubItem(qobject)">Append Object</button>
+        </form>
+      </li>
+
+      <!-- ngRepeat: qobject in qobject.children -->
+    </ol>
+  </li><!-- end ngRepeat: qobject in data --><!-- ngInclude: 'questionnaire.html' --><li collapsed="false" class="ng-scope angular-ui-tree-node" ng-repeat="qobject in data" ui-tree-node="" ng-include="'questionnaire.html'">
+    <div class="angular-ui-tree-handle ng-scope" ng-show="!qobject.$editing">
+      <a href="http://demo.sdaps.org/surveys/2/edit" class="btn btn-danger btn-xs pull-right" data-nodrag="" ng-click="removeObj(this)"><i class="glyphicon glyphicon-remove"></i></a>
+      <a href="http://demo.sdaps.org/surveys/2/edit" class="btn btn-primary btn-xs pull-right" data-nodrag="" ng-show="canAdd(qobject.type)" ng-click="addChild(qobject)"><i ng-show="!qobject.$adding" class="glyphicon glyphicon-plus"></i><i ng-show="qobject.$adding" class="glyphicon glyphicon-minus ng-hide"></i></a>
+      <a href="http://demo.sdaps.org/surveys/2/edit" class="btn btn-primary btn-xs pull-right" data-nodrag="" ng-click="editObj(qobject)"><i class="glyphicon glyphicon-pencil"></i></a>
+      <div class="pull-right">&nbsp;</div>
+
+      <div class="ng-hide" ng-show="qobject.type == 'section'"><div class="qobjectheader ng-binding">Section: </div></div>
+
+      <div class="ng-hide" ng-show="qobject.type == 'multicol'"><div class="qobjectheader ng-binding">2 column layout</div></div>
+
+      <div class="ng-hide" ng-show="qobject.type == 'textbody'"><pre class="textbody ng-binding"></pre></div>
+
+      <div class="ng-hide" ng-show="qobject.type == 'singlemark'"><div class="qobjectheader ng-binding"></div>
+        <div class="ng-binding" style="text-align: center;">
+          
+          <!-- ngRepeat: n in [] | range:qobject.checkboxcount --> 
+        </div>
+      </div>
+
+      <div class="ng-hide" ng-show="qobject.type == 'textbox'"><div class="qobjectheader ng-binding"></div>
+        <textarea class="ng-binding" style="display: block; width: 100%;" disabled="">A textbox with a height of at least cm. Expands: </textarea>
+      </div>
+
+      <div class="ng-hide" ng-show="qobject.type == 'markgroup'"><div class="qobjectheader ng-binding"></div></div>
+
+      <div class="ng-hide" ng-show="qobject.type == 'choicegroup'"><div class="qobjectheader ng-binding"></div></div>
+
+      <div class="" ng-show="qobject.type == 'choicequestion'"><div class="qobjectheader ng-binding"></div><div class="pull-right ng-binding">2 Columns</div></div>
+
+      <!-- choicequestion children -->
+
+      <div class="ng-binding ng-hide" ng-show="qobject.type == 'choiceitem'"><input disabled="" type="checkbox"> <div class="pull-right ng-binding">Spans </div></div>
+      <div class="ng-binding ng-hide" ng-show="qobject.type == 'choiceitemtext'"> <input value="" disabled="" type="text"><div class="pull-right ng-binding">Spans </div></div>
+
+      <!-- markgroup children -->
+
+      <div ng-show="qobject.type == 'markline'" class="row ng-hide">
+        <div class="col-md-5 ng-binding"></div>
+        <div class="col-md-6 ng-binding" style="text-align: center;">
+          
+          <!-- ngRepeat: n in [] | range:parentAttr(this, 'checkboxcount') --> 
+        </div>
+      </div>
+
+      <!-- choicegroup children -->
+
+      <div ng-show="qobject.type == 'groupaddchoice'" class="row ng-hide">
+        <div class="col-md-11 ng-binding" style="text-align: right;">Choice: </div>
+      </div>
+
+      <div ng-show="qobject.type == 'choiceline'" class="row ng-hide">
+        <div class="col-md-11 ng-binding"></div>
+      </div>
+
+    </div>
+
+    <div class="angular-ui-tree-handle ng-scope ng-hide" data-nodrag="" ng-show="qobject.$editing">
+      <form action="http://demo.sdaps.org/surveys/2/edit" class="form-inline ng-pristine ng-valid" role="form">
+        <div ng-show="qobject.type == 'section'" class="form-group ng-hide">
+          <label style="width: 100%;"><div class="sr-only">Title</div>
+            <input value="" class="form-control ng-pristine ng-valid" style="width: 100%;" placeholder="Title" ng-model="qobject.title" type="text">
+          </label>
+        </div>
+
+        <div ng-show="qobject.type == 'multicol'" class="form-group ng-hide">
+          <label>Columns: 
+            <input class="form-control ng-pristine ng-valid ng-valid-number ng-valid-max ng-valid-min ng-valid-pattern" min="1" max="4" ng-pattern="/[1-4]/" ng-model="qobject.columns" type="number">
+          </label>
+        </div>
+
+        <div ng-show="qobject.type == 'textbody'" class="form-group ng-hide">
+          <label style="width: 100%;"><div class="sr-only">Text</div>
+            <textarea style="width: 100%;" class="form-control ng-pristine ng-valid" placeholder="Some text here." ng-model="qobject.text"></textarea>
+          </label>
+        </div>
+
+        <div ng-show="qobject.type == 'singlemark'" class="form-group ng-hide">
+          <div class="row">
+            <label class="col-md-11"><div class="sr-only">Question</div>
+                <input value="" style="width: 100%;" class="form-control ng-pristine ng-valid" placeholder="Question" ng-model="qobject.question" type="text">
+            <label>
+          </label></label></div>
+
+          <label>Number of Checkboxes:
+            <input class="form-control ng-pristine ng-valid ng-valid-number ng-valid-max ng-valid-min ng-valid-pattern" min="2" max="10" ng-pattern="/[0-9]*/" ng-model="qobject.checkboxcount" type="number">
+          </label>
+
+          <div class="row">
+            <label class="col-md-5"><div class="sr-only">lower bound label</div>
+              <input value="" style="width: 100%;" class="form-control ng-pristine ng-valid" placeholder="lower" ng-model="qobject.lower" type="text">
+            </label>
+            <div class="col-md-1" style="text-align: center;">–</div>
+            <label class="col-md-5"><div class="sr-only">upper bound label</div>
+              <input value="" style="width: 100%;" class="form-control ng-pristine ng-valid" placeholder="upper" ng-model="qobject.upper" type="text">
+            </label>
+          </div>
+        </div>
+
+        <div ng-show="qobject.type == 'textbox'" class="form-group ng-hide">
+          <div class="row">
+            <label class="col-md-11"><div class="sr-only">Question</div>
+                <input value="" style="width: 100%;" class="form-control ng-pristine ng-valid" placeholder="Question" ng-model="qobject.question" type="text">
+            <label>
+          </label></label></div>
+
+          <label>Height:
+            <input class="form-control ng-pristine ng-valid ng-valid-number ng-valid-max ng-valid-min" min="1.0" max="12" ng-model="qobject.height" type="number">
+          </label>
+
+          <label><input class="form-control ng-pristine ng-valid" ng-model="qobject.expand" type="checkbox"> Expand in height</label>
+        </div>
+
+        <div ng-show="qobject.type == 'markgroup'" class="form-group ng-hide">
+          <div class="row">
+            <label class="col-md-11"><div class="sr-only">Heading</div>
+                <input value="" style="width: 100%;" class="form-control ng-pristine ng-valid" placeholder="Question" ng-model="qobject.heading" type="text">
+            <label>
+          </label></label></div>
+
+          <label>Number of Checkboxes:
+            <input class="form-control ng-pristine ng-valid ng-valid-number ng-valid-max ng-valid-min ng-valid-pattern" min="2" max="10" ng-pattern="/[0-9]*/" ng-model="qobject.checkboxcount" type="number">
+          </label>
+        </div>
+
+        <div ng-show="qobject.type == 'choicegroup'" class="form-group ng-hide">
+          <div class="row">
+            <label class="col-md-11"><div class="sr-only">Heading</div>
+                <input value="" style="width: 100%;" class="form-control ng-pristine ng-valid" placeholder="Question" ng-model="qobject.heading" type="text">
+            <label>
+          </label></label></div>
+        </div>
+
+        <div ng-show="qobject.type == 'choicequestion'" class="form-group">
+          <label><div class="sr-only">Question</div>
+            <input value="" class="form-control ng-pristine ng-valid" placeholder="Question" ng-model="qobject.question" type="text">
+          </label><br>
+          <label>Columns:
+            <input class="form-control ng-pristine ng-valid ng-valid-number ng-valid-max ng-valid-min ng-valid-pattern" min="1" max="10" ng-pattern="/[0-9]*/" ng-model="qobject.columns" type="number">
+          </label>
+        </div>
+
+        <!-- choicequestion children -->
+
+        <div ng-show="qobject.type == 'choiceitem'" class="form-group ng-hide">
+          <label class="sr-only" for="choiceitem-answer">Answer</label>
+          <input value="" class="form-control ng-pristine ng-valid" placeholder="Title" ng-model="qobject.answer" type="text"><br>
+          <label>Column span:
+            <input class="form-control ng-pristine ng-valid ng-valid-number ng-valid-max ng-valid-min ng-valid-pattern" min="1" max="10" ng-pattern="/[0-9]*/" ng-model="qobject.colspan" type="number">
+          </label>
+        </div>
+
+        <div ng-show="qobject.type == 'choiceitemtext'" class="form-group ng-hide">
+          <label><div class="sr-only">Answer</div>
+            <input value="" class="form-control ng-pristine ng-valid" placeholder="Title" ng-model="qobject.answer" type="text">
+          </label><br>
+          <label>Column span:
+            <input class="form-control ng-pristine ng-valid ng-valid-number ng-valid-max ng-valid-min ng-valid-pattern" min="1" max="10" ng-pattern="/[0-9]*/" ng-model="qobject.colspan" type="number">
+          </label>
+          <label>Height: 
+            <input class="form-control ng-pristine ng-valid ng-valid-number ng-valid-max ng-valid-min" min="0.8" max="3" placeholder="1.2" ng-model="qobject.height" type="number">
+          </label>
+        </div>
+
+        <!-- markgroup children -->
+
+        <div ng-show="qobject.type == 'markline'" class="form-group ng-hide">
+          <div class="row">
+            <label class="col-md-11"><div class="sr-only">Question</div>
+                <input value="" style="width: 100%;" class="form-control ng-pristine ng-valid" placeholder="Question" ng-model="qobject.question" type="text">
+            <label>
+          </label></label></div>
+
+          <div class="row">
+            <label class="col-md-5"><div class="sr-only">lower bound label</div>
+              <input value="" style="width: 100%;" class="form-control ng-pristine ng-valid" placeholder="lower" ng-model="qobject.lower" type="text">
+            </label>
+            <div class="col-md-1" style="text-align: center;">–</div>
+            <label class="col-md-5"><div class="sr-only">upper bound label</div>
+              <input value="" style="width: 100%;" class="form-control ng-pristine ng-valid" placeholder="upper" ng-model="qobject.upper" type="text">
+            </label>
+          </div>
+        </div>
+
+        <!-- choicegroup children -->
+
+        <div ng-show="qobject.type == 'groupaddchoice'" class="form-group ng-hide">
+          <div class="row">
+            <label class="col-md-11">Choice:
+                <input value="" style="width: auto;" class="form-control ng-pristine ng-valid" placeholder="Question" ng-model="qobject.choice" type="text">
+            <label>
+          </label></label></div>
+        </div>
+
+        <div ng-show="qobject.type == 'choiceline'" class="form-group ng-hide">
+          <div class="row">
+            <label class="col-md-11"><div class="sr-only">Question</div>
+                <input value="" style="width: 100%;" class="form-control ng-pristine ng-valid" placeholder="Question" ng-model="qobject.question" type="text">
+            <label>
+          </label></label></div>
+        </div>
+
+        <div style="width: 100%; text-align: right; margin-top: 5px;">
+          <button type="submit" class="btn btn-default" ng-click="doneEditingObj(qobject)">Done</button>
+        </div>
+      </form>
+
+    </div>
+
+    <ol class="ng-scope ng-pristine ng-valid angular-ui-tree-nodes" ui-tree-nodes="" ng-model="qobject.children">
+      <li class="angular-ui-tree-adder ng-hide" ng-show="qobject.$adding">
+        <form action="http://demo.sdaps.org/surveys/2/edit" class="form-inline ng-pristine ng-valid" role="form">
+          <div class="form-group">
+            <label>Object type</label>
+              <select class="form-control ng-pristine ng-valid" ng-model="qobject.$newObjType"><option value="? undefined:undefined ?"></option>
+                <!-- ngIf: qobject.type == 'multicol' -->
+                <!-- ngIf: qobject.type == 'multicol' -->
+                <!-- ngIf: qobject.type == 'multicol' -->
+                <!-- ngIf: qobject.type == 'multicol' -->
+                <!-- ngIf: qobject.type == 'multicol' -->
+                <!-- ngIf: qobject.type == 'multicol' -->
+                <!-- ngIf: qobject.type == 'multicol' -->
+                <!-- ngIf: qobject.type == 'choicequestion' --><option class="ng-scope" ng-if="qobject.type == 'choicequestion'" value="choiceitem">Checkbox Choice</option><!-- end ngIf: qobject.type == 'choicequestion' -->
+                <!-- ngIf: qobject.type == 'choicequestion' --><option class="ng-scope" ng-if="qobject.type == 'choicequestion'" value="choiceitemtext">Textfield Choice</option><!-- end ngIf: qobject.type == 'choicequestion' -->
+                <!-- ngIf: qobject.type == 'markgroup' -->
+                <!-- ngIf: qobject.type == 'choicegroup' -->
+                <!-- ngIf: qobject.type == 'choicegroup' -->
+              </select>
+            
+          </div>
+          <button type="submit" class="btn btn-default" ng-click="prependNewSubItem(qobject)">Prepend Object</button>
+          <button type="submit" class="btn btn-default" ng-click="appendNewSubItem(qobject)">Append Object</button>
+        </form>
+      </li>
+
+      <!-- ngRepeat: qobject in qobject.children -->
+    </ol>
+  </li><!-- end ngRepeat: qobject in data -->
+      </ol>
+    </div>
+
+    
+  </div>
+
+  <div id="preview" class="col-md-6">
+    <div>
+      <button id="prev">Previous</button>
+      <button id="next">Next</button>
+      &nbsp; &nbsp;
+      <span>Page: <span id="page_num">1</span> / <span id="page_count">1</span></span>
+    </div>
+    <div id="preview-container" style="width: 100%; margin-top: 10px;">
+      <!-- The preview goes here! -->
+      <canvas width="1653" height="2338" class="pdfcanvas" id="preview" style="width: 100%;">
+    </canvas></div>
+  </div>
+</div>
+
+
+	</div>
+	<script src="jquery.js" type="text/javascript"> </script>
+	<script src="underscore.js" type="text/javascript"> </script>
+	<script src="bootstrap.min.js" rel="text/javascript"></script>
+	<script src="angular.min.js" type="text/javascript"></script>
+	
+  <script type="text/javascript" src="jquery.js"></script>
+  <script type="text/javascript" src="angular-ui-tree.min.js"></script>
+  <script type="text/javascript" src="pdf.js"></script>
+
+  <!-- And custom scripts -->
+  <script type="text/javascript" src="edit_questionnaire.js"></script>
+  <script type="text/javascript" src="pdf_preview.js"></script>
+  <script type="text/javascript">
+    $(function(){
+      /* For the PDFJS worker (isn't there a nicer way to do this? */
+      PDFJS.workerSrc = '/static/sdaps_ctl/pdf.worker.js';
+
+      /* Hook up the preview widget. */
+      var preview = new PDFPreview.Preview($('#preview'), '/surveys/2/questionnaire.pdf');
+      /* And attach to window for editor. */
+      window.preview = preview;
+    });
+
+  </script>
+
+
+
+
+</body>
+</html>

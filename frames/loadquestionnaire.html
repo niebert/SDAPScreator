@@ -1,0 +1,65 @@
+<HTML>
+<HEAD>
+   <TITLE>Load Questionnaire - SDAPScreator</TITLE>
+   <meta http-equiv="Content-Type" content="text/html; charset=utf8">
+
+<!-- 
+################################################# 
+# Load Questionnaire - SDAPScreator						
+# Javascript Software Package  				 
+# email: niehaus@uni-landau.de		
+# created               8.8.2014
+# last modifications    8.8.2014
+# Author:  Engelbert Niehaus
+# GNU Public License 
+################################################# 
+-->
+</HEAD>
+<BODY bgcolor="#EEEEEE">
+<center>
+<br>
+<br>
+<center>
+<table border="1" width="86%">
+  <tbody>
+    <tr bgcolor="#ffffff">
+      <td>
+      <table border="0">
+        <tbody>
+          <tr bgcolor="#ffffff">
+            <td><br>
+            </td>
+            <td>
+            <center><br>
+<font face="Arial,Helvetica">
+<!---Button: Load Questionnaire ------- Button Link: loadquestionnaire.html ----->
+<h1>Load Questionnaire</h1>
+</center>
+ <ul>
+ <SCRIPT LANGUAGE="JavaScript">
+    var vQuestionnaire = new Array();
+    //-----------------------------------------------------------------
+    var vPath = "../questionnaires/";
+    vQuestionnaire.push(new Array("Empty Questionnaire","questionnaire0.html"));
+    vQuestionnaire.push(new Array("Questionnaire 1 - Test","questionnaire1.html"));
+    //-----------------------------------------------------------------
+ 	for (var i=0; i<vQuestionnaire.length; i++) {
+        document.write("<li><a href='"+vPath+vQuestionnaire[i][1]+"'>"+vQuestionnaire[i][0]+"</a> ")
+        document.write("<tt> ("+vQuestionnaire[i][1]+")</tt></li>")
+	}; 	
+ </SCRIPT>
+ </ul>
+	</font>
+	<!--- inner input table ---></td>
+          </tr>
+        </tbody>
+      </table>
+      &nbsp;&nbsp;
+<!--- outer table ---> </td>
+    </tr>
+  </tbody>
+</table>
+
+</BODY>
+</HTML>	
+	

@@ -1,0 +1,36 @@
+\documentclass[draft,english,pdf,pagemark,stamp]{sdaps}
+\usepackage[utf8]{inputenc}
+
+\author{The Author}
+\title{The Title}
+
+\begin{document}
+  \begin{questionnaire}
+    \begin{info}
+      Some information here. Nothing special, just adds a line above/below.
+    \end{info}
+
+    \section{Section Heading}
+
+    \begin{markgroup}{This is a group of mark questions}
+      \markline{first}{lower bound}{upper bound}
+      \markline{second}{lower bound}{upper bound}
+    \end{markgroup}
+
+    \singlemark{Mark Question}{lower bound}{upper bound}
+
+    \section{Section Heading}
+
+    \begin{choicequestion}[4]{Some choices}
+      \choiceitem{first}
+      \choiceitem{second}
+      \choiceitem{third}
+      \choiceitem{fourth}
+      \choicemulticolitem{2}{one with a very long text}
+      \choiceitemtext{1.2cm}{2}{Other:}
+    \end{choicequestion}
+
+    \textbox{5cm}{A Textbox}
+
+  \end{questionnaire}
+\end{document}
