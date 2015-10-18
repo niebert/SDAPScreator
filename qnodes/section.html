@@ -2,9 +2,20 @@
 <html>
 <head>
   <title>QNode File</title>
-
-  <meta http-equiv="Content-Type"
- content="text/html; charset=utf8">
+<!--
+#################################################################
+#         SDAPS Creator: Save QNode SECTION
+#     for QNode File: qnodes/section.html
+#                
+# Author of Class:      Engelbert Niehaus                    
+# email:                niehaus@uni-landau,de                 
+# created               18.10.2015             
+# last modifications    18.10.2015             
+# GNU Public License - OpenSource
+# created with JavaScript generator_exporter.html
+#################################################################
+-->
+  <meta http-equiv="Content-Type" content="text/html; charset=utf8">
 </head>
 <body bgcolor="#eeeeee">
 <!--- import Javascript Library qnodeloader.js --->
@@ -29,7 +40,7 @@
             <b>Load 
 	<script language="JavaScript1.2">
    	//----------------------------------------------------	
-         document.write(extractName(document.location.href).toUpperCase());
+         document.write(top.extractName(document.location.href).toUpperCase());
 	//----------------------------------------------------	
     </script>
             QNode<br></b> </font>
@@ -38,20 +49,28 @@
    		 document.write(getQNode_Filename());
 	//----------------------------------------------------	
     </script>
-                        <font size="+1" face="Arial,Helvetica">
+                            <font size="+1" face="Arial,Helvetica">
               <!-- action="#" -->
 	   			<form name="fInputForm"  onsubmit="document.location.href='showquestionnaire.html'">
 					<input type=button name="Import" value="Import QNode" onclick="importQNodeAlert()"> 
+<!--------------------------------------------------------------------------------------------->
 					QNode-Type: <input type=text name="QNodeType" value="myqnode"> 
+<!--------------------------------------------------------------------------------------------->
 			<hr noshade style=" color:black; height:5px; text-align:left; border:1px solid blue;">
 			<b>Variables for QNode</b><br/>
 <!--------------------------------------------------------------------------------------------->
 <TEXTAREA name="tVariables" cols="95" rows="6" >
-Q_TITLE|Title of Section
+Q_TITLE|First Section
+Q_TYPE|SECTION
+SECTION_NO|1
+SUBSECTION_NO|0
+QUESTION_NO|0
 </TEXTAREA><hr/>
 <!--------------------------------------------------------------------------------------------->
 					<b>Options for QNode</b> (Option-Text|Option Value)<br/>
+<!--------------------------------------------------------------------------------------------->
 <TEXTAREA name="tOptions" cols="95" rows="6" >
+
 </TEXTAREA>
 <!--------------------------------------------------------------------------------------------->
 			<hr noshade style=" color:black; height:5px; text-align:left; border:1px solid blue;">
@@ -75,20 +94,23 @@ Q_TITLE|Title of Section
   <font size="+1"><b>###SECTION_NO### ###Q_TITLE###</b></font>
   </td></tr>
 </table>  
+
 </TEXTAREA>
 <!--------------------------------------------------------------------------------------------->
 				<br/><b>HTML-Option for QNode</b><br/>
 <!--------------------------------------------------------------------------------------------->
 <TEXTAREA name="tHTMLOption" cols="95" rows="3" >
      <INPUT TYPE="hidden" NAME="OPTION###OPTION_NO###" VALUE="###OPTION_TEXT###|###OPTION_VALUE###">
+
 </TEXTAREA>
 <!--------------------------------------------------------------------------------------------->
-			<hr noshade style=" color:black; height:5px; text-align:left; border:1px solid blue;">
-			<b>LaTeX-Template for QNode</b><br/>
+		<hr noshade style=" color:black; height:5px; text-align:left; border:1px solid blue;">
+		<b>LaTeX-Template for QNode</b><br/>
 <!--------------------------------------------------------------------------------------------->
 <TEXTAREA name="tLatexTemplate" cols="95" rows="6" >
 %---------------NEW SECTION ###SECTION_NO###-----------
 \section{###Q_TITLE###}
+
 
 </TEXTAREA>
 <!--------------------------------------------------------------------------------------------->
@@ -96,10 +118,11 @@ Q_TITLE|Title of Section
 <!--------------------------------------------------------------------------------------------->
 <TEXTAREA name="tLatexOption" cols="95" rows="3" >
    % Unused Option-Text=###OPTION_TEXT### Unused Option-Value=###OPTION_VALUE### - you can delete this line
+
 </TEXTAREA>
 <!--------------------------------------------------------------------------------------------->
-			<hr noshade style=" color:black; height:5px; text-align:left; border:1px solid blue;">
-			<b>XML-Template for QNode</b><br/>
+		<hr noshade style=" color:black; height:5px; text-align:left; border:1px solid blue;">
+		<b>XML-Template for QNode</b><br/>
 <!--------------------------------------------------------------------------------------------->
 <TEXTAREA name="tXMLTemplate" cols="95" rows="6" >
   <QNODE LOAD="L">
@@ -112,12 +135,14 @@ Q_TITLE|Title of Section
     </OPTIONS>
   </QNODE>
 ###Q_CHILDNODES### 
+
 </TEXTAREA>
 <!--------------------------------------------------------------------------------------------->
 		<br/><b>XML-Option for QNode</b><br/>
 <!--------------------------------------------------------------------------------------------->
 <TEXTAREA name="tXMLOption" cols="95" rows="3" >
         <OPTDEF TEXT="###OPTION_TEXT###" VALUE="###OPTION_VALUE###" />
+
 </TEXTAREA>
 <!--------------------------------------------------------------------------------------------->
 		    	</form>
@@ -128,7 +153,7 @@ Q_TITLE|Title of Section
             </center>
             <br>
             </td>
-            <td>&nbsp;&nbsp;
+            <td>  
 <!--- inner input table ---></td>
           </tr>
         </tbody>

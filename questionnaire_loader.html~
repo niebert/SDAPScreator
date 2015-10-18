@@ -43,12 +43,8 @@
     //-----------------------------------------------------------------
     var vPath = "questionnaires/";
     vQuestionnaire.push(new Array("Empty Questionnaire","questionnaire0root.html"));
-    vQuestionnaire.push(new Array("Load XML-Questionnaire","loadxml.html"));
-    vQuestionnaire.push(new Array("My Questionnaire 1 - SDAPS Demo","questionnaire1.html"));
-    vQuestionnaire.push(new Array("My Questionnaire 2 - Empty","myquestionnaire2.html"));
-    vQuestionnaire.push(new Array("My Questionnaire 3 - Empty","myquestionnaire3.html"));
-    vQuestionnaire.push(new Array("My Questionnaire 4 - Empty","myquestionnaire4.html"));
-    vQuestionnaire.push(new Array("My Questionnaire 5 - Empty","myquestionnaire5.html"));
+    vQuestionnaire.push(new Array("Questionnaire 1 - SDAPS Demo","questionnaire1.html"));
+    vQuestionnaire.push(new Array("Questionnaire 1 XML - Test","questionnaire1xml.html"));
     //-----------------------------------------------------------------
  	//-----------------------------------------------------------------
 	for (var i=0; i<vQuestionnaire.length; i++) {

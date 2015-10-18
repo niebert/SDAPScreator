@@ -42,34 +42,19 @@
               <!-- action="#" -->
 	   			<form name="fInputForm"  onsubmit="document.location.href='showquestionnaire.html'">
 					<input type=button name="Import" value="Import QNode" onclick="importQNodeAlert()"> 
-<!--------------------------------------------------------------------------------------------->
 					QNode-Type: <input type=text name="QNodeType" value="myqnode"> 
-<!--------------------------------------------------------------------------------------------->
 			<hr noshade style=" color:black; height:5px; text-align:left; border:1px solid blue;">
 			<b>Variables for QNode</b><br/>
 <!--------------------------------------------------------------------------------------------->
-        			<TEXTAREA name="tVariables" cols="95" rows="6" >
-Q_TITLE|Dezimalzahl eingeben
-Q_HTML_HINT|Bitte tragen Sie die Dezimalzahl von oben nach unten hinter 1.Ziffer... bis 9.Ziffer... ein und setzen Sie in jeder Zeile das entsprechende Kreuz für die Ziffer oder das Komma. Erg&auml;nzen Sie Nachkommastellen mit einer Null 5,137 durch 5,13700000. Das Vorzeichen (-) darf nur als erstes Zeichen verwendet werden. 
-Q_LATEX_HINT|Bitte die Dezimalzahl von oben nach unten in die $\sqcup$ eintragen und dann die Kreuze setzen.  \textbf{In jede Zeile kommt nur ein Kreuz.} Erg\"anzen Sie Nachkommastellen mit einer Null 5,137 durch 5,13700000. Das Vorzeichen (-) darf nur als erstes Zeichen verwendet werden.
-Q_NUMBER|Ziffer, Komma
-Q_SIGN|Vorzeichen
-Q_CHARACTER|Zeichen
-Q_KOMMA|,
-Q_MINUS|-
-           		 	</TEXTAREA><hr/>
+<TEXTAREA name="tVariables" cols="95" rows="6" >
+Q_TITLE|Title for Textbox
+Q_HTML_HEIGHT|250px
+Q_LATEX_HEIGHT|3.2cm
+Q_HTML_DEFAULT_VALUE|
+</TEXTAREA><hr/>
 <!--------------------------------------------------------------------------------------------->
 					<b>Options for QNode</b> (Option-Text|Option Value)<br/>
-        			<TEXTAREA name="tOptions" cols="95" rows="6" >
-1. ###Q_NUMBER###|Z1
-2. ###Q_NUMBER###|Z2
-3. ###Q_NUMBER###|Z3
-4. ###Q_NUMBER###|Z4
-5. ###Q_NUMBER###|Z5
-6. ###Q_NUMBER###|Z6
-7. ###Q_NUMBER###|Z7
-8. ###Q_NUMBER###|Z8
-9. ###Q_NUMBER###|Z9
+<TEXTAREA name="tOptions" cols="95" rows="6" >
 </TEXTAREA>
 <!--------------------------------------------------------------------------------------------->
 			<hr noshade style=" color:black; height:5px; text-align:left; border:1px solid blue;">
@@ -86,74 +71,37 @@ Q_MINUS|-
 			<hr noshade style=" color:black; height:5px; text-align:left; border:1px solid blue;">
 			<b>HTML-Template for QNode</b><br/>
 <!--------------------------------------------------------------------------------------------->
-        			<TEXTAREA name="tHTMLTemplate" cols="95" rows="6" >
+<TEXTAREA name="tHTMLTemplate" cols="95" rows="6" >
 <hr/>
-  ###SECTION_NO###.###SUBSECTION_NO### ###Q_TITLE###<br/>
-  ###Q_HTML_HINT###
-<table border=0 width="100%">
-     <TR> <TD><!-- ###OPTION_NO### --> &nbsp;&nbsp;</TD><TD>&nbsp;</TD>
-     <TD align="center">###Q_CHARACTER###</TD>
-     <TD align="center">1</TD>
-     <TD align="center">2</TD>
-     <TD align="center">3</TD>
-     <TD align="center">4</TD>
-     <TD align="center">5</TD>
-     <TD align="center">6</TD>
-     <TD align="center">7</TD>
-     <TD align="center">8</TD>
-     <TD align="center">9</TD>
-     <TD align="center">0</TD>
-     <TD align="center">###Q_KOMMA###</TD>
-     <TD align="center">###Q_MINUS###</TD>
-###Q_OPTIONS###
-</table>   
-###Q_CHILDNODES###
-   </TEXTAREA>
+  ###SECTION_NO###.###SUBSECTION_NO### ###Q_TITLE###<br>
+  <__TEXT__AREA__ style="width:100%; height:###Q_HTML_HEIGHT###;">###Q_HTML_DEFAULT_VALUE###
+  </__TEXT__AREA__>
+</table>  
+</TEXTAREA>
 <!--------------------------------------------------------------------------------------------->
 				<br/><b>HTML-Option for QNode</b><br/>
 <!--------------------------------------------------------------------------------------------->
 <TEXTAREA name="tHTMLOption" cols="95" rows="3" >
-     <TR> <TD><!-- ###OPTION_NO### --> &nbsp;&nbsp;</TD><TD align="right">###OPTION_TEXT###</TD>
-     <TD align="left"><input type="text" size="3"></TD>
-     <TD align="center"><input type="radio" Name="Group###QUESTION_NO###Opt###OPTION_NO###" value="1"></TD>
-     <TD align="center"><input type="radio" Name="Group###QUESTION_NO###Opt###OPTION_NO###" value="2"></TD>
-     <TD align="center"><input type="radio" Name="Group###QUESTION_NO###Opt###OPTION_NO###" value="3"></TD>
-     <TD align="center"><input type="radio" Name="Group###QUESTION_NO###Opt###OPTION_NO###" value="4"></TD>
-     <TD align="center"><input type="radio" Name="Group###QUESTION_NO###Opt###OPTION_NO###" value="5"></TD>
-     <TD align="center"><input type="radio" Name="Group###QUESTION_NO###Opt###OPTION_NO###" value="6"></TD>
-     <TD align="center"><input type="radio" Name="Group###QUESTION_NO###Opt###OPTION_NO###" value="7"></TD>
-     <TD align="center"><input type="radio" Name="Group###QUESTION_NO###Opt###OPTION_NO###" value="8"></TD>
-     <TD align="center"><input type="radio" Name="Group###QUESTION_NO###Opt###OPTION_NO###" value="9"></TD>
-     <TD align="center"><input type="radio" Name="Group###QUESTION_NO###Opt###OPTION_NO###" value="0"></TD>
-     <TD align="center"><input type="radio" Name="Group###QUESTION_NO###Opt###OPTION_NO###" value="###Q_KOMMA###"></TD>
-     <TD align="center"><input type="radio" Name="Group###QUESTION_NO###Opt###OPTION_NO###" value="###Q_MINUS###"></TD>    
+     <INPUT TYPE="hidden" NAME="OPTION###OPTION_NO###" VALUE="###OPTION_TEXT###|###OPTION_VALUE###">
 </TEXTAREA>
 <!--------------------------------------------------------------------------------------------->
-		<hr noshade style=" color:black; height:5px; text-align:left; border:1px solid blue;">
-		<b>LaTeX-Template for QNode</b><br/>
+			<hr noshade style=" color:black; height:5px; text-align:left; border:1px solid blue;">
+			<b>LaTeX-Template for QNode</b><br/>
 <!--------------------------------------------------------------------------------------------->
 <TEXTAREA name="tLatexTemplate" cols="95" rows="6" >
-      
-    \end{markgroup}
-    \def\checkboxstyle{ellipse}
-    \setcounter{markcheckboxcount}{11}
-    \begin{markgroup}{###Q_TITLE###. ###Q_LATEX_HINT###}
-       \hfill & & 1 & 2 & 3 & 4 & 5 & 6 & 7 & 8 & 9 & 0 & , & ###Q_MINUS###\\
-###Q_OPTIONS###
-    \end{markgroup}
+%---------------NEW TEXTBOX ###SUBSECTION_NO###-----------
+\textbox{###Q_LATEX_HEIGHT###}{###Q_TITLE###}
 
-###Q_CHILDNODES###
 </TEXTAREA>
 <!--------------------------------------------------------------------------------------------->
 				<br/><b>Latex-Option for QNode</b><br/>
 <!--------------------------------------------------------------------------------------------->
 <TEXTAREA name="tLatexOption" cols="95" rows="3" >
-        %----Ziffer ###OPTION_NO###: ###OPTION_VALUE### ------------    			
-        \markline{\hfill ###OPTION_TEXT### \Huge$\sqcup$}{}{}
+   % Unused Option-Text=###OPTION_TEXT### Unused Option-Value=###OPTION_VALUE### - you can delete this line
 </TEXTAREA>
 <!--------------------------------------------------------------------------------------------->
-		<hr noshade style=" color:black; height:5px; text-align:left; border:1px solid blue;">
-		<b>XML-Template for QNode</b><br/>
+			<hr noshade style=" color:black; height:5px; text-align:left; border:1px solid blue;">
+			<b>XML-Template for QNode</b><br/>
 <!--------------------------------------------------------------------------------------------->
 <TEXTAREA name="tXMLTemplate" cols="95" rows="6" >
   <QNODE LOAD="L">

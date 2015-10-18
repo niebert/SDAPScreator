@@ -52,6 +52,7 @@
 Q_TITLE|Title of Questionnaire
 Q_AUTHOR|Authors Name
 Q_LANGUAGE|english
+Q_FOLDER_QNODES|qnodes/
 Q_AUTHOR_EMAIL|author@mailserver.com
 Q_INFO|You need approximatedly 15min for this Questionnaire.
            		 	</TEXTAREA><hr/>
@@ -107,7 +108,7 @@ inputenc|utf8
 <TEXTAREA name="tLatexTemplate" cols="95" rows="6" >
 \documentclass[draft,###Q_LANGUAGE###,pdf,pagemark,stamp]{sdaps}
 ###Q_OPTIONS###
-
+% SDAPScreator Folder QNodes: ###Q_FOLDER_QNODES###
 \title{###Q_TITLE###}
 \author{###Q_AUTHOR###}
 
@@ -131,7 +132,7 @@ inputenc|utf8
 		<b>XML-Template for QNode</b><br/>
 <!--------------------------------------------------------------------------------------------->
 <TEXTAREA name="tXMLTemplate" cols="95" rows="6" >
-<QUESTIONNAIRE>
+<QUESTIONNAIRE FOLDER="###Q_FOLDER_QNODES###">
   <HEADER>
      <TITLE>###Q_TITLE###</TITLE>
      <AUTHOR>###Q_AUTHOR###</AUTHOR>

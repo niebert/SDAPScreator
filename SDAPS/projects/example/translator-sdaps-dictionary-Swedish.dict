@@ -1,0 +1,27 @@
+% This file is auto-generated from gettext translations (.po files).
+% The header of the original file follows for reference:
+%
+% Translations for sdaps LaTeX classes.
+% Copyright 2010-2013 Ferdinand Schwenk (ferdisdot@gmail.com).
+% Copyright 2011-2013 Benjamin Berg (benjamin@sipsolutions.net).
+%
+% This work may be distributed and/or modified under the
+% conditions of the LaTeX Project Public License, either version 1.3c
+% of this license or (at your option) any later version.
+% The latest version of this license is in
+%   http://www.latex-project.org/lppl.txt
+%
+
+\ProvidesDictionary{translator-sdaps-dictionary}{Swedish}
+
+\providetranslation{infotext}{This questionnaire is automatically read by a computer program. Please use a pen for filling in your answers.}
+\providetranslation{standard-deviation}{Standard-Deviation}
+\providetranslation{info-cross}{Check}
+\providetranslation{info-correct}{Uncheck to correct}
+\providetranslation{answers}{Answers}
+\providetranslation{questionnaireid}{Questionnaire-ID:}
+\providetranslation{surveyid}{Survey-ID:}
+\providetranslation{draft}{draft}
+\providetranslation{info-select}{You can check any number of boxes in selection questions.}
+\providetranslation{info-mark}{For questions with a range (1--\arabic{markcheckboxcount}) choose the answer the mark that fits best.}
+\providetranslation{mean}{Mean}

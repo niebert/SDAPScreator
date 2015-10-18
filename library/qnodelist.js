@@ -93,8 +93,7 @@ function init_name_QNodeList(pName) {
 	//    vMyInstance.init_name(pName);
 	//-------------------------------------------------------
 	this.aName = pName;
-
-}
+};
 //----End of Method init_name Definition
 
 //#################################################################
@@ -118,8 +117,8 @@ function init_parent_QNodeList(pParent) {
 	this.aParent = pParent;
 	for (var i=1; i<=this.rows; i++) {
 		this[i][2].init_parent(this)
-	}
-}
+	};
+};
 //----End of Method init_parent Definition
 
 						
@@ -161,7 +160,7 @@ function update_QNodeList() {
 		this[i][2].aChildNodes.aUpdatePrefix = vSectionNo + ".";
 		this[i][2].aChildNodes.update();
 	};
-}
+};
 //----End of Method update Defupdateion
 
 						
@@ -188,7 +187,7 @@ function importQNode_QNodeList(pQNode) {
 	} else {
 		this.appendQNode(pQNode);
 	}
-}
+};
 //----End of Method importQNode Definition
 
 					
@@ -220,7 +219,7 @@ function appendQNode_QNodeList(pQNode) {
 	vQNode.importQNode(pQNode);
 	this[this.rows][2] = vQNode;
 	this.update(); // update enumeration
-}
+};
 //----End of Method appendQNode Definition
 
 						
@@ -256,7 +255,7 @@ function insertQNode_QNodeList(pQNode,pi) {
 	vQNode.importQNode(pQNode);
 	this[pi][2] = vQNode;
 	this.update(); //update enumeration of Questions
-}
+};
 //----End of Method insertQNode Definition
 
 						
@@ -294,10 +293,10 @@ function moveQNode_QNodeList(pi,pDestination) {
 	       this[i-1][2] = this[i][2];
 	   };
 	   this[pDestination][2] = vQNode;
-    }
+    };
 	//alert("moveQNode(pi) pi="+pi+" pDestination="+pDestination+"rows="+this.rows+"\nqnodelist.js:245");
 	this.update(); //update enumeration of Questions
-}
+};
 //----End of Method moveQNode Definition
 
 						
@@ -321,7 +320,7 @@ function removeQNode_QNodeList(pi) {
 	//-------------------------------------------------------
 	this.remove(pi); // removes the the row with index pi
  	this.update(); //update enumeration of Questions
-}
+};
 //----End of Method removeQNode Definition
 
 						
@@ -348,7 +347,7 @@ function getHTML_QNodeList() {
 		vContent += this[i][2].getHTML(); 
 	};
 	return vContent;
-}
+};
 //----End of Method getHTML Definition
 
 						
@@ -379,8 +378,7 @@ function getEditHTML_QNodeList() {
 		}
 	};
 	return vContent;
-
-}
+};
 //----End of Method getEditHTML Definition
 
 						
@@ -411,8 +409,7 @@ function getEdit_Structure_HTML_QNodeList() {
 		}
 	};
 	return vContent;
-
-}
+};
 //----End of Method getEditHTML Definition
 
 						
@@ -439,8 +436,7 @@ function exportText_QNodeList(pFormat) {
 		vContent += this[i][2].exportText(pFormat); 
 	};
 	return vContent;
-
-}
+};
 //----End of Method exportText Definition
 
 						
@@ -492,8 +488,7 @@ function exportLatex_QNodeList() {
 	var pFormat  = 2;
 	this.aFormat = pFormat;
 	return this.exportText(pFormat);
-
-}
+};
 //----End of Method exportLatex Definition
 
 						
@@ -518,8 +513,7 @@ function exportXML_QNodeList() {
 	var pFormat  = 3;
 	this.aFormat = pFormat;
 	return this.exportText(pFormat);
-
-}
+};
 //----End of Method exportXML Definition
 
 			

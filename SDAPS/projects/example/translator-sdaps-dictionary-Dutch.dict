@@ -1,0 +1,27 @@
+% This file is auto-generated from gettext translations (.po files).
+% The header of the original file follows for reference:
+%
+% Translations for sdaps LaTeX classes.
+% Copyright 2010-2013 Ferdinand Schwenk (ferdisdot@gmail.com).
+% Copyright 2011-2013 Benjamin Berg (benjamin@sipsolutions.net).
+%
+% This work may be distributed and/or modified under the
+% conditions of the LaTeX Project Public License, either version 1.3c
+% of this license or (at your option) any later version.
+% The latest version of this license is in
+%   http://www.latex-project.org/lppl.txt
+%
+
+\ProvidesDictionary{translator-sdaps-dictionary}{Dutch}
+
+\providetranslation{infotext}{De vragenlijst wordt elektronisch ingelezen. Gelieve met een balpen of dunne viltstift te antwoorden.}
+\providetranslation{standard-deviation}{Standaardafwijking}
+\providetranslation{info-cross}{Aankruisen}
+\providetranslation{info-correct}{Corrigeren}
+\providetranslation{answers}{Antwoorden}
+\providetranslation{questionnaireid}{Vragenlijst-ID:}
+\providetranslation{surveyid}{Onderzoeks-ID:}
+\providetranslation{draft}{voorontwerp}
+\providetranslation{info-select}{Bij meerkeuzevragen mogen meerdere antwoorden worden aangekruist.}
+\providetranslation{info-mark}{Bij waarderingsvragen met een bereik (1--\arabic{markcheckboxcount}) mag slechts een hokje worden aangekruist.}
+\providetranslation{mean}{Gemiddelde}

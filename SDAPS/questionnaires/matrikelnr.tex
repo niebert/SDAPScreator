@@ -1,0 +1,84 @@
+\documentclass[draft,english,pdf,pagemark,stamp]{sdaps}
+\usepackage[utf8]{inputenc} % Package1 
+           		 	
+% SDAPScreator Folder QNodes: qnodes/
+\title{Questionnaire Test with Student-ID}
+\author{Authors Name}
+
+\begin{document}
+  \begin{questionnaire}
+
+    %---------------NEW SECTION 1-----------
+\section{Matrikelnummer und Name}
+
+
+      
+    %\def\checkboxstyle{ellipse}
+    \setcounter{markcheckboxcount}{10}
+    \begin{markgroup}{Bitte die Matrikelnummer von oben nach unten in die $\sqcup$ eintragen und dann die Kreuze setzen.  \textbf{In jede Zeile kommt nur ein Kreuz.}}
+       \hfill & & 1 & 2 & 3 & 4 & 5 & 6 & 7 & 8 & 9 & 0 \\
+        %----Ziffer 1: Z1 ------------    			
+        \markline{\hfill 1. Ziffer \Huge$\sqcup$}{}{}
+
+        %----Ziffer 2: Z2 ------------    			
+        \markline{\hfill 2. Ziffer \Huge$\sqcup$}{}{}
+
+        %----Ziffer 3: Z3 ------------    			
+        \markline{\hfill 3. Ziffer \Huge$\sqcup$}{}{}
+
+        %----Ziffer 4: Z4 ------------    			
+        \markline{\hfill 4. Ziffer \Huge$\sqcup$}{}{}
+
+        %----Ziffer 5: Z5 ------------    			
+        \markline{\hfill 5. Ziffer \Huge$\sqcup$}{}{}
+
+        %----Ziffer 6: Z6 ------------    			
+        \markline{\hfill 6. Ziffer \Huge$\sqcup$}{}{}
+
+        %----Ziffer 7: Z7 ------------    			
+        \markline{\hfill 7. Ziffer \Huge$\sqcup$}{}{}
+
+        %----Ziffer 8: Z8 ------------    			
+        \markline{\hfill 8. Ziffer \Huge$\sqcup$}{}{}
+
+        %----Ziffer 9: Z9 ------------    			
+        \markline{\hfill 9. Ziffer \Huge$\sqcup$}{}{}
+
+
+    \end{markgroup}
+
+
+
+%---------------NEW SECTION 2-----------
+\section{First Section}
+
+
+    \begin{choicequestion}[4]{First Question}
+      \choiceitem{Option 1}
+      \choiceitem{Option 2}
+      \choiceitem{Option 3}
+      \choiceitem{Option 4}
+      \choicemulticolitem{2}{Option 5 with long text}
+      \choiceitemtext{1.2cm}{2}{Other Comment}
+    \end{choicequestion}
+
+    
+    \begin{choicegroup}{Second Question Group with Yes and No} 
+       \groupaddchoice{Yes}
+       \groupaddchoice{No}
+      %----Option 1: QP1 ------------    			
+      \choiceline{Question Part 1}
+      %----Option 2: QP2 ------------    			
+      \choiceline{Question Part 2}
+      %----Option 3: QP3 ------------    			
+      \choiceline{Question Part 3}
+      %----Option 4: QP4 ------------    			
+      \choiceline{Question Part 4}
+
+    \end{choicegroup}
+
+
+
+  \end{questionnaire}
+\end{document}
+     

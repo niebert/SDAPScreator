@@ -894,20 +894,21 @@ function getEditButtons_QNode(pDisplayFormat,pEditCall,pUpdateCall) {
 				 + vContent2 + "top.vSDAPScreator.editQNode('"+this.objectPath+"','"+pEditCall+"')" 
 				 + vContent3 + "\n";
 		};
-		var vNO = this.aVariables["QUESTION_NO"];
+		var vNO = this.aVariables["QUESTION_NO"] || "0";
 		var vObjectCall = this.objectPath + ".aChildNodes.insertQNode(pQNode,1)";
 		var i = parseInt(vNO);
 		//alert("qnode.js:674 - getEditButton()-Call\nthis.aType="+this.aType+"\naParent.aType="+this.aParent.aType);
 		//alert("qnode.js:675 - getEditButton()-Call\nthis.aParent.="+this.aParent.objectPath+"\nthis.objectPath="+this.objectPath);
 		//alert("qnode.js:676 - getEditButton()-Call\nthis.aParent.="+this.aParent.objectPath+"\nthis.ID="+this.ID);
+		//alert("qnode.js:677 - getEditButton()-Call\nQUESTION_NO="+i+"\nthis.aType="+this.aType+"\naParent.aType="+this.aParent.aType);
 		if (this.aParent.aType == "QNodeList") {
 			var vi= this.ID;
 			var vCount = this.aParent.rows;
 		    var vCall = "top.vSDAPScreator.moveQNode('"+this.aParent.objectPath + "',"+vi+","
 		    vReturn = "Pos: "+this.getSelectBox("SBox"+vi,vCount,vi,vCall) + vReturn;
-		    vi= this.ID + 0
-			//alert("vi="+vi+" qnode.js:864 getEditButton()-Call");
-			vObjectCall = this.aParent.objectPath + ".insertQNode(pQNode,"+vi+")";
+		    var vi_ins= this.ID + 1;
+			//alert("vi="+vi+" vi_ins="+vi_ins+"\nqnode.js:864 getEditButton()-Call");
+			vObjectCall = this.aParent.objectPath + ".insertQNode(pQNode,"+vi_ins+")";
 			vReturn += vContent1 + "Delete QNode" 
 				 + vContent2 + "top.vSDAPScreator.deleteQNode('"+this.aParent.objectPath + "',"+vi+")" 
 				 + vContent3 + "\n";

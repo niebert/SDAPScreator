@@ -1,0 +1,27 @@
+% This file is auto-generated from gettext translations (.po files).
+% The header of the original file follows for reference:
+%
+% Translations for sdaps LaTeX classes.
+% Copyright 2010-2013 Ferdinand Schwenk (ferdisdot@gmail.com).
+% Copyright 2011-2013 Benjamin Berg (benjamin@sipsolutions.net).
+%
+% This work may be distributed and/or modified under the
+% conditions of the LaTeX Project Public License, either version 1.3c
+% of this license or (at your option) any later version.
+% The latest version of this license is in
+%   http://www.latex-project.org/lppl.txt
+%
+
+\ProvidesDictionary{translator-sdaps-dictionary}{Finnish}
+
+\providetranslation{infotext}{T{\"a}m{\"a} kyselykaavake luetaan automaattisesti tietokoneohjelman avulla. K{\"a}yt{\"a} kuulak{\"a}rkikyn{\"a}{\"a} vastatessasi kysymyksiin.}
+\providetranslation{standard-deviation}{Keskihajonta}
+\providetranslation{info-cross}{Valitse}
+\providetranslation{info-correct}{Poista valinta korjataksesi}
+\providetranslation{answers}{Vastaukset}
+\providetranslation{questionnaireid}{Kyselylomakkeen tunnus:}
+\providetranslation{surveyid}{Kyselyn tunnus:}
+\providetranslation{draft}{luonnos}
+\providetranslation{info-select}{Voit valita haluamasi m{\"a}{\"a}r{\"a}n laatikoita valintakysymyksiss{\"a}.}
+\providetranslation{info-mark}{Kysymyksiss{\"a}, jotka vastaus kysyt{\"a}{\"a}n vaihteluv{\"a}lill{\"a} (1--\arabic{markcheckboxcount}), valitse vastaus, joka sopii parhaiten.}
+\providetranslation{mean}{Keskiarvo}

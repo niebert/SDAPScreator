@@ -18,7 +18,11 @@ function importQNodeAlert()
     importQNode();
 	alert('Import QNode "'+vQNodeType+'" done!');
 }	
-
+function inputConvert(pString) {
+	var vString = pString;
+	vString = vString.replace(/__TEXT__AREA__/g,"TEXTAREA");
+	return vString;
+}
 function importQNode()
 //###### removes Comments beginning with "#" in the column of line
 {
@@ -40,13 +44,13 @@ function importQNode()
 	if (vQ_Variables != "") {
 		//alert("qnodeloader.js:42 - vQ_Options=\n"+vQ_Options);
 		//vQNode["Options"] = vQ_Variables;
-	};	
-	vQNode["HTMLTemplate"]  = document.fInputForm.tHTMLTemplate.value;
-	vQNode["HTMLOption"]    = document.fInputForm.tHTMLOption.value;
-	vQNode["LatexTemplate"] = document.fInputForm.tLatexTemplate.value;
-	vQNode["LatexOption"]   = document.fInputForm.tLatexOption.value;
-	vQNode["XMLTemplate"]   = document.fInputForm.tXMLTemplate.value;
-	vQNode["XMLOption"]     = document.fInputForm.tXMLOption.value;
+	};
+	vQNode["HTMLTemplate"]  = inputConvert(document.fInputForm.tHTMLTemplate.value);
+	vQNode["HTMLOption"]    = inputConvert(document.fInputForm.tHTMLOption.value);
+	vQNode["LatexTemplate"] = inputConvert(document.fInputForm.tLatexTemplate.value);
+	vQNode["LatexOption"]   = inputConvert(document.fInputForm.tLatexOption.value);
+	vQNode["XMLTemplate"]   = inputConvert(document.fInputForm.tXMLTemplate.value);
+	vQNode["XMLOption"]     = inputConvert(document.fInputForm.tXMLOption.value);
 	//alert("load qnode....html:23 - importQNode()\nvQNodeType="+vQNode["QNodeType"]);
 	top.vSDAPScreator.importQNode(vQNode);
 	top.vSDAPScreator.aFileLoader.set_loaded(extractName(document.location.href));

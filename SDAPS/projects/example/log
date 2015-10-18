@@ -1,0 +1,109 @@
+------------------------------------------------------------------------------
+- SDAPS -- setup_tex
+------------------------------------------------------------------------------
+Führe pdflatex zwei mal aus um den Fragebogen zu erstellen.
+Führe pdflatex zwei mal aus um den Fragebogen zu erstellen.
+The Title
+Date: 10.03.2013
+Author: The Author
+Questionnaire
+1(Head) Range Questions
+1.1(Mark) How often do you use SDAPS? {1}
+	never - daily
+	0(Checkbox)  87.8  78.4   3.5   3.5 
+	1(Checkbox)  95.5  78.4   3.5   3.5 
+	2(Checkbox) 103.3  78.4   3.5   3.5 
+	3(Checkbox) 111.0  78.4   3.5   3.5 
+	4(Checkbox) 118.7  78.4   3.5   3.5 
+1.2(Head) What do you think about the following aspects of \LaTeX ?
+1.2.1(Mark) equation syntax {1}
+	bad - good
+	0(Checkbox) 141.4  92.4   3.5   3.5 
+	1(Checkbox) 149.1  92.4   3.5   3.5 
+	2(Checkbox) 156.9  92.4   3.5   3.5 
+	3(Checkbox) 164.6  92.4   3.5   3.5 
+	4(Checkbox) 172.3  92.4   3.5   3.5 
+1.2.2(Mark) rendered equations {1}
+	ugly - beautiful
+	0(Checkbox) 141.4  97.2   3.5   3.5 
+	1(Checkbox) 149.1  97.2   3.5   3.5 
+	2(Checkbox) 156.9  97.2   3.5   3.5 
+	3(Checkbox) 164.6  97.2   3.5   3.5 
+	4(Checkbox) 172.3  97.2   3.5   3.5 
+1.2.3(Mark) ease of use {1}
+	hard - easy
+	0(Checkbox) 141.4 102.0   3.5   3.5 
+	1(Checkbox) 149.1 102.0   3.5   3.5 
+	2(Checkbox) 156.9 102.0   3.5   3.5 
+	3(Checkbox) 164.6 102.0   3.5   3.5 
+	4(Checkbox) 172.3 102.0   3.5   3.5 
+2(Head) Choice Questions
+2.1(Choice) Which of the following Open Source Optical Mark Recognition software packages have you heard about? {1}
+	0(Checkbox)  15.1 139.7   3.5   3.5 SDAPS
+	1(Checkbox)  76.4 139.7   3.5   3.5 Auto Multiple Choice
+	2(Checkbox)  15.1 149.2   3.5   3.5 QueXF
+	3(Textbox )  90.3 144.3 104.6  12.7 Other:
+2.2(Head) Which software do you prefere for the following tasks?
+2.2.1(Choice) writing letters {1}
+	0(Checkbox) 123.0 172.5   3.5   3.5 \LaTeX
+	1(Checkbox) 141.3 172.5   3.5   3.5 LibreOffice
+	2(Checkbox) 167.8 172.5   3.5   3.5 Microsoft Word
+	3(Checkbox) 189.4 172.5   3.5   3.5 other
+2.2.2(Choice) creating tables {1}
+	0(Checkbox) 123.0 177.3   3.5   3.5 \LaTeX
+	1(Checkbox) 141.3 177.3   3.5   3.5 LibreOffice
+	2(Checkbox) 167.8 177.3   3.5   3.5 Microsoft Word
+	3(Checkbox) 189.4 177.3   3.5   3.5 other
+2.2.3(Choice) typesetting equations {1}
+	0(Checkbox) 123.0 182.0   3.5   3.5 \LaTeX
+	1(Checkbox) 141.3 182.0   3.5   3.5 LibreOffice
+	2(Checkbox) 167.8 182.0   3.5   3.5 Microsoft Word
+	3(Checkbox) 189.4 182.0   3.5   3.5 other
+3(Head) Freeform text fields
+3.1(Text) Do you have any comments? {1}
+	0(Textbox )  13.0 218.8 184.0  52.4 
+4(Head) Tricks and Features
+4.1(Mark) This is a range question {2}
+	lower bound - upper bound
+	0(Checkbox)  40.9  55.8   3.5   3.5 
+	1(Checkbox)  48.7  55.8   3.5   3.5 
+	2(Checkbox)  56.4  55.8   3.5   3.5 
+	3(Checkbox)  64.1  55.8   3.5   3.5 
+	4(Checkbox)  71.8  55.8   3.5   3.5 
+4.2(Choice) A choice question! {2}
+	0(Checkbox)  15.1  97.4   3.5   3.5 first choice
+	1(Checkbox)  15.1 102.2   3.5   3.5 second choice
+	2(Checkbox)  15.1 107.0   3.5   3.5 third choice
+	3(Textbox )  27.9 111.5  73.3  12.7 other:
+4.3(Mark) Another range question {2}
+	lower bound - upper bound
+	0(Checkbox) 134.7  55.8   3.5   3.5 
+	1(Checkbox) 142.4  55.8   3.5   3.5 
+	2(Checkbox) 150.1  55.8   3.5   3.5 
+	3(Checkbox) 157.8  55.8   3.5   3.5 
+	4(Checkbox) 165.6  55.8   3.5   3.5 
+4.4(Text) And a freeform text field {2}
+	0(Textbox ) 106.8  78.8  90.2  45.4 
+4.5(Text) And textboxes with a fixed height. This one is exactly 2\,cm high. {2}
+	0(Textbox )  13.0 155.4 184.0  20.7 
+
+------------------------------------------------------------------------------
+- SDAPS -- add
+------------------------------------------------------------------------------
+Beartbeite ./scanned/output.tif
+Fertig
+------------------------------------------------------------------------------
+- SDAPS -- recognize
+------------------------------------------------------------------------------
+1 Bogen
+0.561043 Sekunden pro Bogen
+------------------------------------------------------------------------------
+- SDAPS -- recognize
+------------------------------------------------------------------------------
+0 Bögen
+------------------------------------------------------------------------------
+- SDAPS -- report
+------------------------------------------------------------------------------
+------------------------------------------------------------------------------
+- SDAPS -- csvdata
+------------------------------------------------------------------------------
