@@ -115,10 +115,53 @@ function checkTextareas()
     	 eval(vCall);    	 
     }
 }	
+var vDOM_ID = new Array();
+vDOM_ID.push("tAuthor");
+vDOM_ID.push("tEMail");
+//vDOM_ID.push("");
+
+function saveLocalStorage() {
+     //localStorage.setItem("lastname", "Smith");
+    // Retrieve
+    //document.getElementById("result").innerHTML = localStorage.getItem("lastname");
+    //alert("vDOM_ID.length="+vDOM_ID.length);
+	for (var i=0;i < vDOM_ID.length; i++ ) {
+		var vID = vDOM_ID[i];
+		var vNode = document.getElementById(vID);
+		if (vNode) {
+			//alert(vID+"="+vNode.value);
+			localStorage.setItem(vID,vNode.value);
+		};
+	};
+};
+
+function loadLocalStorage() {
+	//alert("vDOM_ID.length="+vDOM_ID.length);
+	for (var i=0;i < vDOM_ID.length; i++ ) {
+		var vID = vDOM_ID[i];
+		var vValue = localStorage.getItem(vID);
+		if (vValue) {
+			var vNode = document.getElementById(vID);
+			vNode.value = vValue;
+		} else {
+			//alert("vID="+vID+" is undefined");
+		};
+	};
+}
 
 function postprocessQNode()
 //###### removes Comments beginning with "#" in the column of line
 {
+	if (typeof(Storage) != "undefined") {
+		// Store
+		//alert("LastName='"+localStorage.getItem("lastname")+"'");
+		//localStorage.setItem("lastname", "Smith");
+		// Retrieve
+		
+		//document.getElementById("result").innerHTML = localStorage.getItem("lastname");
+	} else {
+		document.getElementById("result").innerHTML = "Sorry, your browser does not support Web Storage...";
+	}
 	//----------------------------------------------------	
 	document.fInputForm.QNodeType.value = extractName(document.location.href).toUpperCase();
 	var vQNodeType  = document.fInputForm.QNodeType.value;
