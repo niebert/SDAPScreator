@@ -1,0 +1,147 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+  <meta http-equiv="Content-Type"
+ content="text/html; charset=utf8">
+</head>
+<body bgcolor="#ffffff" background="backgroundimage.jpg">
+
+<br>
+<br>
+<center>
+<table border="1">
+  <tbody>
+    <tr bgcolor="#ffffff">
+      <td>
+      <table border="0">
+        <tbody>
+          <tr bgcolor="#ffffff">
+            <td><br>
+            </td>
+            <td>
+            <center><br>
+            <br>
+            <font size="+2" face="Arial,Helvetica">
+            <b>Config Javascript Grammar Creator<br>
+            </font> </b>
+       		<font  face="Arial,Helvetica">
+            	<form name="fConfig">
+  <hr/>
+  <b>Config:</b> <input type="text" name="ConfigFile" value="config.thml">  
+  <hr/>
+  Folder of Grammar Files: <input type="text" name="GrammarFolder" value="grammar_de/">
+  <hr/>
+  Wizzard File for User Input: <input type="text" name="mainEditGrammar" value="paper">
+<hr/>
+  <!--------------------------------------------------------------------------------->
+  Grammar Files
+<!--------------------------------------------------------------------------------->
+<textarea name="GrammarFiles" cols="125" rows="3">
+|Paper Settings|paper||
+|Loop Replacements and Enumerate|loop|L|
+|Section Structure|sections||
+|Global Definitions|globaldefinitions||
+|Abstract|abstract||
+|Introduction|introduction||
+|Evaluation|evaluation||
+|Implementation|implementation||
+|Related Work|relatedwork||
+|Results|results||
+|Discussion|discussion||
+|Citations|citations||
+|Literature Database|literature||
+|Phrases|phrases||
+|Words|words||
+|FORMAT Latex Overwrite for Output|latex||
+</textarea>
+  <hr/>
+  Text Source
+<textarea name="textSource" cols="125" rows="3">
+Generated File at SYS_DATE_NOW
+*STARTNODE_SECTIONS
+</textarea>
+  <hr/>
+<!--------------------------------------------------------------------------------->
+  Text Generated
+<!--------------------------------------------------------------------------------->
+<textarea name="textGenerated" cols="125" rows="8">
+% Generated File at SYS_DATE_NOW 
+*STARTNODE_SECTIONS
+</textarea>
+  <hr/>
+<!--------------------------------------------------------------------------------->
+  Text Destination
+<!--------------------------------------------------------------------------------->
+<textarea name="textDestination" cols="125" rows="8">
+
+Copy Text here, you want to generate a grammar from. 
+
+</textarea>
+  <hr/>
+<!--------------------------------------------------------------------------------->
+  Text Grammar
+<!--------------------------------------------------------------------------------->
+<textarea name="textGrammar" cols="125" rows="8">
+
+</textarea>
+            	</form>
+<!--------------------------------------------------------------------------------->
+<script language="JavaScript1.2">
+
+	function loadConfigVariables () {
+	    top.vArticleGenerator.initGrammar();
+		top.title.document.fTitle.tConfigFile.value    = document.fConfig.ConfigFile.value;
+		top.title.document.fTitle.tGrammarFolder.value = document.fConfig.GrammarFolder.value;
+		top.vArticleGenerator.mainEditGrammar = document.fConfig.mainEditGrammar.value;
+		top.vArticleGenerator.textGrammar     = document.fConfig.textGrammar.value;
+		top.vArticleGenerator.textSource      = document.fConfig.textSource.value;
+		top.vArticleGenerator.textGenerated   = document.fConfig.textGenerated.value;
+		top.vArticleGenerator.textDestination = document.fConfig.textDestination.value;
+		top.vArticleGenerator.grammarfiles.folder = document.fConfig.GrammarFolder.value;
+		top.vArticleGenerator.grammarfiles.split_grammarfiles(document.fConfig.GrammarFiles.value);
+		
+	};
+    top.vArticleGenerator.setTimeout("top.main.loadConfigVariables ();"+
+    			   "top.vArticleGenerator.grammarfiles.check_preload()",100);	
+	
+//    top.vArticleGenerator.setTimeout("top.main.loadConfigVariables ();"+
+//    			   "top.main.document.location='./frames/empty.html'",200);	
+</script>
+<!--------------------------------------------------------------------------------->
+            </font>
+            </center>
+            <center>
+            <p></p>
+            	<form action="empty.html"> 
+          		<table border=0>
+            		<tr>
+            		<td>
+            			<input type="button" 
+          					value="Load Config" 
+          					onclick="loadConfigVariables();alert('Config Variables loaded!')">
+          			</td>
+          			<td> 
+            			<input type="submit"
+ 							value="Cancel" 
+ 							onclick="alert('Load Config - Cancelled!')">
+ 					</td>
+ 					</tr> 
+ 				</table>
+ 				</form> 				
+            </center>
+            <br>
+            <br>
+            </td>
+            <td>&nbsp;&nbsp;
+<!--- inner input table ---></td>
+          </tr>
+        </tbody>
+      </table>
+<!--- outer table ---> </td>
+    </tr>
+  </tbody>
+</table>
+<font size="2" face="Arial,Helvetica"><b>It is recommended to use the Browser Firefox with this Application. It is necessary to enable Javascript.</font>
+</center>
+</body>
+</html>

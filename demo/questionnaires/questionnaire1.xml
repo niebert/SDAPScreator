@@ -1,0 +1,38 @@
+<QUESTIONNAIRE>
+  <QNODE LOAD="Y">
+     <TYPE>1header</TYPE>
+     <VARIABLES>
+        <VARDEF NAME="VAR1" VALUE="default1"/>
+        <VARDEF NAME="VAR2" VALUE="default2"/>
+     </VARIABLES>
+     <OPTIONS>
+        <OPTDEF TEXT="Option 1" VALUE="Opt1"/>
+        <OPTDEF TEXT="Option 2" VALUE="Opt2"/>
+        <OPTDEF TEXT="Option 3" VALUE="Opt3"/>
+     </OPTIONS>
+  </QNODE>
+  <QNODE LOAD="Y">
+     <TYPE>qnode2</TYPE>
+     <VARIABLES>
+        <VARDEF NAME="VAR3" VALUE="default3"/>
+        <VARDEF NAME="VAR4" VALUE="default4"/>
+        <VARDEF NAME="VAR5" VALUE="default5"/>
+     </VARIABLES>
+     <OPTIONS>
+        <OPTDEF TEXT="Option 1" VALUE="Opt1"/>
+        <OPTDEF TEXT="Option 2" VALUE="Opt2"/>
+     </OPTIONS>
+  </QNODE>
+  <QNODE LOAD="Y">
+     <TYPE>qnode3</TYPE>
+     <VARIABLES>
+        <VARDEF NAME="VAR6" VALUE="default6"/>
+     </VARIABLES>
+     <OPTIONS>
+        <OPTDEF TEXT="Option 1" VALUE="Opt1"/>
+        <OPTDEF TEXT="Option 2" VALUE="Opt2"/>
+        <OPTDEF TEXT="Option 3" VALUE="Opt3"/>
+        <OPTDEF TEXT="Option 4" VALUE="Opt4"/>
+     </OPTIONS>
+  </QNODE>
+</QUESTIONNAIRE>
