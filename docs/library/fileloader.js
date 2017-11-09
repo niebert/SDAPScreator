@@ -444,7 +444,7 @@ function show_QNode_selector_FileLoader() {
 	//    vMyInstance.show_QNode_selector();
 	//-------------------------------------------------------
 	var vEval = "top.main.document.location.href = '"+this.folder+"/_qnodeselector.html'";
-	this.assSDAPScreator.setTimeout(vEval,100);
+	this.assSDAPScreator.setTimeout(vEval,500);
 }
 //----End of Method show_QNode_selector Definition
 
