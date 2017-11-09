@@ -33,7 +33,7 @@ while true; do
 	          ;;
 	   Print)  echo "Print  $sdapsCMD selected";;
 	   Import)  echo "Scanned Images are added to Project by $sdapsCMD"
-	   			echo "Selelect Import Format for Scanned Images"
+	   			echo "Select Import Format for Scanned Images"
 	   			scanFORMAT=`zenity --list \
 				--title="Select Answer for Remove" \
 				--column="" --column="Operation" \
