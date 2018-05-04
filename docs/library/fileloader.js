@@ -2,20 +2,20 @@
 //# Javascript Class: FileLoader()
 //#       SuperClass: Matrix
 //#   Class Filename: fileloader.js
-//#                
-//# Author of Class:      Engelbert Niehaus                    
-//# email:                niehaus@uni-landau.de                 
-//# created               4.2.2013             
-//# last modifications    4.2.2013             
+//#
+//# Author of Class:      Engelbert Niehaus
+//# email:                niehaus@uni-landau.de
+//# created               4.2.2013
+//# last modifications    4.2.2013
 //# GNU Public License - OpenSource
-//# created with JavaScript Class Generator by Engelbert Niehaus 
+//# created with JavaScript Class Generator by Engelbert Niehaus
 //#################################################################
 
 //---------------------------------------------------------------------
 //---Import this Class in HTML-File with
 // <SCRIPT LANGUAGE="JavaScript" SRC="myclass.js"> </SCRIPT>
 //---------------------------------------------------------------------
-//---Constructor of Class FileLoader() 
+//---Constructor of Class FileLoader()
 // Call the constructor for creating an instance of class FileLoader
 // by the following command in HTML-file that imports this class
 // var vMyInstance = new FileLoader();
@@ -69,7 +69,7 @@ function FileLoader () {
 //----Methodes---------------------------------------------------------
 // In the definition of the methods of  'FileLoader'
 // the function name is extended with '_FileLoader'.
-// This is done to avoid name space conflicts, if you overwrite a 
+// This is done to avoid name space conflicts, if you overwrite a
 // method 'my_method()' that was inherited from a superclass 'MySuperClass' e.g.
 //   SuperClass: MySuperClass.my_method()
 //   Class:       FileLoader.my_method()
@@ -78,19 +78,19 @@ function FileLoader () {
 // and
 //   function my_method_MySuperClass(...) { .....
 //---------------------------------------------------------------------
-//---Methods of Class "FileLoader()" defined as JS functions 
+//---Methods of Class "FileLoader()" defined as JS functions
 //---------------------------------------------------------------------
 
 //#################################################################
-//# Method: init_FileLoader 
+//# Method: init_FileLoader
 //#    used in Class: FileLoader
-//#                
-//# Comment: overwrites the init-method of Matrix()                       
 //#
-//# created               4.2.2013             
-//# last modifications    4.2.2013             
+//# Comment: overwrites the init-method of Matrix()
+//#
+//# created               4.2.2013
+//# last modifications    4.2.2013
 //#################################################################
-			
+
 function init_FileLoader() {
 	//---Method Class:  "FileLoader" defined in fileloader.js---
     this.preload_index = 0;
@@ -101,15 +101,15 @@ function init_FileLoader() {
 }
 
 //#################################################################
-//# Method: loadQNodeXML_FileLoader 
+//# Method: loadQNodeXML_FileLoader
 //#    used in Class: FileLoader
-//#                
-//# Comment: loades the loadXML-method of Matrix()                       
 //#
-//# created               4.2.2013             
-//# last modifications    4.2.2013             
+//# Comment: loades the loadXML-method of Matrix()
+//#
+//# created               4.2.2013
+//# last modifications    4.2.2013
 //#################################################################
-			
+
 function loadQNodeXML_FileLoader(pXMLstring) {
 	//---Method Class:  "FileLoader" defined in fileloader.js---
 	//alert("fileloader.js:113 - loadXML_FileLoader(pXMLstring)\n"+pXMLstring);
@@ -118,15 +118,15 @@ function loadQNodeXML_FileLoader(pXMLstring) {
 }
 
 //#################################################################
-//# Method: preload_index_OK_FileLoader 
+//# Method: preload_index_OK_FileLoader
 //#    used in Class: FileLoader
-//#                
-//# Comment: Checks if preload index in within the range                      
 //#
-//# created               4.2.2013             
-//# last modifications    4.2.2013             
+//# Comment: Checks if preload index in within the range
+//#
+//# created               4.2.2013
+//# last modifications    4.2.2013
 //#################################################################
-			
+
 function preload_index_OK_FileLoader() {
 	//---Method Class:  "FileLoader" defined in fileloader.js---
     return ((this.preload_index>0) && (this.preload_index <= this.rows));
@@ -134,18 +134,18 @@ function preload_index_OK_FileLoader() {
 
 
 //#################################################################
-//# Method: init_parent  
+//# Method: init_parent
 //#    used in Class: FileLoader
-//#                
-//# Comment:  pParent is the SDAPScreator.   
+//#
+//# Comment:  pParent is the SDAPScreator.
 //#           same functionality as setParentAss_FileLoader
-//# created               7.9.2014             
-//# last modifications    7.9.2014             
+//# created               7.9.2014
+//# last modifications    7.9.2014
 //#################################################################
 
 function init_parent_FileLoader(pParent) {
 	//----Debugging------------------------------------------
-	// The following alert-Command is useful for debugging 
+	// The following alert-Command is useful for debugging
 	//alert("fileloader.js:107 - init_parent()-Call")
 	//----Create Object/Instance of FileLoader----
 	//    var vMyInstance = new FileLoader();
@@ -158,16 +158,16 @@ function init_parent_FileLoader(pParent) {
 
 
 //#################################################################
-//# Method: check_preload_FileLoader 
+//# Method: check_preload_FileLoader
 //#    used in Class: FileLoader
-//#                
+//#
 //# Comment: increase preload_index and preload a single QNode File
 //#          that has the Preload-Tag "L" set in config.html
 //#
-//# created               4.2.2013             
-//# last modifications    4.2.2013             
+//# created               4.2.2013
+//# last modifications    4.2.2013
 //#################################################################
-			
+
 function check_preload_FileLoader() {
 	//---Method Class:  "FileLoader for QNodes " defined in fileloader.js---
 	//alert("fileloader.js:169 check_preload()\n Rows: "+this.rows+" preload_index="+this.preload_index);
@@ -181,16 +181,16 @@ function check_preload_FileLoader() {
 }
 
 //#################################################################
-//# Method: preload_FileLoader 
+//# Method: preload_FileLoader
 //#    used in Class: FileLoader
-//#                
+//#
 //# Comment: increase preload_index and preload a single Grammar File
 //#          that has the Preload-Tag "L" set in config.html
 //#
-//# created               4.2.2013             
-//# last modifications    4.2.2013             
+//# created               4.2.2013
+//# last modifications    4.2.2013
 //#################################################################
-			
+
 function preload_FileLoader() {
 	//---Method Class:  "FileLoader for QNodes " defined in fileloader.js---
 	//alert("fileloader.js:169 preload_FileLoader()\n Name: "+this.name);
@@ -205,7 +205,7 @@ function preload_FileLoader() {
 	this.next_index();
 	if (this.preload_index > this.rows) {
 		var vEval ="top.main.document.location.href = 'frames/postprocessingload.html'";
-		top.setTimeout(vEval,100);	
+		top.setTimeout(vEval,100);
 		//top.main.document.location='./frames/empty.html';
 		//alert("All grammars defined in config.html were preloaded!\nfileloader.js:149 - preload_FileLoader for QNodes ()");
 	} else if (this[this.preload_index][3] == "W") {
@@ -213,7 +213,7 @@ function preload_FileLoader() {
 		this[this.preload_index][3] = "Wizzard";
 		alert("Start Wizzard: "+this[this.preload_index][2] + ".html\nfileloader.js:188 - preload()");
 		top.main.document.location = this.folder + this[this.preload_index][2] + ".html";
-	} else { 
+	} else {
 	    this.assSDAPScreator.wizzard.active = 0;
 		this[this.preload_index][3] = "Loaded";
 		//alert("preload_FileLoader():256 - Load: "+this[this.preload_index][2] + ".html");
@@ -221,20 +221,20 @@ function preload_FileLoader() {
 	};
 }
 
-						
+
 //#################################################################
-//# Method: next_index  
+//# Method: next_index
 //#    used in Class: FileLoader
-//#                
-//# Comment:                        
 //#
-//# created               14.10.2014             
-//# last modifications    14.10.2014             
+//# Comment:
+//#
+//# created               14.10.2014
+//# last modifications    14.10.2014
 //#################################################################
 
 function next_index_FileLoader() {
 	//----Debugging------------------------------------------
-	// The following alert-Command is useful for debugging 
+	// The following alert-Command is useful for debugging
 	//alert("fileloader.js:next_index()-Call")
 	//----Create Object/Instance of FileLoader----
 	//    var vMyInstance = new FileLoader();
@@ -242,7 +242,7 @@ function next_index_FileLoader() {
 	//-------------------------------------------------------
 	this.preload_index++;
 	//if (this.preload_index <= this.rows) alert("fileloader.js:200 preload_FileLoader()\nRows="+this.rows+"\nFilename: "+this[this.preload_index][2]+"\nLOAD="+this[this.preload_index][3]);
-	while ((this.preload_index <= this.rows) 
+	while ((this.preload_index <= this.rows)
 		&& (this[this.preload_index][3] != "L")
 		&& (this[this.preload_index][3] != "W")
 		) {
@@ -251,20 +251,20 @@ function next_index_FileLoader() {
 
 }
 //----End of Method next_index Definition
-						
+
 //#################################################################
-//# Method: get_next_filename  
+//# Method: get_next_filename
 //#    used in Class: FileLoader
-//#                
-//# Comment:                        
 //#
-//# created               14.10.2014             
-//# last modifications    14.10.2014             
+//# Comment:
+//#
+//# created               14.10.2014
+//# last modifications    14.10.2014
 //#################################################################
 
 function get_next_filename_FileLoader() {
 	//----Debugging------------------------------------------
-	// The following alert-Command is useful for debugging 
+	// The following alert-Command is useful for debugging
 	//alert("fileloader.js:get_next_filename()-Call")
 	//----Create Object/Instance of FileLoader----
 	//    var vMyInstance = new FileLoader();
@@ -278,7 +278,7 @@ function get_next_filename_FileLoader() {
 		this.assSDAPScreator.wizzard.active = 1;
 		this[this.preload_index][3] = "Wizzard";
 		vReturn = "frames/wizzardqnode.html";
-	} else { 
+	} else {
 	    this.assSDAPScreator.wizzard.active = 0;
 		this[this.preload_index][3] = "Loaded";
 		//alert("preload_FileLoader():256 - Load: "+this[this.preload_index][2] + ".html");
@@ -288,20 +288,20 @@ function get_next_filename_FileLoader() {
 }
 //----End of Method get_next_filename Definition
 
-						
+
 //#################################################################
-//# Method: get_Q_TITLE  
+//# Method: get_Q_TITLE
 //#    used in Class: FileLoader
-//#                
-//# Comment:                        
 //#
-//# created               14.10.2014             
-//# last modifications    14.10.2014             
+//# Comment:
+//#
+//# created               14.10.2014
+//# last modifications    14.10.2014
 //#################################################################
 
 function get_Q_TITLE_FileLoader() {
 	//----Debugging------------------------------------------
-	// The following alert-Command is useful for debugging 
+	// The following alert-Command is useful for debugging
 	//alert("fileloader.js:get_Q_TITLE()-Call")
 	//----Create Object/Instance of FileLoader----
 	//    var vMyInstance = new FileLoader();
@@ -317,18 +317,18 @@ function get_Q_TITLE_FileLoader() {
 //----End of Method get_Q_TITLE Definition
 
 //#################################################################
-//# Method: get_VARIABLES  
+//# Method: get_VARIABLES
 //#    used in Class: FileLoader
-//#                
-//# Comment:                        
 //#
-//# created               14.10.2014             
-//# last modifications    14.10.2014             
+//# Comment:
+//#
+//# created               14.10.2014
+//# last modifications    14.10.2014
 //#################################################################
 
 function get_VARIABLES_FileLoader() {
 	//----Debugging------------------------------------------
-	// The following alert-Command is useful for debugging 
+	// The following alert-Command is useful for debugging
 	//alert("fileloader.js:get_VARIABLES()-Call")
 	//----Create Object/Instance of FileLoader----
 	//    var vMyInstance = new FileLoader();
@@ -344,18 +344,18 @@ function get_VARIABLES_FileLoader() {
 //----End of Method get_VARIABLES Definition
 
 //#################################################################
-//# Method: get_OPTIONS  
+//# Method: get_OPTIONS
 //#    used in Class: FileLoader
-//#                
-//# Comment:                        
 //#
-//# created               14.10.2014             
-//# last modifications    14.10.2014             
+//# Comment:
+//#
+//# created               14.10.2014
+//# last modifications    14.10.2014
 //#################################################################
 
 function get_OPTIONS_FileLoader() {
 	//----Debugging------------------------------------------
-	// The following alert-Command is useful for debugging 
+	// The following alert-Command is useful for debugging
 	//alert("fileloader.js:get_OPTIONS()-Call")
 	//----Create Object/Instance of FileLoader----
 	//    var vMyInstance = new FileLoader();
@@ -374,39 +374,39 @@ function get_OPTIONS_FileLoader() {
 //#################################################################
 //# Method: setParentAss
 //#    used in Class: FileLoader
-//#                
-//# Comment:                        
 //#
-//# created               4.2.2013             
-//# last modifications    4.2.2013             
+//# Comment:
+//#
+//# created               4.2.2013
+//# last modifications    4.2.2013
 //#################################################################
 
 function setParentAss_FileLoader(pSDAPScreator) {
 	//----Debugging------------------------------------------
-	// The following alert-Command is useful for debugging 
+	// The following alert-Command is useful for debugging
 	//alert("fileloader.js:84 - setParentAss(pSDAPScreator)-Call")
 	//----Create Object/Instance of FileLoader----
 	//    var vMyInstance = new FileLoader();
 	//    vMyInstance.setParentAss(pSDAPScreator);
 	this.assSDAPScreator = pSDAPScreator;
-	
+
 }
 //----End of Method split_qnodefile Definition
 
-			
+
 //#################################################################
-//# Method: split_qnodefiles  
+//# Method: split_qnodefiles
 //#    used in Class: FileLoader
-//#                
-//# Comment:                        
 //#
-//# created               4.2.2013             
-//# last modifications    4.2.2013             
+//# Comment:
+//#
+//# created               4.2.2013
+//# last modifications    4.2.2013
 //#################################################################
 
 function split_qnodefiles_FileLoader(pTextAreaString) {
 	//----Debugging------------------------------------------
-	// The following alert-Command is useful for debugging 
+	// The following alert-Command is useful for debugging
 	//alert("fileloader.js:74 - split_qnodefiles("+pTextAreaString+")-Call")
 	//----Create Object/Instance of FileLoader----
 	//    var vMyInstance = new FileLoader();
@@ -423,27 +423,27 @@ function split_qnodefiles_FileLoader(pTextAreaString) {
 	//alert("fileloader.js:79 - split_qnodefile() length FileLoader='"+this.rows+"'")
 }
 //----End of Method split_qnodefile Definition
-									
-						
+
+
 //#################################################################
-//# Method: show_QNode_selector  
+//# Method: show_QNode_selector
 //#    used in Class: FileLoader
-//#                
-//# Comment:                        
 //#
-//# created               16.10.2014             
-//# last modifications    16.10.2014             
+//# Comment:
+//#
+//# created               16.10.2014
+//# last modifications    16.10.2014
 //#################################################################
 
 function show_QNode_selector_FileLoader() {
 	//----Debugging------------------------------------------
-	// The following alert-Command is useful for debugging 
+	// The following alert-Command is useful for debugging
 	//alert("fileloader.js:show_QNode_selector()-Call")
 	//----Create Object/Instance of FileLoader----
 	//    var vMyInstance = new FileLoader();
 	//    vMyInstance.show_QNode_selector();
 	//-------------------------------------------------------
-	var vEval = "top.main.document.location.href = '"+this.folder+"/_qnodeselector.html'";
+	var vEval = "top.main.document.location.href = '"+this.folder+"1qnodeselector.html'";
 	this.assSDAPScreator.setTimeout(vEval,500);
 }
 //----End of Method show_QNode_selector Definition
@@ -451,15 +451,15 @@ function show_QNode_selector_FileLoader() {
 
 
 //#################################################################
-//# Method: show_QNode_links_FileLoader 
+//# Method: show_QNode_links_FileLoader
 //#    used in Class: FileLoader
-//#                
-//# Comment: overwrites the show-method of Matrix()                       
 //#
-//# created               4.2.2013             
-//# last modifications    4.2.2013             
+//# Comment: overwrites the show-method of Matrix()
+//#
+//# created               4.2.2013
+//# last modifications    4.2.2013
 //#################################################################
-			
+
 function show_QNode_links_FileLoader() {
 	//---Method Class:  "FileLoader for QNodes " defined in fileloader.js---
 	//---Overwrites Method from "Matrix" defined in matrix.js---
@@ -479,17 +479,17 @@ function show_QNode_links_FileLoader() {
 	//---TABLE TAIL---
 	vContentHTML +="</table>";
 	//alert("fileloader.js:108 - m_show_FileLoader() this.rows="+this.rows);
-	return vContentHTML; 
+	return vContentHTML;
 }
 
 //#################################################################
-//# Method: set_loaded_FileLoader 
+//# Method: set_loaded_FileLoader
 //#    used in Class: FileLoader
-//#                
-//# Comment: set QNode file as loaded 
 //#
-//# created               4.2.2013             
-//# last modifications    4.2.2013             
+//# Comment: set QNode file as loaded
+//#
+//# created               4.2.2013
+//# last modifications    4.2.2013
 //#################################################################
 
 function set_loaded_FileLoader(pFilename) {
@@ -507,13 +507,13 @@ function set_loaded_FileLoader(pFilename) {
 }
 
 //#################################################################
-//# Method: set_unloaded_FileLoader 
+//# Method: set_unloaded_FileLoader
 //#    used in Class: FileLoader
-//#                
-//# Comment: set QNode  file as loaded 
 //#
-//# created               4.2.2013             
-//# last modifications    4.2.2013             
+//# Comment: set QNode  file as loaded
+//#
+//# created               4.2.2013
+//# last modifications    4.2.2013
 //#################################################################
 
 
@@ -528,13 +528,13 @@ function set_unloaded_FileLoader(pFilename) {
 	};
 }
 //#################################################################
-//# Method: unloadQNodes_FileLoader 
+//# Method: unloadQNodes_FileLoader
 //#    used in Class: FileLoader
-//#                
-//# Comment: set all QNode files as unloaded 
 //#
-//# created               4.2.2013             
-//# last modifications    4.2.2013             
+//# Comment: set all QNode files as unloaded
+//#
+//# created               4.2.2013
+//# last modifications    4.2.2013
 //#################################################################
 
 
@@ -542,38 +542,36 @@ function unloadQNodes_FileLoader() {
 	//---Method Class:  "FileLoader for QNodes " defined in fileloader.js---
 	//alert("fileloader.js:191 set_unloaded_FileLoader()\n Name: "+this.name);
 	// this.preload_index = 100;
-	this.preload_index = 0;	
+	this.preload_index = 0;
 	for (var i=1; i<=this.rows; i++) {
 		this[i][3] = "";
 	};
 	alert("fileloader.js:283 - unloadQNodes() - ToDo - Remove Qnodes in Questionnaire");
 }
 
-						
+
 //#################################################################
-//# Method: appendChildLoader  
+//# Method: appendChildLoader
 //#    used in Class: FileLoader
-//#                
-//# Comment:                        
 //#
-//# created               11.10.2014             
-//# last modifications    11.10.2014             
+//# Comment:
+//#
+//# created               11.10.2014
+//# last modifications    11.10.2014
 //#################################################################
 
 function appendChildLoader_FileLoader(pObjectPath) {
 	//----Debugging------------------------------------------
-	// The following alert-Command is useful for debugging 
+	// The following alert-Command is useful for debugging
 	alert("fileloader.js:325 - appendChildLoader(pObjectPath)-Call");
 	//----Create Object/Instance of FileLoader----
 	//    var vMyInstance = new FileLoader();
 	//    vMyInstance.appendChildLoader(pObjectPath);
 	//-------------------------------------------------------
-	
+
 	//>>>> INSERT YOUR CODE HERE <<<<<
 
-    	
+
 
 }
 //----End of Method appendChildLoader Definition
-
-		
