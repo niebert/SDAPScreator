@@ -1,0 +1,95 @@
+<HTML>
+<HEAD>
+   <TITLE>QNode Selector - SDAPScreator</TITLE>
+   <meta http-equiv="Content-Type" content="text/html; charset=utf8">
+
+<!-- 
+################################################# 
+# QNode Selector - SDAPScreator						
+# Javascript Software Package  				 
+# email: niehaus@uni-landau.de		
+# created               8.8.2014
+# last modifications    8.8.2014
+# Author:  Engelbert Niehaus
+# GNU Public License 
+################################################# 
+-->
+</HEAD>
+<BODY bgcolor="#EEEEEE">
+<center>
+<br>
+<br>
+<center>
+<table border="1" width="86%">
+  <tbody>
+    <tr bgcolor="#ffffff">
+      <td>
+      <table border="0">
+        <tbody>
+          <tr bgcolor="#ffffff">
+            <td><br>
+            </td>
+            <td>
+            <center><br>
+<font face="Arial,Helvetica">
+<!---Button: QNode Selector ------- Button Link: qnodeselector.html ----->
+ <SCRIPT LANGUAGE="JavaScript">
+    var vQNodes = new Array();
+    var vDisplayPath = "/qnodes/";
+    if (top.vSDAPcreator) {
+    	vDisplayPath = "/"+top.vSDAPcreator.aFileLoader.folder;
+    };
+    document.write("<h1>QNode Selector <tt>"+vDisplayPath+"</tt></h1>");
+</SCRIPT>
+ </center>
+ <table border=0 align="center">
+ <SCRIPT LANGUAGE="JavaScript">
+    var vQNodes = new Array();
+    //var vPath = "../qnodes/";
+    var vPath = "";
+    //-----------------------------------------------------------------
+    //-------INSERT Available QNodes for Questionnaire HERE------------
+    //-----------------------------------------------------------------
+    vQNodes.push(new Array("Section","section"));
+    vQNodes.push(new Array("Textbox 1 Row","textbox"));
+    vQNodes.push(new Array("Single Question - 5 Lower Bound, Upper Bound","single5select"));
+    vQNodes.push(new Array("Single Question - 4 Short Option, 1 Long Option and Other","short4long1other"));
+    vQNodes.push(new Array("Group Question - 2 Yes or No Label","group2yesno"));
+    vQNodes.push(new Array("Group Question - 5 Lower Bound, Upper Bound","group5select"));
+    vQNodes.push(new Array("Decimal Number - Encode an decimal number","decimal"));
+    vQNodes.push(new Array("Lastname Firstname","name"));
+    vQNodes.push(new Array("Lastname Firstname Student-ID ","name_studid"));
+    vQNodes.push(new Array("Lastname Firstname e-Mail Student-ID ","name_mail_studid"));
+    vQNodes.push(new Array("Student ID - Encode an integer number","studentid"));    
+    vQNodes.push(new Array("My QNode 1","qnode1"));
+    vQNodes.push(new Array("My QNode 2","qnode2"));
+    vQNodes.push(new Array("My QNode 3","qnode3"));
+    vQNodes.push(new Array("My QNode 4","qnode4"));
+    vQNodes.push(new Array("My QNode 5","qnode5"));
+    vQNodes.push(new Array("My QNode 6","qnode6"));
+    vQNodes.push(new Array("My QNode 7","qnode7"));
+    vQNodes.push(new Array("My QNode 8","qnode8"));
+    vQNodes.push(new Array("My QNode 9","qnode9"));
+    vQNodes.push(new Array("My QNode 10","qnode10"));
+    //-----------------------------------------------------------------
+ 	for (var i=0; i<vQNodes.length; i++) {
+        document.write("<tr><td>&nbsp;-</td>");
+        document.write("<td><a href=\"javascript:top.vSDAPScreator.loadQNode('"+vPath+vQNodes[i][1]+"')\">"+vQNodes[i][0]+"</a> ")
+        document.write("</td><td><tt> ("+vQNodes[i][1]+".html)</tt></td></tr>");
+	}; 	
+ </SCRIPT>
+ </table>
+	</font>
+	<!--- inner input table ---></td>
+          </tr>
+        </tbody>
+      </table>
+      &nbsp;&nbsp;
+<!--- outer table ---> </td>
+    </tr>
+  </tbody>
+</table>
+
+</BODY>
+</HTML>	
+	

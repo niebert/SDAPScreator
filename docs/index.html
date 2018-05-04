@@ -3,64 +3,64 @@
 <title>
 	SDAPScreator
 </title>
-<!-- 
-################################################# 
-# SDAPScreator  								
-# Javascript Software Package  				 
-# email: niehaus@uni-landau.de		
+<!--
+#################################################
+# SDAPScreator
+# Javascript Software Package
+# email: niehaus@uni-landau.de
 # created               8.8.2014
 # last modifications    8.8.2014
-# Author:  Engelbert Niehaus, Joerg Rapp 
-# GNU Public License 
-################################################# 
+# Author:  Engelbert Niehaus, Joerg Rapp
+# GNU Public License
+#################################################
 -->
   <meta http-equiv="Content-Type" content="text/html; charset=utf8">
 
-<!-----IMPORT OF LIBRARY FOR CLASS: String/URL_Object ----->
+<!---IMPORT OF LIBRARY FOR CLASS: String/URL_Object -->
 <SCRIPT LANGUAGE="JavaScript" SRC="library/string.js">
 </SCRIPT>
-<!-----IMPORT OF LIBRARY FOR CLASS: Matrix ----->
+<!---IMPORT OF LIBRARY FOR CLASS: Matrix -->
 <SCRIPT LANGUAGE="JavaScript" SRC="library/matrix.js">
 </SCRIPT>
-<!-----IMPORT OF LIBRARY FOR CLASS: Wizzard ----->
+<!---IMPORT OF LIBRARY FOR CLASS: Wizzard -->
 <SCRIPT LANGUAGE="JavaScript" SRC="library/wizzard.js">
 </SCRIPT>
-<!-----IMPORT OF LIBRARY FOR CLASS: QTemplates ----->
+<!-- IMPORT OF LIBRARY FOR CLASS: QTemplates -->
 <SCRIPT LANGUAGE="JavaScript" SRC="library/qtemplates.js">
 </SCRIPT>
-<!-----IMPORT OF LIBRARY FOR CLASS: QNode ----->
+<!---IMPORT OF LIBRARY FOR CLASS: QNode -->
 <SCRIPT LANGUAGE="JavaScript" SRC="library/qnode.js">
 </SCRIPT>
-<!-----IMPORT OF LIBRARY FOR CLASS: QNodeList ----->
+<!---IMPORT OF LIBRARY FOR CLASS: QNodeList -->
 <SCRIPT LANGUAGE="JavaScript" SRC="library/qnodelist.js">
 </SCRIPT>
-<!-----IMPORT OF LIBRARY FOR CLASS: Questionnaire ----->
+<!---IMPORT OF LIBRARY FOR CLASS: Questionnaire -->
 <SCRIPT LANGUAGE="JavaScript" SRC="library/questionnaire.js">
 </SCRIPT>
-<!-----IMPORT OF LIBRARY FOR CLASS: XMLparser ----->
+<!---IMPORT OF LIBRARY FOR CLASS: XMLparser -->
 <SCRIPT LANGUAGE="JavaScript" SRC="library/xmlparser.js">
 </SCRIPT>
-<!-----IMPORT OF LIBRARY FOR CLASS: FileLoader ----->
+<!---IMPORT OF LIBRARY FOR CLASS: FileLoader -->
 <SCRIPT LANGUAGE="JavaScript" SRC="library/fileloader.js">
 </SCRIPT>
-<!-----IMPORT OF LIBRARY FOR CLASS: Generate All Objects ----->
+<!---IMPORT OF LIBRARY FOR CLASS: Generate All Objects -->
 <SCRIPT LANGUAGE="JavaScript" SRC="library/objectgenerate.js">
 </SCRIPT>
 
-<!----Create Objects------------------------->
+<!--Create Objects---------------------->
 <SCRIPT LANGUAGE="JavaScript">
 
 //#################################################################
 //# Javascript Class: SDAPScreator()
-//#       
+//#
 //#   Class Filename: index.html
-//#                
-//# Author of Class:      Joerg Rapp                 
-//# email:                rapp@uni-landau.de                 
-//# created               14.10.2014             
-//# last modifications    14.10.2014             
+//#
+//# Author of Class:      Joerg Rapp
+//# email:                rapp@uni-landau.de
+//# created               14.10.2014
+//# last modifications    14.10.2014
 //# GNU Public License - OpenSource
-//# created with JavaScript Class Generator by Engelbert Niehaus 
+//# created with JavaScript Class Generator by Engelbert Niehaus
 //#################################################################
 
 function SDAPScreator() {
@@ -105,18 +105,23 @@ function SDAPScreator() {
 	this.Export_Latex = Export_Latex_SDAPScreator;
 	this.Export_HTML = Export_HTML_SDAPScreator;
 	this.Debug = Debug_SDAPScreator;
+
+	this.load_default = function (pQuestionnaire) {
+		pQuestionnaire = pQuestionnaire || 'questionnaire0root.html';
+		top.main.document.location='questionnaires/'+pQuestionnaire;
+	}
 }
 
 //---------------------------------------------------------------------
 //----Attributes-------------------------------------------------------
 // If you want to access the attributes of SDAPScreator, use
-// the attribute name with a leading "this.", e.g. 
+// the attribute name with a leading "this.", e.g.
 // this.myattrib3 = "Hello World";
 //---------------------------------------------------------------------
 //----Methodes---------------------------------------------------------
 // In the definition of the methods of  'SDAPScreator'
 // the function name is extended with '_SDAPScreator'.
-// This is done to avoid name space conflicts, if you overwrite a 
+// This is done to avoid name space conflicts, if you overwrite a
 // method 'my_method()' that was inherited from a superclass 'MySuperClass' e.g.
 //   SuperClass: MySuperClass.my_method()
 //   Class:       SDAPScreator.my_method()
@@ -125,23 +130,23 @@ function SDAPScreator() {
 // and
 //   function my_method_MySuperClass(...) { .....
 //---------------------------------------------------------------------
-//---Methods of Class "SDAPScreator()" defined as JS functions 
-//---------------------------------------------------------------------						
+//---Methods of Class "SDAPScreator()" defined as JS functions
+//---------------------------------------------------------------------
 
-						
+
 //#################################################################
-//# Method: init  
+//# Method: init
 //#    used in Class: SDAPScreator
-//#                
-//# Comment:                        
 //#
-//# created               15.10.2014             
-//# last modifications    15.10.2014             
+//# Comment:
+//#
+//# created               15.10.2014
+//# last modifications    15.10.2014
 //#################################################################
 
 function init_SDAPScreator() {
 	//----Debugging------------------------------------------
-	// The following alert-Command is useful for debugging 
+	// The following alert-Command is useful for debugging
 	//alert("sdapscreator.js:init()-Call")
 	//----Create Object/Instance of SDAPScreator----
 	//    var vMyInstance = new SDAPScreator();
@@ -158,18 +163,18 @@ function init_SDAPScreator() {
 
 
 //#################################################################
-//# Method: editQNode  
+//# Method: editQNode
 //#    used in Class: SDAPScreator
-//#                
-//# Comment:                        
 //#
-//# created               14.10.2014             
-//# last modifications    14.10.2014             
+//# Comment:
+//#
+//# created               14.10.2014
+//# last modifications    14.10.2014
 //#################################################################
 
 function editQNode_SDAPScreator(pObjectPath,pCall) {
 	//----Debugging------------------------------------------
-	// The following alert-Command is useful for debugging 
+	// The following alert-Command is useful for debugging
 	//alert("sdapscreator.js:167 - CALL \n  editQNode('"+pObjectPath+"') ");
 	//----Create Object/Instance of SDAPScreator----
 	//    var vMyInstance = new SDAPScreator();
@@ -188,18 +193,18 @@ function editQNode_SDAPScreator(pObjectPath,pCall) {
 //----End of Method editQNode Definition
 
 //#################################################################
-//# Method: set_form_templates  
+//# Method: set_form_templates
 //#    used in Class: SDAPScreator
-//#                
-//# Comment:                        
 //#
-//# created               14.10.2014             
-//# last modifications    14.10.2014             
+//# Comment:
+//#
+//# created               14.10.2014
+//# last modifications    14.10.2014
 //#################################################################
 
 function set_form_templates_SDAPScreator() {
 	//----Debugging------------------------------------------
-	// The following alert-Command is useful for debugging 
+	// The following alert-Command is useful for debugging
 	//alert("sdapscreator.js:199 - CALL \n  set_form_templates() ");
 	//----Create Object/Instance of SDAPScreator----
 	//    var vMyInstance = new SDAPScreator();
@@ -215,18 +220,18 @@ function set_form_templates_SDAPScreator() {
 //----End of Method editQNode Definition
 
 //#################################################################
-//# Method: saveQNode  
+//# Method: saveQNode
 //#    used in Class: SDAPScreator
-//#                
-//# Comment:                        
 //#
-//# created               14.10.2014             
-//# last modifications    14.10.2014             
+//# Comment:
+//#
+//# created               14.10.2014
+//# last modifications    14.10.2014
 //#################################################################
 
 function saveQNode_SDAPScreator(pObjectPath) {
 	//----Debugging------------------------------------------
-	// The following alert-Command is useful for debugging 
+	// The following alert-Command is useful for debugging
 	//alert("sdapscreator.js:193 - CALL \n  saveQNode('"+pObjectPath+"') ");
 	//----Create Object/Instance of SDAPScreator----
 	//    var vMyInstance = new SDAPScreator();
@@ -241,18 +246,18 @@ function saveQNode_SDAPScreator(pObjectPath) {
 //----End of Method saveQNode Definition
 
 //#################################################################
-//# Method: updateQNodeVariables  
+//# Method: updateQNodeVariables
 //#    used in Class: SDAPScreator
-//#                
-//# Comment:                        
 //#
-//# created               14.10.2014             
-//# last modifications    14.10.2014             
+//# Comment:
+//#
+//# created               14.10.2014
+//# last modifications    14.10.2014
 //#################################################################
 
 function updateQNodeVariables_SDAPScreator(pSaveHash) {
 	//----Debugging------------------------------------------
-	// The following alert-Command is useful for debugging 
+	// The following alert-Command is useful for debugging
 	//alert("sdapscreator.js:219 - CALL \n  updateQNodeVariables(pSaveHash) ");
 	//----Create Object/Instance of SDAPScreator----
 	//    var vMyInstance = new SDAPScreator();
@@ -266,18 +271,18 @@ function updateQNodeVariables_SDAPScreator(pSaveHash) {
 
 
 //#################################################################
-//# Method: getEdit_Template_HTML  
+//# Method: getEdit_Template_HTML
 //#    used in Class: SDAPScreator
-//#                
-//# Comment:                        
 //#
-//# created               14.10.2014             
-//# last modifications    14.10.2014             
+//# Comment:
+//#
+//# created               14.10.2014
+//# last modifications    14.10.2014
 //#################################################################
 
 function getEdit_Template_HTML_SDAPScreator() {
 	//----Debugging------------------------------------------
-	// The following alert-Command is useful for debugging 
+	// The following alert-Command is useful for debugging
 	//alert("sdapscreator.js:190 - CALL \n  getEdit_Template_HTML() ");
 	//----Create Object/Instance of SDAPScreator----
 	//    var vMyInstance = new SDAPScreator();
@@ -286,29 +291,29 @@ function getEdit_Template_HTML_SDAPScreator() {
 	//this.aQNodePath = "this.aQuestionnaire.aQuestions";
 	//this.aImportCall = this.aQNodePath+".importQNode(pQNode)";
 	//this.aEditCall   = this.aQNodePath+".getEdit_Template_HTML()";
-	var vReturn = "";    	
+	var vReturn = "";
 	var vEval = "vReturn = "+ this.aEditCall;
 	//alert("sdapscreator.js:200 - CALL \n  getEdit_Template_HTML()\nvEval.\n"+vEval);
 	eval(vEval);
-	
+
 	return vReturn;
 }
 //----End of Method getEdit_Template_HTML Definition
 
 
 //#################################################################
-//# Method: addNewQNode  
+//# Method: addNewQNode
 //#    used in Class: SDAPScreator
-//#                
-//# Comment:                        
 //#
-//# created               14.10.2014             
-//# last modifications    14.10.2014             
+//# Comment:
+//#
+//# created               14.10.2014
+//# last modifications    14.10.2014
 //#################################################################
 
 function addNewQNode_SDAPScreator(pImportCall) {
 	//----Debugging------------------------------------------
-	// The following alert-Command is useful for debugging 
+	// The following alert-Command is useful for debugging
 	//alert("sdapscreator.js:152 - CALL \n  addNewQNode('"+pImportCall+"') ");
 	//----Create Object/Instance of SDAPScreator----
 	//    var vMyInstance = new SDAPScreator();
@@ -316,25 +321,25 @@ function addNewQNode_SDAPScreator(pImportCall) {
 	//-------------------------------------------------------
 	this.aImportCall = pImportCall;
 	this.aFileLoader.show_QNode_selector();
-    	
+
 
 }
 //----End of Method addNewQNode Definition
 
 
 //#################################################################
-//# Method: importQNode  
+//# Method: importQNode
 //#    used in Class: SDAPScreator
-//#                
-//# Comment:                        
 //#
-//# created               7.10.2014             
-//# last modifications    7.10.2014             
+//# Comment:
+//#
+//# created               7.10.2014
+//# last modifications    7.10.2014
 //#################################################################
 
 function importQNode_SDAPScreator(pQNode) {
 	//----Debugging------------------------------------------
-	// The following alert-Command is useful for debugging 
+	// The following alert-Command is useful for debugging
 	//alert("sdapscreator.js:importQNode()-Call")
 	//----Create Object/Instance of SDAPScreator----
 	//    var vMyInstance = new SDAPScreator();
@@ -347,18 +352,18 @@ function importQNode_SDAPScreator(pQNode) {
 }
 
 //#################################################################
-//# Method: deleteQNode  
+//# Method: deleteQNode
 //#    used in Class: SDAPScreator
-//#                
-//# Comment:                        
 //#
-//# created               7.10.2014             
-//# last modifications    7.10.2014             
+//# Comment:
+//#
+//# created               7.10.2014
+//# last modifications    7.10.2014
 //#################################################################
 
 function deleteQNode_SDAPScreator(pQNodeListPath,pi) {
 	//----Debugging------------------------------------------
-	// The following alert-Command is useful for debugging 
+	// The following alert-Command is useful for debugging
 	//alert("sdapscreator.js:325 - deleteQNode('"+pQNodeListPath+"',"+pi+")-Call");
 	//----Create Object/Instance of SDAPScreator----
 	//    var vMyInstance = new SDAPScreator();
@@ -380,18 +385,18 @@ function deleteQNode_SDAPScreator(pQNodeListPath,pi) {
 }
 
 //#################################################################
-//# Method: moveQNode  
+//# Method: moveQNode
 //#    used in Class: SDAPScreator
-//#                
-//# Comment:                        
 //#
-//# created               7.10.2014             
-//# last modifications    7.10.2014             
+//# Comment:
+//#
+//# created               7.10.2014
+//# last modifications    7.10.2014
 //#################################################################
 
 function moveQNode_SDAPScreator(pQNodeListPath,pi,pDestination) {
 	//----Debugging------------------------------------------
-	// The following alert-Command is useful for debugging 
+	// The following alert-Command is useful for debugging
 	//alert("sdapscreator.js:325 - moveQNode('"+pQNodeListPath+"',"+pi+")-Call");
 	//----Create Object/Instance of SDAPScreator----
 	//    var vMyInstance = new SDAPScreator();
@@ -416,18 +421,18 @@ function moveQNode_SDAPScreator(pQNodeListPath,pi,pDestination) {
 }
 
 //#################################################################
-//# Method: loadQNode  
+//# Method: loadQNode
 //#    used in Class: SDAPScreator
-//#                
-//# Comment:                        
 //#
-//# created               7.10.2014             
-//# last modifications    7.10.2014             
+//# Comment:
+//#
+//# created               7.10.2014
+//# last modifications    7.10.2014
 //#################################################################
 
 function loadQNode_SDAPScreator(pFilename) {
 	//----Debugging------------------------------------------
-	// The following alert-Command is useful for debugging 
+	// The following alert-Command is useful for debugging
 	//alert("SDAPScreator:237 - loadQNode('"+pFilename+")\nCALL='"+this.aImportCall+"'");
 	//----Create Object/Instance of SDAPScreator----
 	//    var vMyInstance = new SDAPScreator();
@@ -438,42 +443,42 @@ function loadQNode_SDAPScreator(pFilename) {
 	//alert("index.html:70 - Call: "+vCall+" will be called!\nStored in top.vSDAPScreator.aQNodePath");
     //eval(vCall);
 }
-						
+
 //#################################################################
-//# Method: updateQuestionnaire  
+//# Method: updateQuestionnaire
 //#    used in Class: SDAPScreator
-//#                
-//# Comment:                        
 //#
-//# created               7.10.2014             
-//# last modifications    7.10.2014             
+//# Comment:
+//#
+//# created               7.10.2014
+//# last modifications    7.10.2014
 //#################################################################
 
 function updateQuestionnaire_SDAPScreator() {
 	//----Debugging------------------------------------------
-	// The following alert-Command is useful for debugging 
+	// The following alert-Command is useful for debugging
 	//alert("sdapscreator.js:updateQuestionnaire()-Call")
 	//----Create Object/Instance of SDAPScreator----
 	//    var vMyInstance = new SDAPScreator();
 	//    vMyInstance.updateQuestionnaire();
 	//-------------------------------------------------------
-	
+
 	this.aQuestionnaire.update()
-	
+
 	//alert("index.html:118 - updateQuestionnaire()-Call");
 
 }
 //----End of Method updateQuestionnaire Definition
 
-						
+
 //#################################################################
-//# Method: setTimeout  
+//# Method: setTimeout
 //#    used in Class: SDAPScreator
-//#                
-//# Comment:                        
 //#
-//# created               14.10.2014             
-//# last modifications    14.10.2014             
+//# Comment:
+//#
+//# created               14.10.2014
+//# last modifications    14.10.2014
 //#################################################################
 
 function setTimeout_SDAPScreator(pEvalStr,pTime) {
@@ -486,7 +491,7 @@ function Load_Questionnaire_SDAPScreator() {
 }
 
 function Edit_Structure_SDAPScreator() {
-	var vReturn = ""; 
+	var vReturn = "";
 	vReturn += this.aQuestionnaire.aQuestions.getEdit_Structure_HTML();
 	if (this.aQuestionnaire.aQuestions.aChildNodes.rows >0) {
 		vReturn += this.aQuestionnaire.aQuestions.aChildNodes.getEdit_Structure_HTML();
@@ -503,7 +508,7 @@ function Show_Questionnaire_SDAPScreator() {
 }
 
 function Edit_Questionnaire_SDAPScreator() {
-	var vReturn = ""; 
+	var vReturn = "";
 	vReturn += this.aQuestionnaire.aQuestions.getEditHTML();
 	if (this.aQuestionnaire.aQuestions.aChildNodes.rows >0) {
 		vReturn += this.aQuestionnaire.aQuestions.aChildNodes.getEditHTML();
@@ -536,7 +541,9 @@ var vURL_Object       = new URL_Object();
 var vSDAPScreator     = new SDAPScreator();
 vSDAPScreator.init();
 //var vFormGenerator    = new FormGenerator();
-setTimeout("top.main.document.location='questionnaires/questionnaire0root.html'")
+vSDAPScreator.load();
+
+setTimeout("")
 //-------------------------------------------------
 
 //-------------------------------------------------
@@ -624,4 +631,3 @@ Use e.g. <a href="http://www.mozilla.org">Mozilla Firefox</a>
 
 </body></noframes>
 </html>
-	
