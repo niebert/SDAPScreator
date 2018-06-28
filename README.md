@@ -28,7 +28,50 @@ The following quick start tutorial assumes that your documents are stored in the
 The setup command creates the PDF document `questionnaire.pdf` in the project directory e.g. `/home/myuser/Documents/SDAPS/my_project/questionnaire.pdf`. Print this document multiple times for your survey and let fill out the questionnaire on paper for the survey.
 
 ### Scan the filled paper and pencil questionnaires
-Scan the filled paper and pencil questionnaires with a scanner. 
+Scan the filled paper and pencil questionnaires with a scanner. E.g. the scanner provides a multipage PDF document with all the scanned questionnaires `filled_quests.pdf`. (300 DPI, grey scale or black and white). Convert the PDF document into multipage TIFF file in monochrome black and white (not grey scale) e.g. `filled_quests.tif`.
+
+### Join single page TIFF files into one multipage TIFF
+Sometimes the scanner provides multiple single page TIFF files. If you have Image Magick installed on your Linux Computer you can join multiple TIFF.
+* Command: `convert page1.tif page2.tif -append multipage.tif`
+
+### Add scanned documents to project
+
+* Project Name: `my_project/`
+* Linux Command:  `sdaps (Project Path) add (TIFF Files)`
+* Example:  `sdaps /home/myuser/Documents/SDAPS/my_project add  multipage.tif`
+
+### Recognize scanned Questionnaires
+
+* Project Name: `my_project/`
+* Linux Command:  `sdaps (Project Path) recognize`
+* Example:  `sdaps /home/myuser/Documents/SDAPS/my_project recognize`
+
+### Check Recognition of Questionnaires in Frontend
+
+* Project Name: `my_project/`
+* Linux Command:  `sdaps (Project Path) gui`
+* Example:  `sdaps /home/myuser/Documents/SDAPS/my_project gui`
+
+### Create PDF Report of Recognition
+
+* Project Name: `my_project/`
+* Linux Command:  `sdaps (Project Path) report`
+* Example:  `sdaps /home/myuser/Documents/SDAPS/my_project report`
+
+### Export CSV Table of Recognition
+
+* Project Name: `my_project/`
+* Linux Command:  `sdaps (Project Path) csv export`
+* Example:  `sdaps /home/myuser/Documents/SDAPS/my_project csv export`
+
+## SDAPS Menu
+It exists an SDAPS menu to avoid command line execution from console. To use the `SDAPSmenu.sh` on your Linux system it is necessary that `zenity` and `evince` is installed by:
+* `sudo apt-get install zenity`
+* `sudo apt-get install evince`
+Evince is a pdf-viewer used in `SDAPSmenu.sh` and `Zenity` allows user interaction from a shell script. If `zenity` and `evince` are installed you can start `SDAPSmenu.sh` by:
+* `sh ./SDAPSmenu.sh`
+`SDAPSmenu.sh` is provided the the ZIP-package of `SDAPScreator` on https://www.github.com/niebert/SDAPScreator .
+
 
 ## Videos
 * [SDAPS Basic Concept](https://www.youtube.com/watch?v=qJhvjqMSYmk)
