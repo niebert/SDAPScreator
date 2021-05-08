@@ -33,7 +33,12 @@ You can download an image of SDAPS based on Linux, that can be install even on a
 
 ## Installation Support SDAPS Homepage
 See https://sdaps.org/install/ for installation support on Linux Operating Systems. You can use e.g. an older Windows computer and install LUbuntu on it and use that with an attached USB scanner for scanning and processing for Paper and Pencil questionnaires. 
-
+```sh
+sudo add-apt-repository ppa:benjamin-sipsolutions/sdaps or /sdaps-unstable
+sudo apt-get update
+sudo apt-get install sdaps 
+```
+If you want to run the SDAPS Creator offline 
 
 ## Command Line - Quick Start
 The following quick start tutorial assumes that your documents are stored in the subdirectory `/home/myuser/Documents` with a subdirectory `/home/myuser/Documents/SDAPS` that contains all SDAPS project. Adapt the pathname to your home directory and documents folder on your Linux Operating System
